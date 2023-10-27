@@ -1,0 +1,41 @@
+.selector {
+    border: 1px solid #000;
+    background: transparent;
+    border-radius: 5px;
+    box-shadow: 3px 3px 0px 0px rgba(0, 0, 0);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    width: 60px;
+    height: 30px;
+}
+
+.selector:focus {
+    outline: none;
+    border: 1px solid #000;
+}
+
+.selector:hover {
+    color: white;
+}
+.selector:active {
+    box-shadow: none;
+    transform: translateY(4px);
+  }
+
+.option {
+    border-radius: 0%;
+    color: black;
+    background-color: #2c1eaf;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 5px;
+    border: none;
+}
+
+select option:hover {
+    background-color: #2c1eaf;
+}
+
+.option:hover {
+    background-color: #000;
+}

@@ -1,0 +1,172 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap");
+
+body {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  background: linear-gradient(to bottom, #5b21b6, #1e40af);
+  color: #fff;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  justify-content: baseline;
+  justify-items: baseline;
+  align-items: start;
+  gap: 10px;
+  padding: 10px;
+}
+.order-by-container {
+  grid-column: 6 / span 2;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.order-button-container {
+  align-self: self-end;
+}
+
+.status-label,
+.species-label,
+.gender-label {
+  text-transform: capitalize;
+}
+
+.filter-buttons-container {
+  display: flex;
+  gap: 10px;
+}
+
+.status-buttons-container,
+.gender-buttons-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.species-buttons-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.status-container {
+  grid-column: 4 / span 1;
+}
+
+.species-container {
+  grid-column: 5 / span 1;
+}
+
+.gender-container {
+  grid-column: 6 / span 1;
+}
+
+.reset-button,
+.Any-status-button,
+.button-status,
+.Any-species-button,
+.button-species,
+.Any-gender-button,
+.button-gender {
+  border: 1px solid #000;
+  background: transparent;
+  border-radius: 5px;
+  box-shadow: 3px 3px 0px 0px rgba(0, 0, 0);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 90px;
+  height: 30px;
+}
+
+.order-button {
+  margin-left: 5px;
+  border: 1px solid #000;
+  background: transparent;
+  border-radius: 5px;
+  box-shadow: 3px 3px 0px 0px rgba(0, 0, 0);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-size: 21px;
+  width: 30px;
+  height: 30px;
+  line-height: 1;
+  text-align: center;
+}
+.reset-button:hover,
+.Any-status-button:hover,
+.button-status:hover,
+.Any-species-button:hover,
+.button-species:hover,
+.Any-gender-button:hover,
+.button-gender:hover {
+  color: #fff;
+}
+.order-button:hover {
+  background-color: #fff;
+}
+
+
+.items-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.item {
+  min-width: 100px;
+  min-height: 50px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.category {
+  color: #64748b;
+  font-size: 10px;
+}
+
+.status-active,
+.species-active,
+.gender-active {
+  background-color: #3e8e41;
+  box-shadow: none;
+  transform: translateY(4px);
+}
+.reset-button:active,
+.order-button:active,
+.Any-status-button:active,
+.Any-species-button:active,
+.Any-gender-button:active {
+  box-shadow: none;
+  transform: translateY(4px);
+}
+
+.status-active {
+  background-color: #1e3b1e;
+  color: #fff;
+}
+
+.species-active {
+  background-color: #1e293b;
+  color: #fff;
+}
+
+.gender-active {
+  background-color: #3b1e1e;
+  color: #fff;
+}

@@ -1,0 +1,16 @@
+.searchBarDiv {
+
+}
+
+.searchBar {
+    padding: 5px;
+    width: 300px;
+    border-radius: 10px;
+}
+
+.searchBarButton {
+    padding: 5px;
+    width: 100px;
+    margin-left: 10px;
+    border-radius: 10px;
+}

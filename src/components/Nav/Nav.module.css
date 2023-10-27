@@ -1,0 +1,15 @@
+.navBar {
+    display: flex;
+    position: sticky;
+    justify-content: space-around;
+    align-content: space-around;
+    border: solid black 1px;
+    background-color: aquamarine;
+    padding: 10px;
+}
+
+.menuButton {
+    padding: 5px;
+    width: 100px;
+    border-radius: 10px;
+}
