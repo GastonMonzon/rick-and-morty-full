@@ -1,23 +1,26 @@
 /* styles */
-import styles from './OptionsSideBarRight.module.css'
+import './OptionsSideBarRight.css'
 
 /* components */
 import Checkbox from '../Checkbox/Checkbox';
 import RadioButtons from '../RadioButtons/RadioButtons';
 import {
-    verticalCardsPerRowRadio, horizontalCardsPerRowRadio, infoLabelsCheckbox, infoVerticalPositionsRadio, infoHorizontalPositionsRadio, textPositionXRadio, textPositionYRadio, favoritesIconRadio,
+    verticalCardsPerRowRadio, horizontalCardsPerRowRadio, infoLabelsCheckbox, infoLabelsPositionRadio, textPositionXRadio, textPositionYRadio, favoritesIconRadio,
     episodesViewRadio, episodeListViewRadio, episodeInfoCheckbox, episodeCharactersViewRadio
 } from '../../config';
 import {
-    verticalCardsPerRow, horizontalCardsPerRow, infoLabels, infoVerticalPosition, infoHorizontalPosition, textPositionX,
+    verticalCardsPerRow, horizontalCardsPerRow, infoLabels, infoLabelsPosition, textPositionX,
     textPositionY, favoritesIcon, episodeView, episodeInfoLabels, episodeListView, charactersView
 } from '../../redux/actions';
+import optionsBackgroundVideo from '../../images/optionsBackgroundVideo2.mp4';
 
 /* hooks */
 import { useDispatch } from 'react-redux';
+import { useRef } from 'react';
 
 export default function OptionsSideBarRight() {
     const dispatch = useDispatch();
+    const videoRef = useRef(null);
 
     const handleVerticalCardsPerRowChange = (id) => {
         dispatch(verticalCardsPerRow(id));
@@ -28,11 +31,8 @@ export default function OptionsSideBarRight() {
     const handleInfoLabelsChange = (id, event) => {
         dispatch(infoLabels({ id: id, isChecked: event.target.checked }));
     }
-    const handleInfoVerticalPositionsChange = (id, event) => {
-        dispatch(infoVerticalPosition(id));
-    }
-    const handleInfoHorizontalPositionsChange = (id, event) => {
-        dispatch(infoHorizontalPosition(id));
+    const handleinfoLabelsPositionChange = (id, event) => {
+        dispatch(infoLabelsPosition(id));
     }
     const handleTextPositionXChange = (id, event) => {
         dispatch(textPositionX(id));
@@ -56,7 +56,15 @@ export default function OptionsSideBarRight() {
         dispatch(charactersView(id));
     }
     return (
-        <div className={styles.optionsSidebar}>
+        <div className='optionsSidebar'>
+            <div className="video-container">
+                <video ref={videoRef} src={optionsBackgroundVideo} id="background-video" autoPlay muted loop>
+                </video>
+            </div>
+            <div className="video-container2">
+                <video ref={videoRef} src={optionsBackgroundVideo} id="background-video2" autoPlay muted loop>
+                </video>
+            </div>
             <h3>⚙️ Options Sidebar</h3>
             <div>
                 <h4>Card Options</h4>
@@ -92,22 +100,12 @@ export default function OptionsSideBarRight() {
                 </div>
                 <div>
                     <RadioButtons
-                        name={infoVerticalPositionsRadio.name}
-                        mainTitle={infoVerticalPositionsRadio.mainTitle}
-                        titles={infoVerticalPositionsRadio.titles}
-                        ids={infoVerticalPositionsRadio.ids}
-                        checkedId={infoVerticalPositionsRadio.checked}
-                        handleOptionsSideBarChange={handleInfoVerticalPositionsChange}
-                    />
-                </div>
-                <div>
-                    <RadioButtons
-                        name={infoHorizontalPositionsRadio.name}
-                        mainTitle={infoHorizontalPositionsRadio.mainTitle}
-                        titles={infoHorizontalPositionsRadio.titles}
-                        ids={infoHorizontalPositionsRadio.ids}
-                        checkedId={infoHorizontalPositionsRadio.checked}
-                        handleOptionsSideBarChange={handleInfoHorizontalPositionsChange}
+                        name={infoLabelsPositionRadio.name}
+                        mainTitle={infoLabelsPositionRadio.mainTitle}
+                        titles={infoLabelsPositionRadio.titles}
+                        ids={infoLabelsPositionRadio.ids}
+                        checkedId={infoLabelsPositionRadio.checked}
+                        handleOptionsSideBarChange={handleinfoLabelsPositionChange}
                     />
                 </div>
                 <div>
@@ -142,7 +140,7 @@ export default function OptionsSideBarRight() {
                 </div>
             </div>
             <div>
-                <h4>Detail Options:</h4>
+                <h4>Detail Options</h4>
                 <div>
                     <RadioButtons
                         name={episodesViewRadio.name}
@@ -184,6 +182,7 @@ export default function OptionsSideBarRight() {
                     />
                 </div>
             </div>
+            <br /><br /><br /><br /><br /><br /><br /><br />
         </div>
     )
 }

@@ -7,6 +7,7 @@ export default function SearchBar({ query, handleQuery }) {
          <input
             type="search"
             id='searchBarQuery'
+            placeholder='Search'
             value={query}
             onChange={handleQuery}
          />

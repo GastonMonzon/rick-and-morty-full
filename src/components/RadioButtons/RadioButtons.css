@@ -1,0 +1,97 @@
+.container-verticalCardsPerRow,
+.container-horizontalCardsPerRow,
+.container-infoPosition,
+.container-textPositionX,
+.container-textPositionY,
+.container-episodesView,
+.container-charactersView,
+.container-episodeListView {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0 10px 0;
+}
+
+.container-favoritesIcon {
+}
+
+.title-label-verticalCardsPerRow,
+.title-label-horizontalCardsPerRow,
+.title-label-infoPosition,
+.title-label-textPositionX,
+.title-label-textPositionY,
+.title-label-favoritesIcon,
+.title-label-episodesView,
+.title-label-charactersView,
+.title-label-episodeListView {
+    font-weight: bold;
+}
+
+.input-label-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.verticalCardsPerRow,
+.horizontalCardsPerRow,
+.infoPosition,
+.textPositionX,
+.textPositionY,
+.favoritesIcon,
+.episodesView,
+.charactersView,
+.episodeListView {
+    text-align: center;
+    width: 24px;
+    margin-right: 5px;
+    border: solid 2px rgba(0, 0, 0, 0);
+    border-radius: 10px;
+}
+
+.infoPosition {
+    margin-right: 30px;
+}
+
+.textPositionX {
+    margin-right: 30px;
+}
+
+.textPositionY {
+    width: 100%;
+}
+
+.favoritesIcon {
+    display: inline;
+    margin-right: 16px;
+}
+
+.favoritesIcon input {
+    margin-bottom: 10px;
+}
+
+.episodesView {
+    width: 100%;
+}
+
+.episodeListView {
+    width: 100%;
+}
+
+.charactersView {
+    width: 100%;
+}
+
+
+input[type="radio"] {
+    align-items: center;
+    accent-color: rgb(67, 0, 98);
+    height: 15px;
+}
+
+input[type="radio"]:hover {
+    transform: scale(1.25);
+}
+
+input[type="radio"]:hover,
+input[type="radio"]:checked {
+    transform: scale(1.25);
+}

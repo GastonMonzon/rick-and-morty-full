@@ -1,7 +1,10 @@
 import {
     SET_ALL_CARDS, RANDOMIZE_ALL, ADD_FAV, REMOVE_FAV, QUERY, RESET_QUERY, ORDER, ORDER_BY, FILTER, RESET_FILTER, RESET_FILTERS,
-    VERTICAL_CARDS_PER_ROW, HORIZONTAL_CARDS_PER_ROW, INFO_LABELS, INFO_VERTICAL_POSITION, INFO_HORIZONTAL_POSITION, TEXT_POSITION_X, 
-    TEXT_POSITION_Y, FAVORITES_ICON, EPISODE_VIEW, EPISODE_INFO_LABELS, CHARACTERS_VIEW, EPISODE_LIST_VIEW
+    VERTICAL_CARDS_PER_ROW, HORIZONTAL_CARDS_PER_ROW, INFO_LABELS, INFO_LABELS_POSITION, TEXT_POSITION_X, TEXT_POSITION_Y, 
+    RANDOMIZE_ALL_FAVORITES, QUERY_FAVORITES, RESET_QUERY_FAVORITES, ORDER_FAVORITES, ORDER_BY_FAVORITES, FILTER_FAVORITES, 
+    RESET_FILTER_FAVORITES, RESET_FILTERS_FAVORITES, VERTICAL_CARDS_PER_ROW_FAVORITES, HORIZONTAL_CARDS_PER_ROW_FAVORITES,
+    INFO_LABELS_FAVORITES, INFO_LABELS_POSITION_FAVORITES, TEXT_POSITION_X_FAVORITES, TEXT_POSITION_Y_FAVORITES, FAVORITES_ICON, 
+    EPISODE_VIEW, EPISODE_INFO_LABELS, CHARACTERS_VIEW, EPISODE_LIST_VIEW
 } from "./action-types"
 
 export const setAllCards = (cards) => {
@@ -46,17 +49,56 @@ export const horizontalCardsPerRow = (id) => {
 export const infoLabels = (labelData) => {
     return { type: INFO_LABELS, payload: labelData }
 }
-export const infoVerticalPosition = (position) => {
-    return { type: INFO_VERTICAL_POSITION, payload: position }
-}
-export const infoHorizontalPosition = (position) => {
-    return { type: INFO_HORIZONTAL_POSITION, payload: position }
+export const infoLabelsPosition = (position) => {
+    return { type: INFO_LABELS_POSITION, payload: position }
 }
 export const textPositionX = (position) => {
     return { type: TEXT_POSITION_X, payload: position }
 }
 export const textPositionY = (position) => {
     return { type: TEXT_POSITION_Y, payload: position }
+}
+export const randomizeAllFavorites = (randomizedCards) => {
+    return { type: RANDOMIZE_ALL_FAVORITES, payload: randomizedCards }
+}
+export const queryFunctionFavorites = (queryData) => {
+    return { type: QUERY_FAVORITES, payload: queryData }
+}
+export const resetQueryFavorites = () => {
+    return { type: RESET_QUERY_FAVORITES }
+}
+export const orderCardsFavorites = () => {
+    return { type: ORDER_FAVORITES }
+}
+export const orderByFavorites = (orderData) => {
+    return { type: ORDER_BY_FAVORITES, payload: orderData }
+}
+export const filterFavorites = (filterItem) => {
+    return { type: FILTER_FAVORITES, payload: filterItem }
+}
+export const resetFilterFavorites = (category) => {
+    return { type: RESET_FILTER_FAVORITES, payload: category }
+}
+export const resetFiltersFavorites = () => {
+    return { type: RESET_FILTERS_FAVORITES }
+}
+export const verticalCardsPerRowFavorites = (id) => {
+    return { type: VERTICAL_CARDS_PER_ROW_FAVORITES, payload: id }
+}
+export const horizontalCardsPerRowFavorites = (id) => {
+    return { type: HORIZONTAL_CARDS_PER_ROW_FAVORITES, payload: id }
+}
+export const infoLabelsFavorites = (labelData) => {
+    return { type: INFO_LABELS_FAVORITES, payload: labelData }
+}
+export const infoLabelsPositionFavorites = (position) => {
+    return { type: INFO_LABELS_POSITION_FAVORITES, payload: position }
+}
+export const textPositionXFavorites = (position) => {
+    return { type: TEXT_POSITION_X_FAVORITES, payload: position }
+}
+export const textPositionYFavorites = (position) => {
+    return { type: TEXT_POSITION_Y_FAVORITES, payload: position }
 }
 export const favoritesIcon = (id) => {
     return { type: FAVORITES_ICON, payload: id }

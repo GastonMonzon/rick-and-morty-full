@@ -25,43 +25,36 @@ export const verticalCardsPerRowRadio = {
 export const horizontalCardsPerRowRadio = {
     name: 'horizontalCardsPerRow',
     mainTitle: 'Horizontal Cards Per Row:',
-    titles: ['2', '3', '4', '5', '6', '7', '8', '9', '10'],
-    ids: ['twoCards', 'threeCards', 'fourCards', 'fiveCards', 'sixCards', 'sevenCards', 'eightCards', 'nineCards', 'tenCards'],
-    checked: 'sixCards'
+    titles: ['2', '3', '4'],
+    ids: ['twoCards', 'threeCards', 'fourCards'],
+    checked: 'fourCards'
 }
 export const infoLabelsCheckbox = {
     name: 'infoLabels',
     mainTitle: 'Info Labels:',
-    titles: ['Id', 'Name', 'Status', 'Species', 'Gender', 'Origin', 'Location'],
+    titles: ['Id', 'Name', 'Status', 'Species', 'Type', 'Gender', 'Origin', 'Location'],
     ids: ['idView', 'nameView', 'statusView', 'speciesView', 'typeView', 'genderView', 'originView', 'locationView'],
-    checked: ['idView', 'nameView', 'statusView', 'speciesView', 'typeView', 'genderView', 'originView', 'locationView']
+    checked: ['idView', 'nameView', 'statusView', 'speciesView', 'genderView']
 }
-export const infoVerticalPositionsRadio = {
-    name: 'infoVerticalPositions',
-    mainTitle: 'Info Vertical Position:',
-    titles: ['Above', 'Over', 'Below'],
-    ids: ['above', 'over', 'below'],
-    checked: 'over'
-}
-export const infoHorizontalPositionsRadio = {
-    name: 'infoHorizontal Positions',
-    mainTitle: 'Info Horizontal Position:',
-    titles: ['Left', 'Over', 'Right'],
-    ids: ['left', 'over', 'right'],
-    checked: 'over'
+export const infoLabelsPositionRadio = {
+    name: 'infoPosition',
+    mainTitle: 'Info Position:',
+    titles: ['Over', 'Above', 'Right', 'Below', 'Left'],
+    ids: ['over', 'above', 'right', 'below', 'left'],
+    checked: 'below'
 }
 export const textPositionXRadio = {
     name: 'textPositionX',
     mainTitle: 'Text Position X:',
-    titles: ['Left', 'Center', 'Right'],
-    ids: ['leftX', 'centerX', 'rightX'],
+    titles: ['Left', 'Center', 'Right', 'Justify'],
+    ids: ['leftX', 'centerX', 'rightX', 'justify'],
     checked: 'leftX'
 }
 export const textPositionYRadio = {
     name: 'textPositionY',
     mainTitle: 'Text Position Y:',
-    titles: ['Top', 'Center', 'Bottom'],
-    ids: ['top', 'centerY', 'bottom'],
+    titles: ['Top', 'Center', 'Bottom', 'Space-Around', 'Space-Between', 'Space-Evenly'],
+    ids: ['top', 'centerY', 'bottom', 'space-around', 'space-between', 'space-evenly'],
     checked: 'top'
 }
 export const favoritesIconRadio = {

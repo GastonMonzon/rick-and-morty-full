@@ -2,6 +2,8 @@ import styles from './Detail.module.css';
 import axios from 'axios';
 import { useParams, Link, useLocation, NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import backgroundVideo from '../../images/backgroundVideo.mp4';
 
 export default function Detail(props) {
     const { id } = useParams();
@@ -9,6 +11,10 @@ export default function Detail(props) {
     const [episodes, setEpisodes] = useState([]);
     const [origin, setOrigin] = useState({});
     const [location, setLocation] = useState({});
+    const episodeNameView = useSelector((state) => state.allCards.episodeNameView);
+    const episodeCodeView = useSelector((state) => state.allCards.episodeCodeView);
+    const episodeDateView = useSelector((state) => state.allCards.episodeDateView);
+    const episodeCharactersView = useSelector((state) => state.allCards.episodeCharactersView);
     const pageLocation = useLocation();
 
     useEffect(() => {
@@ -79,21 +85,13 @@ export default function Detail(props) {
 
     return (
         <div className={styles.containerDiv} >
-            <div className={styles.containerDivTitle}></div>
-            <h1 className={styles.detailH1UpperShadow}></h1>
-            <h1 className={styles.detailH1Shadow}></h1>
-            <h1 className={styles.detailH1}>Detail</h1>
+            <div className={styles.detailvideocontainer}>
+                <video src={backgroundVideo} className={styles.detailbackgroundvideo} autoPlay muted loop>
+                    </video>
+                </div>
             <h2 className={styles.detailName}>{character.name}</h2>
             <table className={styles.detailTable} >
                 <tbody>
-                    {/* <tr>
-                        <td>
-                            <h3>Name: </h3>
-                        </td>
-                        <td>
-                            <p>{character.name}</p>
-                        </td>
-                    </tr> */}
                     <tr>
                         <td>
                             <h3>Status:</h3>
@@ -152,19 +150,21 @@ export default function Detail(props) {
                     )}
                 </tbody>
             </table>
-            <h3>Episodes:</h3>
+            {(episodeNameView || episodeCodeView || episodeDateView || episodeCharactersView) && <h3>Episodes:</h3>}
             <ul>
                 {episodes.map((episode) => (
                     <li key={episode.episode}>
-                        <h4>{episode.name}</h4>
-                        <p>{episode.episode}</p>
-                        <p>Air Date: {episode.air_date}</p>
-                        <p>Characters:</p>
-                        {episode.characters.map((character) => (
-                            <NavLink key={character.id} to={`/detail/${character.id}`}>
-                                <img className={styles.detailImage} src={character.image} alt={character.name} title={character.name} />
-                            </NavLink>
-                        ))}
+                        {episodeNameView && <h4>{episode.name}</h4>}
+                        {episodeCodeView && <p>{episode.episode}</p>}
+                        {episodeDateView && <p>Air Date: {episode.air_date}</p>}
+                        {episodeCharactersView && <p>Characters:</p>}
+                        {episodeCharactersView ? (
+                            episode.characters.map((character) => (
+                                <NavLink key={character.id} to={`/detail/${character.id}`}>
+                                    <img className={styles.detailImage} src={character.image} alt={character.name} title={character.name} />
+                                </NavLink>
+                            ))) : (null)
+                        }
                     </li>
                 ))}
             </ul>

@@ -35,17 +35,45 @@ export default function Form(props) {
         <div className={styles.formsDiv}>
             <div className={styles.loginDiv}>
                 <form className={styles.login} onSubmit={handleLogin} >
-                    <label htmlFor='email'>Email:</label>
+                    {/* <label htmlFor='email'>Email:</label>
                     <input type='email' key='email' id='email' name='email'
                         value={userData.email} onChange={handleInputChange} />
-                    <p>{errors.email && errors.email}</p> {/* Chequea que errors.email sea verdadero, si lo es, como se cumple pasa a lo siguiente en el && y lo renderiza, sino no hace nada*/}
+                    <p>{errors.email && errors.email}</p>
                     <br />
                     <label htmlFor="password">Password:</label>
                     <input type='text' key='password' id='password' name='password'
                         value={userData.password} onChange={handleInputChange} />
                     <p>{errors.password && errors.password}</p>
-                    <hr />
+                    <button type='submit' disabled={!userData.email || !userData.password || (errors.email || errors.password)} >Login</button> */}
+                    <table>
+                        <tr>
+                            <td>
+                                <label htmlFor='email'>Email:</label>
+                            </td>
+                            <td rowspan="2">
+                                <input type='email' key='email' id='email' name='email' value={userData.email} onChange={handleInputChange} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>{errors.email && errors.email}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label htmlFor="password">Password:</label>
+                            </td>
+                            <td rowspan="2">
+                                <input type='password' key='password' id='password' name='password' value={userData.password} onChange={handleInputChange} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>{errors.password && errors.password}</p>
+                            </td>
+                        </tr>
                     <button type='submit' disabled={!userData.email || !userData.password || (errors.email || errors.password)} >Login</button>
+                    </table>
                 </form>
             </div>
             <div className={styles.registerDiv}>
@@ -85,12 +113,11 @@ export default function Form(props) {
                         value={userData.password} onChange={handleInputChange}
                     />
                     <p>{errors.password && errors.password}</p>
-                    <label htmlFor="password">Repeat Password:</label>
+                    {/* <label htmlFor="password">Repeat Password:</label>
                     <input type='text' key='password' id='password' name='password'
                         value={userData.password} onChange={handleInputChange}
                     />
-                    <p>{errors.password && errors.password}</p>
-                    <hr />
+                    <p>{errors.password && errors.password}</p> */}
                     <button type='submit' disabled={!userData.email || !userData.password || (errors.email || errors.password)} >Register</button>
                 </form>
             </div>

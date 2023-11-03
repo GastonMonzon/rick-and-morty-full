@@ -2,7 +2,9 @@
     border: 1px solid #000;
     background: transparent;
     border-radius: 5px;
-    box-shadow: 3px 3px 0px 0px rgba(0, 0, 0);
+    color: rgb(2, 255, 2);
+    border-color: rgb(100, 0, 53);
+    box-shadow: 3px 3px 0px 0px rgb(100, 0, 53);
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     width: 60px;
@@ -11,16 +13,20 @@
 
 .selector:focus {
     outline: none;
-    border: 1px solid #000;
+    border-color: #0000ff;
 }
 
 .selector:hover {
-    color: white;
+    color: #fff;
+    border-color: #0000ff;
+    box-shadow: 3px 3px 0px 0px #0000ff;
 }
+
 .selector:active {
     box-shadow: none;
     transform: translateY(4px);
-  }
+    box-shadow: 3px 3px 0px 0px rgb(255, 255, 255);
+}
 
 .option {
     border-radius: 0%;

@@ -26,22 +26,23 @@ export default function App() {
    const navigate = useNavigate();
    const location = useLocation();
    const dispatch = useDispatch();
-   // const [access, setAccess] = useState(false);
+   const [access, setAccess] = useState(false);
    const allCards = useSelector((state) => state.allCards.filteredCards);
+   const [isFiltersBarExtended, setIsFiltersBarExtended] = useState(false);
 
-   // const EMAIL = 'gastonmonzon3@gmail.com';
-   // const PASSWORD = '123456';
+   const EMAIL = 'gastonmonzon3@gmail.com';
+   const PASSWORD = '123456';
 
-   // function login(userData) {
-   //    if (userData.email === EMAIL && userData.password === PASSWORD) {
-   //       setAccess(true);
-   //       navigate('/home');
-   //    }
-   // }
+   function login(userData) {
+      if (userData.email === EMAIL && userData.password === PASSWORD) {
+         setAccess(true);
+         navigate('/home');
+      }
+   }
 
-   // useEffect(() => { // Corre siempre que se cambie página
-   //    !access && navigate('/'); // Sí el acceso es falso te redirije a /
-   // }, [access, navigate]);
+   useEffect(() => { // Corre siempre que se cambie página
+      !access && navigate('/'); // Sí el acceso es falso te redirije a /
+   }, [access, navigate]);
 
    useEffect(() => {
       const fetchAllCharacters = async () => {
@@ -64,23 +65,40 @@ export default function App() {
       fetchAllCharacters();
    }, [dispatch]);
 
+   const extendFiltersBar = (event) => {
+      try {
+         console.log(event.target.tagName);
+         if (event.target.tagName !== 'SUMMARY') {
+            return;
+         }
+      } catch (error) {
+         throw error;
+      }
+      console.log(isFiltersBarExtended);
+      setIsFiltersBarExtended(!isFiltersBarExtended);
+   }
+
+   useEffect(() => {
+      console.log('useEffect');
+      if (location.pathname !== '/home') {
+         console.log('location.pathname !== /home');
+         if (isFiltersBarExtended) {
+            console.log('isFiltersBarExtended');
+            extendFiltersBar();
+         }
+      }
+   }, [location]);
+
    return (
       <div className='app'>
          <div>
-            { location.pathname !== '/' && <Nav /> } {/*Si está en / no renderiza Nav*/}
-            { location.pathname !== '/' && <UserSideBarLeft /> } {/*Idem*/}
-            { location.pathname !== '/' && <OptionsSideBarRight />}
+            {location.pathname !== '/' && <Nav isFiltersBarExtended={isFiltersBarExtended} />} {/*Si está en / no renderiza Nav*/}
          </div>
          <div>
-            {/* { location.pathname === '/home' && <FiltersBar/> } */}
          </div>
          <Routes>
-            {/* <Route exact path='/' element={<Form login={login} />} /> */}
-            {/* <Route path='/home' element={<Cards characters={allCards} className={cardsPerRow} idView={idView} nameView={nameView}
-               statusView={statusView} typeView={typeView} speciesView={speciesView} genderView={genderView} originView={originView}
-               locationView={locationView} infoPosition={infoPosition} favoritesIcon={favoritesIcon}
-            />} /> */}
-            <Route path='/home' element={<Home characters={allCards} />} />
+            <Route exact path='/' element={<Form login={login} />} />
+            <Route path='/home' element={<Home characters={allCards} extendFiltersBar={extendFiltersBar} />} />
             <Route path='/favorites' element={<Favorites />} />
             <Route path='/about' element={<About />} />
             <Route path='/detail/:id' element={<Detail />} />

@@ -1,5 +1,23 @@
 .menuButton {
-    padding: 5px;
-    width: 100px;
-    border-radius: 10px;
+    border: 1px solid #000;
+    background: transparent;
+    border-radius: 5px;
+    box-shadow: 3px 3px 0px 0px rgb(51, 0, 255);
+    border-color: rgb(51, 0, 255);
+    color: rgb(2, 255, 2);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    width: 90px;
+    height: 30px;
+}
+
+.menuButton:active {
+    box-shadow: none;
+    transform: translateY(4px);
+}
+
+.menuButton:hover {
+    color: #00ff88;
+    border-color: #00ff1a;
+    outline: 1px solid #00ff1a;
 }

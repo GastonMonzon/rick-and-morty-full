@@ -1,0 +1,35 @@
+.cardsDiv {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    text-decoration: none;
+    justify-items: center;
+    margin-top: 200px;
+}
+
+.twoCards {
+    grid-template-columns: repeat(2, 1fr);
+}
+.threeCards {
+    grid-template-columns: repeat(3, 1fr);
+}
+.fourCards {
+    grid-template-columns: repeat(4, 1fr);
+}
+.fiveCards {
+    grid-template-columns: repeat(5, 20%);
+}
+.sixCards {
+    grid-template-columns: repeat(6, 1fr);
+}
+.sevenCards {
+    grid-template-columns: repeat(7, 1fr);
+}
+.eightCards {
+    grid-template-columns: repeat(8, 12.5%);
+}
+.nineCards {
+    grid-template-columns: repeat(9, 1fr);
+}
+.tenCards {
+    grid-template-columns: repeat(10, 1fr);
+}

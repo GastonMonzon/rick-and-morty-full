@@ -1,11 +1,11 @@
 import {
-    SET_ALL_CARDS, RANDOMIZE_ALL, QUERY, RESET_QUERY, ORDER, ORDER_BY, FILTER, RESET_FILTER, RESET_FILTERS,
-    VERTICAL_CARDS_PER_ROW, HORIZONTAL_CARDS_PER_ROW, INFO_LABELS, INFO_VERTICAL_POSITION, INFO_HORIZONTAL_POSITION,
-    TEXT_POSITION_X, TEXT_POSITION_Y, FAVORITES_ICON, EPISODE_VIEW, EPISODE_INFO_LABELS, CHARACTERS_VIEW, EPISODE_LIST_VIEW
+    SET_ALL_CARDS, RANDOMIZE_ALL, QUERY, RESET_QUERY, ORDER, ORDER_BY, FILTER, RESET_FILTER, RESET_FILTERS, VERTICAL_CARDS_PER_ROW,
+    HORIZONTAL_CARDS_PER_ROW, INFO_LABELS, INFO_LABELS_POSITION, TEXT_POSITION_X, TEXT_POSITION_Y, FAVORITES_ICON, EPISODE_VIEW,
+    EPISODE_INFO_LABELS, CHARACTERS_VIEW, EPISODE_LIST_VIEW
 } from "./action-types"
 import {
-    orderBySelect, filters, verticalCardsPerRowRadio, horizontalCardsPerRowRadio, infoVerticalPositionsRadio, infoHorizontalPositionsRadio,
-    textPositionXRadio, textPositionYRadio, episodesViewRadio, episodeListViewRadio, episodeCharactersViewRadio
+    orderBySelect, filters, verticalCardsPerRowRadio, horizontalCardsPerRowRadio, infoLabelsPositionRadio, textPositionXRadio,
+    textPositionYRadio, episodesViewRadio, episodeListViewRadio, episodeCharactersViewRadio
 } from '../config';
 
 const initialState = {
@@ -21,13 +21,12 @@ const initialState = {
     idView: true,
     nameView: true,
     statusView: true,
-    typeView: true,
+    typeView: false,
     speciesView: true,
     genderView: true,
-    originView: true,
-    locationView: true,
-    infoVerticalPosition: infoVerticalPositionsRadio.checked,
-    infoHorizontalPosition: infoHorizontalPositionsRadio.checked,
+    originView: false,
+    locationView: false,
+    infoLabelsPosition: infoLabelsPositionRadio.checked,
     textPositionX: textPositionXRadio.checked,
     textPositionY: textPositionYRadio.checked,
     favoritesIcon: ['🤍', '❤️'],
@@ -115,21 +114,20 @@ export const ReducerAllCards = (state = initialState, action) => {
                         console.log(randomizedCards);
                         orderByTemp = [...randomizedCards];
                         state.randomizedCards = [...randomizedCards];
-                    } else {
-                        console.log(state.filteredCards);
-                        const randomOrder = [];
-                        for (let i = 0; i < state.randomizedCards.length; i++) {
-                            for (let j = 0; j < state.filteredCards.length; j++) {
-                                if (state.randomizedCards[i].id === state.filteredCards[j].id) {
-                                    randomOrder.push(state.filteredCards[j]);
-                                    break;
-                                }
+                    }
+                    console.log(state.filteredCards);
+                    const randomOrder = [];
+                    for (let i = 0; i < state.randomizedCards.length; i++) {
+                        for (let j = 0; j < state.filteredCards.length; j++) {
+                            if (state.randomizedCards[i].id === state.filteredCards[j].id) {
+                                randomOrder.push(state.filteredCards[j]);
+                                break;
                             }
                         }
-                        console.log(state.randomizedCards);
-                        console.log(randomOrder);
-                        orderByTemp = [...randomOrder];
                     }
+                    console.log(state.randomizedCards);
+                    console.log(randomOrder);
+                    orderByTemp = [...randomOrder];
                     break;
                 case 'Id':
                     orderByTemp = orderByTemp.sort((a, b) => a.id - b.id);
@@ -285,16 +283,19 @@ export const ReducerAllCards = (state = initialState, action) => {
                 selectedOrder: 'Id'
             };
         case VERTICAL_CARDS_PER_ROW:
+            console.log(action.payload);
             return {
                 ...state,
                 verticalCardsPerRow: action.payload
             };
         case HORIZONTAL_CARDS_PER_ROW:
+            console.log(action.payload);
             return {
                 ...state,
                 horizontalCardsPerRow: action.payload
             };
         case INFO_LABELS:
+            console.log(action.payload);
             switch (action.payload.id) {
                 case 'idView':
                     state.idView = action.payload.isChecked;
@@ -324,27 +325,26 @@ export const ReducerAllCards = (state = initialState, action) => {
             return {
                 ...state
             };
-        case INFO_VERTICAL_POSITION:
+        case INFO_LABELS_POSITION:
+            console.log(action.payload);
             return {
                 ...state,
-                infoVerticalPosition: action.payload
-            };
-        case INFO_HORIZONTAL_POSITION:
-            return {
-                ...state,
-                infoHorizontalPosition: action.payload
+                infoLabelsPosition: action.payload
             };
         case TEXT_POSITION_X:
+            console.log(action.payload);
             return {
                 ...state,
                 textPositionX: action.payload
             };
         case TEXT_POSITION_Y:
+            console.log(action.payload);
             return {
                 ...state,
                 textPositionY: action.payload
             };
         case FAVORITES_ICON:
+            console.log(action.payload);
             let tempFavoritesIcon;
             switch (action.payload) {
                 case 'heart':
@@ -463,11 +463,13 @@ export const ReducerAllCards = (state = initialState, action) => {
                 favoritesIcon: [...tempFavoritesIcon]
             }
         case EPISODE_VIEW:
+            console.log(action.payload);
             return {
                 ...state,
                 episodeView: action.payload
             };
         case EPISODE_INFO_LABELS:
+            console.log(action.payload);
             switch (action.payload.id) {
                 case 'episodeNameView':
                     state.episodeNameView = action.payload.isChecked;
@@ -486,11 +488,13 @@ export const ReducerAllCards = (state = initialState, action) => {
                 ...state
             }
         case CHARACTERS_VIEW:
+            console.log(action.payload);
             return {
                 ...state,
                 charactersView: action.payload
             };
         case EPISODE_LIST_VIEW:
+            console.log(action.payload);
             return {
                 ...state,
                 episodeListView: action.payload

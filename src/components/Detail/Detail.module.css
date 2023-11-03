@@ -1,81 +1,18 @@
 .containerDiv {
-    border: solid rebeccapurple 2px;
+    color: rgb(0, 157, 255);
     padding: 5px;
-    background-image: url('../../images/detail-background.jpg');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-}
-
-/* div {
-    border: black solid 3px;
-} */
-
-/* .titleFlexDiv {
-    display: flex;
-    justify-content: space-evenly;
-} */
-
-.containerDivTitle {
-    width: 750px;
-    height: 4rem;
-    position: fixed;
-    z-index: 10;
-    background-color: rgba(72, 255, 0, 0.6);
-    box-shadow: 10px 10px rgb(77, 0, 118);
-    border-radius: 10px;
-    transform: skew(20deg);
-    top: 11%;
-    left: 2%;
-    padding: 5px;
-
-}
-
-.detailH1UpperShadow {
-    position: fixed;
-    box-shadow: -10px -10px rgb(13, 0, 255);
-    z-index: 50;
-    width: 745px;
-    height: 59px;
-    top: 10%;
-    left: 1.5%;
-    padding: 3px;
-    transform: skew(20deg);
-    border-radius: 10px;
-}
-
-.detailH1Shadow {
-    position: fixed;
-    box-shadow: 10px 10px rgb(4, 0, 255);
-    z-index: 20;
-    width: 745px;
-    height: 59px;
-    top: 9.5%;
-    left: 1%;
-    padding: 3px;
-    transform: skew(20deg);
-    border-radius: 10px;
-    
-}
-
-.detailH1 {
-    position: fixed;
-    border-radius: 10px;
-    top: 10%;
-    left: 2%;
-    padding: 5px;
-    z-index: 30;
-    
 }
 
 .detailName {
-    background-color: blueviolet;
+    background: transparent;
+    border: 0.5px solid #fff;
+    outline: 0.5px solid #fff;
     position: fixed;
     font-size: 2rem;
     top: 11%;
-    left: 17%;
-    max-width: 40%;
-    box-shadow: 10px 10px rgb(0, 157, 255);
+    left: 25%;
+    color: rgb(34, 255, 0);
+    box-shadow: 0px 0px 10px 10px rgb(255, 255, 255);
     z-index: 40;
 
 }
@@ -90,12 +27,14 @@
 
 ul {
     position: relative;
-    z-index: 100;
+    z-index: 10;
 }
 
 ul li {}
 
-p {}
+p {
+    margin-left: 5px;
+}
 
 span {}
 
@@ -104,9 +43,26 @@ span {}
     top: 10%;
     right: 0;
     z-index: 0;
-    width: 35%;
+    width: 30%;
 }
 
 .detailImage {
     width: 4%;
 }
+
+.detailvideocontainer {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
+  }
+  
+  .detailbackgroundvideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }

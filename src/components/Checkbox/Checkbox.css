@@ -1,0 +1,41 @@
+.title-label-infoLabels,
+.title-label-episodeInfo {
+    font-weight: bold;
+}
+
+.container-infoLabels,
+.container-episodeInfo {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px 0 10px 0;
+
+}
+
+.checkbox-input-label-container {
+    margin-bottom: 10px;
+    width: 25%;
+}
+
+.checkbox-input-label-container input {
+    margin-right: 8px;
+}
+
+.episodeInfo {
+    width: 50%;
+}
+
+
+input[type="checkbox"] {
+    align-items: center;
+    accent-color: rgb(67, 0, 98);
+    height: 15px;
+}
+
+input[type="checkbox"]:hover {
+    transform: scale(1.25);
+}
+
+input[type="checkbox"]:hover,
+input[type="checkbox"]:checked {
+    transform: scale(1.25);
+}

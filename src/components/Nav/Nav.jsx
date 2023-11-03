@@ -1,29 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import styles from './Nav.module.css';
-import SearchBar from "../SearchBar/SearchBar";
+import React, { useEffect, useState } from "react";
+import './Nav.css';
 import Button from '../Button/Button';
-import { searchByCheckbox } from "../../config";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { randomizeAll, queryFunction, resetQuery, orderBy, filter } from "../../redux/actions";
-
-export default function Nav() {
-
+import { useLocation, useNavigate } from "react-router-dom";
+import UserSideBarLeft from "../UserSideBarLeft/UserSideBarLeft";
+import OptionsSideBarRight from "../OptionsSideBarRight/OptionsSideBarRight";
+import RandomizeAll from "../RandomizeAll/RandomizeAll";
+import RandomizeAllFavorites from "../RandomizeAllFavorites/RandomizeAllFavorites";
+import backgroundVideo from '../../images/backgroundVideo.mp4';
+export default function Nav({ isFiltersBarExtended }) {
     const [randomId, setRandomId] = useState(null);
-    const [query, setQuery] = useState('');
-    const [shouldCheckLastUnchecked, setShouldCheckLastUnchecked] = useState(false);
-    const [lastUncheckedCheckbox, setLastUncheckedCheckbox] = useState(null);
+    const [videoheight, setVideoHeight] = useState('video-retracted');
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const allCards = useSelector((state) => state.allCards.filteredCards);
-    const selectedOrder = useSelector((state) => state.allCards.selectedOrder);
-    const isAscending = useSelector((state) => state.allCards.isAscending);
-    const checkboxRefs = [
-        useRef(),
-        useRef(),
-        useRef(),
-        useRef()
-    ];
+    const location = useLocation();
+
     useEffect(() => {
         if (randomId) { // Cuando hay un cambio en el estado de randomId
             navigate(`/detail/${randomId}`); // Navega a la página
@@ -31,53 +20,6 @@ export default function Nav() {
         setRandomId(null); // Setea el estado a null para que no redirija a la página al volver atras
     }, [randomId, navigate]);
 
-    useEffect(() => {
-        checkboxRefs.forEach((checkboxRef) => {
-            const checkboxId = checkboxRef.current.id;
-
-            if (searchByCheckbox.checked.includes(checkboxId)) {
-                checkboxRef.current.checked = true;
-            }
-        });
-    }, [checkboxRefs]);
-
-    useEffect(() => {
-        if (shouldCheckLastUnchecked && lastUncheckedCheckbox) {
-            lastUncheckedCheckbox.current.checked = true;
-            setShouldCheckLastUnchecked(false);
-        }
-    }, [shouldCheckLastUnchecked, lastUncheckedCheckbox]);
-    
-    const handleRandomizeAll = () => {
-        const randomizedCards = [...allCards]; // Crea una copia de allCards
-        for (let i = randomizedCards.length - 1; i > 0; i--) { // Algoritmo Fisher-Yates para mezclar aleatoriamente los valores en el arreglo
-            const j = Math.floor(Math.random() * (i + 1));
-            [randomizedCards[i], randomizedCards[j]] = [randomizedCards[j], randomizedCards[i]];
-        }
-        console.log(randomizedCards);
-        dispatch(randomizeAll(randomizedCards));
-    };
-    const handleCheckboxChange = (checkboxRef, event) => {
-        if (!event.target.checked) {
-            setLastUncheckedCheckbox(checkboxRef);
-        }
-        const allUnchecked = Object.values(checkboxRefs).every(
-            (ref) => !ref.current.checked
-        );
-        if (allUnchecked) {
-            setShouldCheckLastUnchecked(true);
-        }
-    };
-    const handleQuery = (event) => {
-        const newQuery = event.target.value;
-        setQuery(newQuery);
-        const checkedKeys = Object.entries(checkboxRefs) // Convierte checkboxRefs en un arreglo de clave-valor
-            .filter(([key, ref]) => ref.current.checked) // Por cada valor filtra si checked no es verdadero
-            .map(([key, ref]) => ref.current.id); // Mapea cada clave-valor y devuelve su clave, en este caso cada nombre de los checkboxes
-        dispatch(queryFunction({ query: newQuery, checkboxes: checkedKeys }));
-        dispatch(filter(''));
-        dispatch(orderBy({ order: selectedOrder, isAscending: isAscending }));
-    };
     const handleRandomize = async () => {
         let isValidId = false;
         let newRandomId;
@@ -92,37 +34,40 @@ export default function Nav() {
         const data = await response.json(); // Pasa la respuesta a JSON y devuelve otra promesa 
         return data !== null; // Si data existe devuelve verdadero o falso si no
     };
-    const handleQueryReset = () => {
-        dispatch(resetQuery);
-        dispatch(filter(''));
-    };
+    useEffect(() => {
+        console.log('useEffect Nav');
+        console.log(isFiltersBarExtended);
+        if (isFiltersBarExtended) {
+            setVideoHeight('video-extended');
+        } else {
+            setVideoHeight('video-retracted');
+        }
+    }, [isFiltersBarExtended]);
 
     return (
-        <nav className={styles.navBar}>
-            <Button text='Login' />
-            <Button link='/home' text='Home' />
-            <Button link='/favorites' text='Favorites' />
-            <button className={styles.menuButton} onClick={handleRandomize} >Randomize</button>
-            <button className={styles.menuButton} onClick={handleRandomizeAll} >Randomize All</button>
-            <Button link='/about' text='About' />
-            <label htmlFor={searchByCheckbox.name} >{searchByCheckbox.mainTitle}</label>
-            {
-                searchByCheckbox.ids.map((id, i) => (
-                    <React.Fragment key={id}>
-                        <input
-                            type="checkbox"
-                            key={id}
-                            name={searchByCheckbox.name}
-                            id={id}
-                            ref={checkboxRefs[i]}
-                            onChange={event => handleCheckboxChange(checkboxRefs[i], event)}
-                        />
-                        <label htmlFor={id} >{searchByCheckbox.titles[i]}</label>
-                    </React.Fragment>
-                ))
-            }
-            <SearchBar query={query} handleQuery={handleQuery} />
-            <button className={styles.menuButton} onClick={handleQueryReset} >Reset</button>
-        </nav>
+        <>
+            <div className={`navbar-video-container ${videoheight}`} >
+                <video src={backgroundVideo} className='navbar-background-video' autoPlay muted loop>
+                </video>
+            </div>
+            <nav className='navBar'>
+                <details>
+                    <summary>User Options</summary>
+                    <UserSideBarLeft />
+                    {/* <Button text='Login' /> */}
+                </details>
+                <Button link='/home' text='Home' />
+                <Button link='/favorites' text='Favorites' />
+                <Button link='/about' text='About' />
+                <button className='menu-button' onClick={handleRandomize} >Randomize</button>
+                {location.pathname === '/home' && <RandomizeAll />}
+                {location.pathname === '/favorites' && <RandomizeAllFavorites />}
+                <div className='space-div'></div>
+                <details>
+                    <summary>Options</summary>
+                    <OptionsSideBarRight />
+                </details>
+            </nav>
+        </>
     );
 }

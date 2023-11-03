@@ -1,0 +1,194 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap");
+
+body {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.containerFiltersBar {
+  color: #fff;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  padding: 10px;
+  position: fixed;
+  top: 50px;
+  z-index: 20;
+}
+
+.first-set-buttons-container {
+  grid-column: 1 / span 1;
+
+}
+
+.order-by-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 10px;
+}
+
+.order-button-container {
+  align-self: flex-end;
+}
+
+.status-label,
+.species-label,
+.gender-label {
+  text-transform: capitalize;
+}
+
+.status-buttons-container,
+.gender-buttons-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.species-buttons-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.status-container {
+  grid-column: 2 / span 1;
+}
+
+.species-container {
+  grid-column: 4 / span 1;
+}
+
+.gender-container {
+  grid-column: 6 / span 1;
+}
+
+.order-button,
+.reset-button,
+.Any-status-button,
+.button-status,
+.Any-species-button,
+.button-species,
+.Any-gender-button,
+.button-gender {
+  background: transparent;
+  background: url('../../images/backgroundVideo.mp4');
+  border-radius: 5px;
+  box-shadow: 3px 3px 0px 0px rgb(51, 0, 255);
+  border: 1px solid rgb(51, 0, 255);
+  color: rgb(2, 255, 2);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  width: 90px;
+  height: 30px;
+}
+
+.reset-button {
+  border-color: rgb(255, 247, 0);
+  box-shadow: 3px 3px 0px 0px rgb(255, 247, 0);
+}
+
+.order-button {
+  margin-left: 5px;
+  font-size: 21px;
+  width: 30px;
+  height: 30px;
+  line-height: 1;
+  text-align: center;
+  border-color: rgb(100, 0, 53);
+  box-shadow: 3px 3px 0px 0px rgb(100, 0, 53);
+}
+
+.Any-status-button,
+.button-status {
+  box-shadow: 3px 3px 0px 0px rgb(255, 106, 0);
+  border-color: rgb(255, 106, 0);
+}
+.Any-species-button,
+.button-species {
+  box-shadow: 3px 3px 0px 0px rgb(35, 115, 0);
+  border-color: rgb(35, 115, 0);
+}
+.Any-gender-button,
+.button-gender {
+  box-shadow: 3px 3px 0px 0px rgb(0, 19, 115);
+  border-color: rgb(0, 19, 115);
+}
+
+.reset-button:hover {
+  color: rgb(255, 247, 0);
+  border: 1px solid rgb(255, 0, 0);
+  outline: 1px solid rgb(255, 0, 0);
+  box-shadow: 3px 3px 0px 0px rgb(255, 0, 0);
+}
+
+.order-button:hover {
+  background-color: #0000ff;
+  border-color: #0000ff;
+  box-shadow: 3px 3px 0px 0px #0000ff;
+}
+
+.Any-status-button:hover,
+.button-status:hover {
+  color: rgb(255, 244, 182);
+  border: 1px solid rgb(255, 244, 182);
+  outline: 1px solid rgb(255, 244, 182);
+}
+
+.Any-species-button:hover,
+.button-species:hover {
+  color: rgb(0, 255, 136);
+  border: 1px solid rgb(0, 255, 136);
+  outline: 1px solid rgb(0, 255, 136);
+}
+
+.Any-gender-button:hover,
+.button-gender:hover {
+  color: rgb(247, 0, 255);
+  border: 1px solid rgb(247, 0, 255);
+  outline: 1px solid rgb(247, 0, 255);
+}
+
+.status-active,
+.species-active,
+.gender-active {
+  transform: translateY(4px);
+}
+
+.reset-button:active,
+.order-button:active,
+.Any-status-button:active,
+.status-active,
+.Any-species-button:active,
+.species-active,
+.Any-gender-button:active,
+.gender-active {
+  box-shadow: none;
+}
+
+.status-active {
+  color: rgb(255, 234, 0);
+  border-color: rgb(255, 234, 0);
+  outline: 1px solid rgb(255, 234, 0);
+}
+
+.species-active {
+  color: rgb(0, 157, 255);
+  border: 1px solid rgb(0, 157, 255);
+  outline: 1px solid rgb(0, 157, 255);
+}
+
+.gender-active {
+  color: rgb(255, 0, 89);
+  border: 1px solid rgb(255, 0, 89);
+  outline: 1px solid rgb(255, 0, 89);
+}

@@ -1,9 +1,0 @@
-.optionsSidebar {
-    width: 25%;
-    height: fit-content;
-    border: solid red 2px;
-    position: absolute;
-    right: 0;
-    background-color: rgba(74, 74, 74, 0.8);
-    z-index: 100;
-}

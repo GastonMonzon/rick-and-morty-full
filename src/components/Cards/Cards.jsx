@@ -1,14 +1,20 @@
-import styles from './Cards.module.css';
-import classNames from 'classnames'
+import './Cards.css';
 import Card from '../Card/Card';
 import { useSelector } from 'react-redux';
 
 export default function Cards({ characters }) {
    const verticalCardsPerRow = useSelector(state => state.allCards.verticalCardsPerRow);
-   const cardsDivClassName = classNames(styles.cardsDiv, styles[verticalCardsPerRow]);
+   const horizontalCardsPerRow = useSelector(state => state.allCards.horizontalCardsPerRow);
+   const infoLabelsPosition = useSelector((state) => state.allCards.infoLabelsPosition);
+   let cardsPerRow;
+   if (infoLabelsPosition === 'left' || infoLabelsPosition === 'right') {
+      cardsPerRow = horizontalCardsPerRow;
+   } else {
+      cardsPerRow = verticalCardsPerRow;
+   }
    
    return (
-      <div className={cardsDivClassName}>
+      <div className={`cardsDiv ${cardsPerRow}`}>
          {characters.map((character) => (
             <Card
                id={character.id}

@@ -8,6 +8,7 @@ import { resetFilters, orderCards, orderBy, filter, resetFilter } from '../../re
 
 /* hooks */
 import { useDispatch, useSelector } from 'react-redux';
+import { useRef } from 'react';
 
 export default function FiltersBar() {
     const dispatch = useDispatch();
@@ -35,33 +36,32 @@ export default function FiltersBar() {
         dispatch(filter(item));
         dispatch(orderBy({ order: selectedOrder, isAscending: isAscending }));
     }
-
     return (
-        <div className='container'>
-            <div className='first-set-buttons-container'>
-                <div className='reset-button-container' >
-                    {/* <label htmlFor='resetButton' className='reset-button-label' >Reset</label> */}
-                    <button className='reset-button' onClick={() => { dispatch(resetFilters()) }}>Reset Filters</button>
-                </div>
-                <div className='order-by-container' >
-                    <div className='order-by-select-container' >
-                        <label htmlFor={orderBySelect.title} className='order-by-select-label' >Order By</label>
-                        <Select
-                            value={selectedOrder}
-                            title={orderBySelect.title}
-                            options={orderBySelect.options}
-                            handleChange={handleOrderChange}
-                        />
+        <>
+            <div className='containerFiltersBar'>
+                <div className='first-set-buttons-container'>
+                    <div className='reset-button-container' >
+                        {/* <label htmlFor='resetButton' className='reset-button-label' >Reset</label> */}
+                        <button className='reset-button' onClick={() => { dispatch(resetFilters()) }}>Reset Filters</button>
                     </div>
-                    <div className='order-button-container' >
-                        {isAscending
-                            ? (<button className='order-button' id='orderButton' onClick={handleOrderDirectionChange}>⬆️</button>)
-                            : (<button className='order-button' id='orderButton' onClick={handleOrderDirectionChange}>⬇️</button>)
-                        }
+                    <div className='order-by-container' >
+                        <div className='order-by-select-container' >
+                            <label htmlFor={orderBySelect.title} className='order-by-select-label' >Order By</label>
+                            <Select
+                                value={selectedOrder}
+                                title={orderBySelect.title}
+                                options={orderBySelect.options}
+                                handleChange={handleOrderChange}
+                            />
+                        </div>
+                        <div className='order-button-container' >
+                            {isAscending
+                                ? (<button className='order-button' id='orderButton' onClick={handleOrderDirectionChange}>⬆️</button>)
+                                : (<button className='order-button' id='orderButton' onClick={handleOrderDirectionChange}>⬇️</button>)
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className='filter-buttons-container'>
                 {Object.entries(filters).map(([category, items]) => (
                     <div className={`${category}-container`}>
                         <label htmlFor={`Any${category}Button`} className={`${category}-label`} >{category}</label>
@@ -84,6 +84,6 @@ export default function FiltersBar() {
                     </div>
                 ))}
             </div>
-        </div>
+        </>
     )
 }

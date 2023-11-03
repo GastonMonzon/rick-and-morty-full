@@ -1,0 +1,57 @@
+.favorites {
+
+}
+
+.allButton {
+    
+}
+
+.orderButton {
+    
+}
+
+.favorites-filters-details {
+  position: fixed;
+  top: 25px;
+  left: 8px;
+  z-index: 15;
+  color: #fff;
+}
+
+.favorites-video-container {
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.favorites-background-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.favorites-filters-video-container {
+  position: fixed;
+  z-index: 13;
+  height: 1%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.favorites-filters-background-video {
+  width: 1920px;
+}
+
+.video-retracted {
+  height: 10%;
+}
+
+.video-extended {
+  height: 32%;
+}
