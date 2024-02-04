@@ -1,0 +1,25 @@
+.infoLabels-label,
+.episodeInfo-label {
+    font-weight: bold;
+}
+
+.infoLabels-container,
+.episodeInfo-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px 0 10px 0;
+
+}
+
+.checkbox-container {
+    margin-bottom: 10px;
+    width: 25%;
+}
+
+.checkbox-container input {
+    margin-right: 8px;
+}
+
+.episodeInfo-checkbox-container {
+    width: 50%;
+}

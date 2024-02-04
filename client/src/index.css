@@ -1,0 +1,91 @@
+@font-face {
+  font-family: 'neuropolitical';
+  src: url('../src/assets/fonts/neuropolitical rg.otf');
+}
+
+html {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: white;
+}
+
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+a:hover {
+  color: inherit;
+}
+
+details,
+label {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+summary {
+    cursor: pointer;
+}
+
+button {
+  background-color: #000;
+  color: rgb(2, 255, 2);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  align-items: center;
+  accent-color: rgb(67, 0, 98);
+  height: 15px;
+}
+
+input[type="checkbox"]:hover {
+  transition: all 0.2s ease-in-out;
+  transform: scale(1.25);
+}
+
+input[type="checkbox"]:hover,
+input[type="checkbox"]:checked {
+  transition: all 0.2s ease-in-out;
+  transform: scale(1.25);
+}
+
+input[type="radio"] {
+  align-items: center;
+  accent-color: rgb(67, 0, 98);
+  height: 15px;
+}
+
+input[type="radio"]:hover {
+  transform: scale(1.25);
+}
+
+input[type="radio"]:hover,
+input[type="radio"]:checked {
+  transform: scale(1.25);
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.no-display {
+  display: none;
+}

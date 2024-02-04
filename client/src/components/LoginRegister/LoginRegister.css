@@ -1,0 +1,142 @@
+.login-register-container {
+  background-image: url('../../assets/images/form-background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.login-container,
+.register-container {
+  background: transparent;
+  background-color: rgba(0, 179, 255, 0.299);
+  box-shadow: 10px 10px 5px 0px rgba(0, 179, 255, 0.2);
+  backdrop-filter: blur(3px);
+  border-radius: 20px;
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+.login-container:hover,
+.register-container:hover {
+  outline: 1px solid #00ff1a;
+}
+
+.login-container h2,
+.register-container h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.input-icon-container {
+  position: relative;
+  display: flex;
+}
+
+.input-icon-container label {
+  position: absolute;
+  transition: .5s;
+  pointer-events: none;
+  font-size: 13px;
+}
+
+.input-icon-container input:focus~label,
+.move-label {
+  transform: translateY(-100%);
+}
+
+.login-form input,
+.register-form input {
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  border-radius: 20px;
+  padding: 3px;
+  transition: .8s;
+  font-size: 12px;
+}
+
+.login-form input:focus,
+.register-form input:focus,
+#loginEmail.color-input,
+#loginPassword.color-input,
+#name.color-input,
+#surName.color-input,
+#userName.color-input,
+#registerEmail.color-input,
+#registerPassword.color-input,
+#registerPasswordRepeat.color-input {
+  background-color: white;
+}
+
+.login-form p,
+.register-form p {
+  margin-bottom: 20px;
+}
+
+.login-container img,
+.register-container img {
+  margin-left: 5px;
+  filter: invert(1);
+}
+
+.login-container button,
+.register-container button {
+  width: 100%;
+  color: black;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 3px 3px 0px 0px rgb(51, 0, 255);
+  border: 1px solid rgb(51, 0, 255);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  height: 30px;
+}
+
+.login-container button:disabled,
+.register-container button:disabled {
+  background: transparent;
+  color: grey;
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+.login-container button:hover:enabled,
+.register-container button:hover:enabled {
+  color: #00ff88;
+  border-color: #00ff1a;
+  outline: 1px solid #00ff1a;
+}
+
+.login-container button:active:enabled,
+.register-container button:active:enabled {
+  box-shadow: none;
+  transform: translate(3px, 3px);
+}
+
+.register-container {
+  background-color: rgba(0, 255, 183, 0.482);
+}
+
+form p {
+  color: rgb(120, 31, 31);
+  font-size: 11px;
+}
+
+#dateOfBirth {
+  padding-left: 90px;
+  visibility: hidden;
+}
+
+#dateOfBirth:focus,
+#dateOfBirth:valid {
+  color: black;
+  visibility: visible;
+}

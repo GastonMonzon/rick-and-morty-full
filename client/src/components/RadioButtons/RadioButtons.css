@@ -1,0 +1,99 @@
+.container-verticalCardsPerRow,
+.container-verticalCardsPerRowF,
+.container-horizontalCardsPerRow,
+.container-horizontalCardsPerRowF,
+.container-infoPosition,
+.container-infoPositionF,
+.container-textPositionX,
+.container-textPositionXF,
+.container-textPositionY,
+.container-textPositionYF,
+.container-episodesView,
+.container-charactersView,
+.container-episodeListView {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0 10px 0;
+}
+
+.container-favoritesIcon {
+}
+
+.title-label-verticalCardsPerRow,
+.title-label-verticalCardsPerRowF,
+.title-label-horizontalCardsPerRow,
+.title-label-horizontalCardsPerRowF,
+.title-label-infoPosition,
+.title-label-infoPositionF,
+.title-label-textPositionX,
+.title-label-textPositionXF,
+.title-label-textPositionY,
+.title-label-textPositionYF,
+.title-label-favoritesIcon,
+.title-label-episodesView,
+.title-label-charactersView,
+.title-label-episodeListView {
+    font-weight: bold;
+}
+
+.input-label-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.verticalCardsPerRow,
+.verticalCardsPerRowF,
+.horizontalCardsPerRow,
+.horizontalCardsPerRowF,
+.infoPosition,
+.infoPositionF,
+.textPositionX,
+.textPositionXF,
+.textPositionY,
+.textPositionYF,
+.favoritesIcon,
+.episodesView,
+.charactersView,
+.episodeListView {
+    text-align: center;
+    width: 24px;
+    margin-right: 5px;
+    border: solid 2px rgba(0, 0, 0, 0);
+    border-radius: 10px;
+}
+
+.infoPosition,
+.infoPositionF {
+    margin-right: 30px;
+}
+
+.textPositionX,
+.textPositionXF {
+    margin-right: 30px;
+}
+
+.textPositionY,
+.textPositionYF {
+    width: 100%;
+}
+
+.favoritesIcon {
+    display: inline;
+    margin-right: 16px;
+}
+
+.favoritesIcon input {
+    margin-bottom: 10px;
+}
+
+.episodesView {
+    width: 100%;
+}
+
+.episodeListView {
+    width: 100%;
+}
+
+.charactersView {
+    width: 100%;
+}

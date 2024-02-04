@@ -1,0 +1,125 @@
+.detail-container {
+  color: rgb(0, 157, 255);
+  padding: 5px;
+  width: 70vw;
+}
+
+.detail-video-container {
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+}
+
+.detail-background-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-name {
+  background: transparent;
+  border: 0.5px solid #fff;
+  outline: 0.5px solid #fff;
+  position: fixed;
+  font-size: 2rem;
+  top: 11%;
+  left: 25%;
+  color: rgb(34, 255, 0);
+  background-color: black;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 10px rgb(255, 255, 255);
+  z-index: 40;
+
+}
+
+.detail-table {
+  margin-top: 4rem;
+}
+
+.detail-table td {
+  vertical-align: top;
+}
+
+.detail-container ul {
+  position: relative;
+  z-index: 10;
+}
+
+.detail-container p {
+  margin-left: 5px;
+}
+
+.detail-character-images-container {
+  margin-left: 5px;
+  border-radius: 5px;
+  width: 68vw;
+  overflow: hidden;
+}
+
+.detail-character-image {
+  width: 9.09%;
+  margin-bottom: -4px;
+}
+
+.detail-image {
+  position: fixed;
+  top: 10%;
+  right: 0;
+  z-index: 0;
+  width: 30%;
+}
+
+.episodes-title-details-tag {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.characters-title-details-tag {
+  font-size: 17px;
+}
+
+.character-images-and-names {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.detail-character-image-name-container {
+  width: 8vw;
+  transition: all 0.2s ease-in-out;
+}
+
+.detail-character-name {
+  position: relative;
+  max-height: 0;
+  text-shadow: 1.5px 0px 1px rgb(0, 0, 0);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.detail-character-image-with-names {
+  width: 100%;
+  z-index: -1;
+  margin-bottom: -4px;
+}
+
+.detail-character-images-container:hover {
+  overflow: visible;
+}
+
+.detail-character-image-name-container:hover {
+  position: relative;
+  color: rgb(0, 255, 47);
+  transform: scale(1.2);
+  z-index: 1;
+}
+
+.detail-character-image-with-names:hover {
+  border: 1px solid rgb(0, 255, 47);
+  outline: 1px solid rgb(0, 255, 47);
+}

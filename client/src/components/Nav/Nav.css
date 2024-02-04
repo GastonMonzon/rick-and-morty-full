@@ -1,0 +1,52 @@
+.nav-background-video-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.nav-background-video {
+  width: 100vw;
+  object-fit: cover;
+}
+
+.navBar {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    height: 8vh;
+    top: 0;
+    z-index: 15;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
+}
+
+.menu-button {
+    background-color: #000;
+    border-radius: 5px;
+    box-shadow: 3px 3px 0px 0px rgb(51, 0, 255);
+    border: 1px solid rgb(51, 0, 255);
+    color: rgb(2, 255, 2);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    width: 90px;
+    height: 30px;
+}
+
+.menu-button:hover:enabled {
+    color: #00ff88;
+    border-color: #00ff1a;
+    outline: 1px solid #00ff1a;
+}
+
+.menu-button:active:enabled {
+    box-shadow: none;
+    transform: translate(3px, 3px);
+}
+
+.searchBar-space-div {
+  height: 100%;
+  width: 580px;
+}

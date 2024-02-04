@@ -1,0 +1,347 @@
+.card-container {
+  margin: 10px;
+  position: relative;
+  box-shadow: 0px 0px 10px 1px rgb(82, 82, 82);
+  transition: transform .2s;
+  border-radius: 2px;
+  color: rgb(0, 255, 47);
+}
+
+.card-container h2 {
+  font-size: inherit;
+  border-radius: 6px;
+  padding: 1px;
+  font-family: neuropolitical;
+}
+
+.container-above {
+  display: grid;
+  grid-template-rows: auto auto;
+  height: fit-content;
+}
+
+.container-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.container-left {
+  display: inline;
+}
+
+.container-twoCards-right,
+.container-twoCards-left {
+  width: 600px;
+  height: 300px;
+}
+
+.container-threeCards-right,
+.container-threeCards-left {
+  width: 400px;
+  height: 200px;
+}
+
+.container-fourCards-right,
+.container-fourCards-left {
+  height: 148px;
+}
+
+.card-div {
+  display: flex;
+  color: inherit;
+}
+
+.card-over {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  text-shadow: 1px 1px 0.5px rgb(0, 0, 0);
+}
+
+.card-over h2 {
+  width: 100%;
+  text-shadow: inherit;
+
+}
+
+.card-above,
+.card-below {
+  width: 100%;
+}
+
+.card-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+}
+
+.card-left {
+  position: absolute;
+  width: 50%;
+}
+
+.card-twoCards-over {
+  font-size: 21px;
+}
+
+.card-threeCards-over {
+  font-size: 20px;
+}
+
+.card-fourCards-over {
+  font-size: 18px;
+}
+
+.card-fiveCards-over {
+  font-size: 15px;
+}
+
+.card-sixCards-over {
+  font-size: 13px;
+}
+
+.card-sevenCards-over {
+  font-size: 10px;
+}
+
+.card-eightCards-over {
+  font-size: 9px;
+}
+
+.card-nineCards-over {
+  font-size: 8px;
+}
+
+.card-tenCards-over {
+  font-size: 7px;
+}
+
+.card-twoCards-above,
+.card-twoCards-below {
+  max-width: 400px;
+  font-size: 20px;
+}
+
+.card-threeCards-above,
+.card-threeCards-below {
+  font-size: 16px;
+}
+
+.card-fourCards-above,
+.card-fourCards-below {
+  font-size: 14px;
+}
+
+.card-fiveCards-above,
+.card-fiveCards-below {
+  font-size: 13px;
+}
+
+.card-sixCards-above,
+.card-sixCards-below {
+  font-size: 12px;
+}
+
+.card-sevenCards-above,
+.card-sevenCards-below {
+  font-size: 11px;
+}
+
+.card-eightCards-above,
+.card-eightCards-below {
+  font-size: 10px;
+}
+
+.card-nineCards-above,
+.card-nineCards-below {
+  font-size: 8px;
+}
+
+.card-tenCards-above,
+.card-tenCards-below {
+  font-size: 7px;
+}
+
+.card-twoCards-right,
+.card-twoCards-left {
+  height: 300px;
+  font-size: 16px;
+}
+
+.card-threeCards-right,
+.card-threeCards-left {
+  height: 200px;
+  font-size: 13.5px;
+  line-height: 15px;
+}
+
+.card-fourCards-right,
+.card-fourCards-left {
+  height: 145px;
+  font-size: 10px;
+  line-height: 10px;
+}
+
+.card-leftX {
+  text-align: left;
+}
+
+.card-centerX {
+  text-align: center;
+}
+
+.card-rightX {
+  text-align: right;
+}
+
+.card-justify {
+  text-align: justify;
+}
+
+.card-top,
+.card-centerY,
+.card-bottom,
+.card-space-around,
+.card-space-between,
+.card-space-evenly {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-top {
+  justify-content: flex-start;
+}
+
+.card-centerY {
+  justify-content: center;
+}
+
+.card-bottom {
+  justify-content: flex-end;
+}
+
+.card-space-around {
+  justify-content: space-around;
+}
+
+.card-space-between {
+  justify-content: space-between;
+}
+
+.card-space-evenly {
+  justify-content: space-evenly;
+}
+
+.image-right {
+  position: relative;
+  z-index: -1;
+  width: 50%;
+  height: fit-content;
+}
+
+.image-left {
+  position: relative;
+  left: 50%;
+  width: 50%;
+}
+
+.image-twoCards-over,
+.image-twoCards-above,
+.image-twoCards-below {
+  width: 400px;
+  height: 400px;
+}
+
+.image-threeCards-over,
+.image-threeCards-above,
+.image-threeCards-below {
+  width: 350px;
+  height: 350px;
+}
+
+.image-fourCards-over,
+.image-fourCards-above,
+.image-fourCards-below {
+  height: 296px;
+}
+
+.image-fiveCards-over,
+.image-fiveCards-above,
+.image-fiveCards-below {
+  height: 232px;
+}
+
+.image-sixCards-over,
+.image-sixCards-above,
+.image-sixCards-below {
+  height: 190px;
+}
+
+.image-sevenCards-over,
+.image-sevenCards-above,
+.image-sevenCards-below {
+  height: 160px;
+}
+
+.image-eightCards-over,
+.image-eightCards-above,
+.image-eightCards-below {
+  height: 138px;
+}
+
+.image-nineCards-over,
+.image-nineCards-above,
+.image-nineCards-below {
+  height: 120px;
+}
+
+.image-tenCards-over,
+.image-tenCards-above,
+.image-tenCards-below {
+  height: 106px;
+}
+
+.image-twoCards-right,
+.image-twoCards-left {
+  height: 300px;
+}
+
+.image-threeCards-right,
+.image-threeCards-left {
+  height: 200px;
+}
+
+.image-fourCards-right,
+.image-fourCards-left {
+  height: 145px;
+}
+
+.favorite-button {
+  position: absolute;
+  top: 1%;
+  right: 1%;
+  z-index: 10;
+  background-color: transparent;
+  border-color: transparent;
+  font-size: 20px;
+}
+
+.card-image-container img {
+  width: 100%;
+  border-radius: 2px;
+}
+
+.card-container:hover {
+  z-index: 10;
+  transform: scale(1.1);
+  background-color: #fff;
+  color: rgb(0, 0, 255);
+  box-shadow: 0px 0px 10px 5px rgba(0, 255, 47, 1);
+}
+
+.card-over:hover {
+  text-shadow: 1px 1px 0.5px rgb(255, 255, 255);
+}
