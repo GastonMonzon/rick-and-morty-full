@@ -13,14 +13,14 @@ export const AuthProvider = ({ children }) => {
     //   setUserInfo(userInfo);
     // })
     // return unsubscribe;
-    // (async function onAuthStateChanged() {
-    //   try {
-    //     const { data } = await axios.get('http://localhost:3001/change');
-    //     setUserInfo(data);
-    //   } catch (error) {
-    //     console.error('Error fetching userInfo:', error);
-    //   }
-    // })();
+    (async function onAuthStateChanged() {
+      try {
+        const { data } = await axios.get('http://localhost:3001/change');
+        setUserInfo(data);
+      } catch (error) {
+        console.error('Error fetching userInfo:', error);
+      }
+    })();
   }, []);
 
   async function createUser(email, password) {
