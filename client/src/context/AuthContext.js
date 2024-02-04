@@ -13,26 +13,26 @@ export const AuthProvider = ({ children }) => {
     //   setUserInfo(userInfo);
     // })
     // return unsubscribe;
-    (async function onAuthStateChanged() {
-      try {
-        const { data } = await axios.get('http://localhost:3001/userChange');
-        setUserInfo(data);
-      } catch (error) {
-        console.error('Error fetching userInfo:', error);
-      }
-    })();
+    // (async function onAuthStateChanged() {
+    //   try {
+    //     const { data } = await axios.get('http://localhost:3001/change');
+    //     setUserInfo(data);
+    //   } catch (error) {
+    //     console.error('Error fetching userInfo:', error);
+    //   }
+    // })();
   }, []);
 
   async function createUser(email, password) {
     try {
-      return await axios.post('http://localhost:3001/userInfo', { email, password });
+      return await axios.post('http://localhost:3001/user', { email, password });
     } catch (error) {
       console.error('Error creating new userInfo', error);
     }
   }
   const logIn = async (email, password) => {
     try {
-      const { data } = await axios.post('http://localhost:3001/userInfo/login', { email, password });
+      const { data } = await axios.post('http://localhost:3001/user/login', { email, password });
       setUserInfo(data.user);
       setUserOptions(data.userOptions);
       return data.userOptions;
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
   }
   const logOut = async (email, password) => {
     try {
-      await axios.get('http://localhost:3001/userInfo/logout');
+      await axios.get('http://localhost:3001/user/logout');
     } catch (error) {
       console.error('Error loging out:', error);
     }

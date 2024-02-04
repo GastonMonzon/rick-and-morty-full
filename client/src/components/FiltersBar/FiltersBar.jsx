@@ -4,7 +4,7 @@ import './FiltersBar.css';
 /* components */
 import { filterOptions, orderByOptions } from '../../config';
 import { orderDirection, orderBy, filter, randomizeAll, query } from '../../redux/actions';
-import backgroundVideo from '../../assets/videos/backgroundVideo.mp4';
+import backgroundVideo from '../../assets/backgroundVideos/backgroundVideo.mp4';
 
 /* hooks */
 import { useDispatch, useSelector } from 'react-redux';

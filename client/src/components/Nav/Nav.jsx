@@ -1,6 +1,6 @@
 import React from "react";
 import './Nav.css';
-import backgroundVideo from '../../assets/videos/backgroundVideo.mp4';
+import backgroundVideo from '../../assets/backgroundVideos/backgroundVideo.mp4';
 import Button from '../Button/Button';
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import UserSideBarLeft from "../UserSideBarLeft/UserSideBarLeft";

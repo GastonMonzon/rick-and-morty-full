@@ -1,40 +1,41 @@
-// const verticalCardsPerRowSelected = localStorage.getItem('verticalCardsPerRow'); 
-// const verticalCardsPerRowFSelected = localStorage.getItem('verticalCardsPerRowF'); 
-// const horizontalCardsPerRowSelected = localStorage.getItem('horizontalCardsPerRow'); 
-// const horizontalCardsPerRowFSelected = localStorage.getItem('horizontalCardsPerRowF'); 
-// const infoPositionSelected = localStorage.getItem('infoPosition'); 
-// const infoPositionFSelected = localStorage.getItem('infoPositionF'); 
-// const textPositionXSelected = localStorage.getItem('textPositionX'); 
-// const textPositionXFSelected = localStorage.getItem('textPositionXF'); 
-// const textPositionYSelected = localStorage.getItem('textPositionY'); 
-// const textPositionYFSelected = localStorage.getItem('textPositionYF'); 
-// const favoritesIconSelected = localStorage.getItem('favoritesIcon'); 
-// const episodesViewSelected = localStorage.getItem('episodesView'); 
-// const episodeListViewSelected = localStorage.getItem('episodeListView'); 
-// const charactersViewSelected = localStorage.getItem('charactersView');
+// // const verticalCardsPerRowSelected = localStorage.getItem('verticalCardsPerRow'); 
+// // const verticalCardsPerRowFSelected = localStorage.getItem('verticalCardsPerRowF'); 
+// // const horizontalCardsPerRowSelected = localStorage.getItem('horizontalCardsPerRow'); 
+// // const horizontalCardsPerRowFSelected = localStorage.getItem('horizontalCardsPerRowF'); 
+// // const infoPositionSelected = localStorage.getItem('infoPosition'); 
+// // const infoPositionFSelected = localStorage.getItem('infoPositionF'); 
+// // const textPositionXSelected = localStorage.getItem('textPositionX'); 
+// // const textPositionXFSelected = localStorage.getItem('textPositionXF'); 
+// // const textPositionYSelected = localStorage.getItem('textPositionY'); 
+// // const textPositionYFSelected = localStorage.getItem('textPositionYF'); 
+// // const favoritesIconSelected = localStorage.getItem('favoritesIcon'); 
+// // const episodesViewSelected = localStorage.getItem('episodesView'); 
+// // const episodeListViewSelected = localStorage.getItem('episodeListView'); 
+// // const charactersViewSelected = localStorage.getItem('charactersView');
+import axios from 'axios';
 import { useAuth } from './context/AuthContext.js';
 
-const { user } = useAuth;
+const { userOptions } = useAuth;
 
 const getUserOptions = () => {
-  if (user) {
+  if (userOptions) {
     return {
       searchByCheckbox: {
         name: 'searchBy',
         mainTitle: 'Search By:',
         titles: ['Id', 'Name', 'Origin', 'Location'],
         ids: ['idCheckbox', 'nameCheckbox', 'originCheckbox', 'locationCheckbox'],
-        checked: user.searchBy,
-        checkedFavorites: user.searchByF
+        checked: userOptions.searchBy,
+        checkedFavorites: userOptions.searchByF
       },
       orderByOptions: {
         title: 'orderBy',
         options: ['Random', 'Id', 'Name', 'Status', 'Species', 'Gender', 'Origin', 'Location'],
-        checked: user.orderBy,
-        checkedFavorites: user.orderByF
+        checked: userOptions.orderBy,
+        checkedFavorites: userOptions.orderByF
       },
-      homeCardsPerPage: user.selectedCardsPerPage,
-      favoritesCardsPerPage: user.selectedCardsPerPageF,
+      homeCardsPerPage: userOptions.selectedCardsPerPage,
+      favoritesCardsPerPage: userOptions.selectedCardsPerPageF,
       cardOptions: [
         {
           name: 'verticalCardsPerRow',
@@ -43,8 +44,8 @@ const getUserOptions = () => {
           titles: ['2', '3', '4', '5', '6', '7', '8', '9', '10'],
           ids: ['twoCards', 'threeCards', 'fourCards', 'fiveCards', 'sixCards', 'sevenCards', 'eightCards', 'nineCards', 'tenCards'],
           idsF: ['twoCardsF', 'threeCardsF', 'fourCardsF', 'fiveCardsF', 'sixCardsF', 'sevenCardsF', 'eightCardsF', 'nineCardsF', 'tenCardsF'],
-          checked: user.verticalCardsPerRow,
-          checkedFavorites: user.verticalCardsPerRowF
+          checked: userOptions.verticalCardsPerRow,
+          checkedFavorites: userOptions.verticalCardsPerRowF
         },
         {
           name: 'horizontalCardsPerRow',
@@ -53,8 +54,8 @@ const getUserOptions = () => {
           titles: ['2', '3', '4'],
           ids: ['twoCards', 'threeCards', 'fourCards'],
           idsF: ['twoCards', 'threeCards', 'fourCards'],
-          checked: user.horizontalCardsPerRow,
-          checkedFavorites: user.horizontalCardsPerRowF
+          checked: userOptions.horizontalCardsPerRow,
+          checkedFavorites: userOptions.horizontalCardsPerRowF
         },
         {
           name: 'infoLabels',
@@ -63,8 +64,8 @@ const getUserOptions = () => {
           titles: ['Id', 'Name', 'Status', 'Species', 'Type', 'Gender', 'Origin', 'Location'],
           ids: ['idView', 'nameView', 'statusView', 'speciesView', 'typeView', 'genderView', 'originView', 'locationView'],
           idsF: ['idView', 'nameView', 'statusView', 'speciesView', 'typeView', 'genderView', 'originView', 'locationView'],
-          checked: user.infoLabels,
-          checkedFavorites: user.infoLabelsF
+          checked: userOptions.infoLabels,
+          checkedFavorites: userOptions.infoLabelsF
         },
         {
           name: 'infoPosition',
@@ -73,8 +74,8 @@ const getUserOptions = () => {
           titles: ['Over', 'Above', 'Right', 'Below', 'Left'],
           ids: ['over', 'above', 'right', 'below', 'left'],
           idsF: ['over', 'above', 'right', 'below', 'left'],
-          checked: user.infoPosition,
-          checkedFavorites: user.infoPositionF
+          checked: userOptions.infoPosition,
+          checkedFavorites: userOptions.infoPositionF
         },
         {
           name: 'textPositionX',
@@ -83,8 +84,8 @@ const getUserOptions = () => {
           titles: ['Left', 'Center', 'Right', 'Justify'],
           ids: ['leftX', 'centerX', 'rightX', 'justify'],
           idsF: ['leftX', 'centerX', 'rightX', 'justify'],
-          checked: user.textPositionX,
-          checkedFavorites: user.textPositionXF
+          checked: userOptions.textPositionX,
+          checkedFavorites: userOptions.textPositionXF
         },
         {
           name: 'textPositionY',
@@ -93,8 +94,8 @@ const getUserOptions = () => {
           titles: ['Top', 'Center', 'Bottom', 'Space-Around', 'Space-Between', 'Space-Evenly'],
           ids: ['top', 'centerY', 'bottom', 'space-around', 'space-between', 'space-evenly'],
           idsF: ['top', 'centerY', 'bottom', 'space-around', 'space-between', 'space-evenly'],
-          checked: user.textPositionY,
-          checkedFavorites: user.textPositionYF
+          checked: userOptions.textPositionY,
+          checkedFavorites: userOptions.textPositionYF
         }
       ],
       favoritesIconRadio: {
@@ -108,7 +109,7 @@ const getUserOptions = () => {
           'heartFire', 'heartPink', 'heartStar', 'heartPresent', 'star', 'heartFace', 'starFace', 'monkeyFace', 'eye',
           'thumbsUp', 'nazar', 'disk', 'nest', 'leaves', 'ship', 'earthAmerica', 'earthAfrica', 'earthAsia', 'volcano',
           'cloudySunny', 'rainy', 'snowy', 'umbrella', 'moon', 'moonFace', 'sunFace', 'noYes', 'exclamation'],
-        checked: user.favoritesIcon
+        checked: userOptions.favoritesIcon
       },
       detailOptions: [
         {
@@ -116,28 +117,28 @@ const getUserOptions = () => {
           mainTitle: 'Episode Info:',
           titles: ['Episode Name', 'Episode Code', 'Air Date', 'Characters'],
           ids: ['episodeNameView', 'episodeCodeView', 'episodeDateView', 'episodeCharactersView'],
-          checked: user.episodeInfo
+          checked: userOptions.episodeInfo
         },
         {
           name: 'episodesView',
           mainTitle: 'Episodes View:',
           titles: ['Hidden (Deployable)', 'Shown (Printed)'],
           ids: ['hiddenEpisodes', 'shownEpisodes'],
-          checked: user.episodesView
+          checked: userOptions.episodesView
         },
         {
           name: 'episodeListView',
           mainTitle: 'Characters Info View:',
           titles: ['Character Names', 'Character Images', 'Character Images And Names'],
           ids: ['characterNames', 'characterImages', 'characterImagesAndNames'],
-          checked: user.episodeListView
+          checked: userOptions.episodeListView
         },
         {
           name: 'charactersView',
           mainTitle: 'Characters View:',
           titles: ['Hidden (Deployable)', 'Shown (Printed)'],
           ids: ['hiddenCharacters', 'shownCharacters'],
-          checked: user.charactersView
+          checked: userOptions.charactersView
         }
       ]
     }
@@ -282,3 +283,18 @@ export const filterOptions = {
   species: ['Human', 'Alien', 'Humanoid', 'Poopybutthole', 'Mythological Creature', 'Animal', 'Robot', 'Cronenberg', 'Disease', 'unknown Species'],
   gender: ['Male', 'Female', 'Genderless', 'unknown Gender']
 }
+
+// export const backgroundVideoNumber = countFilesWithExtension('./assets/loadingGifs', '.gif');
+// export const backgroundGifsNumber = countFilesWithExtension('./assets/videos', '.mp4');
+
+async function checkFilesCount(path, extension) {
+  try {
+    const { data } = await axios.post('http://localhost:3001/count', { path, extension });
+    return data;
+  } catch (error) {
+    console.error('Error counting files', error);
+  }
+}
+
+export const backgroundImagesNumber = checkFilesCount('images', '.jpg') + checkFilesCount('images', '.png');
+console.log(backgroundImagesNumber);

@@ -2,7 +2,7 @@
 import './Favorites.css';
 
 /* components */
-import backgroundVideo from '../../assets/videos/backgroundVideo.mp4';
+import backgroundVideo from '../../assets/backgroundVideos/backgroundVideo.mp4';
 
 /* hooks */
 import { useSelector } from "react-redux";

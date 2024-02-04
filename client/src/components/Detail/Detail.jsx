@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, NavLink } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import backgroundVideo from '../../assets/videos/backgroundVideo.mp4';
+import backgroundVideo from '../../assets/backgroundVideos/backgroundVideo.mp4';
 
 export default function Detail() {
   const { id } = useParams();

@@ -1,6 +1,6 @@
 import './Home.css';
 import Cards from "../Cards/Cards";
-import backgroundVideo from '../../assets/videos/backgroundVideo.mp4';
+import backgroundVideo from '../../assets/backgroundVideos/backgroundVideo.mp4';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 

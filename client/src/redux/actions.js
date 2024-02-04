@@ -1,5 +1,5 @@
 import {
-  SET_ALL_CARDS, RANDOMIZE_ALL, ADD_FAV, REMOVE_FAV, QUERY, ORDER, ORDER_BY, FILTER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS
+  SET_ALL_CARDS, RANDOMIZE_ALL, ADD_FAV, REMOVE_FAV, QUERY, ORDER, ORDER_BY, FILTER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS, SET_VALUES
 } from "./action-types"
 import axios from "axios";
 
@@ -7,7 +7,7 @@ export const setAllCards = (cards) => {
   return { type: SET_ALL_CARDS, payload: cards }
 }
 export const setAllValues = (user) => {
-  return { type: 'SET_VALUES', payload: user }
+  return { type: SET_VALUES, payload: user }
 }
 export const randomizeAll = (isHome) => {
   return { type: RANDOMIZE_ALL, payload: isHome }

@@ -23,7 +23,7 @@ import axios from 'axios';
 export default function App() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { user } = useAuth();
+  const { userOptions } = useAuth();
 
   useEffect(() => {
     (async function fetchCharacters() {
@@ -36,13 +36,13 @@ export default function App() {
     })();
   }, [dispatch]);
 
-  if (!user) {
-    console.log(user);
+  if (!userOptions) {
+    console.log(userOptions);
     return (
       <LoginRegister />
     );
   } else {
-    console.log(user);
+    console.log(userOptions);
     return (
       <div className='app'>
         <div>

@@ -1,10 +1,9 @@
 import {
-  SET_ALL_CARDS, ADD_FAV, REMOVE_FAV, RANDOMIZE_ALL, QUERY, ORDER, ORDER_BY, FILTER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS
+  SET_ALL_CARDS, ADD_FAV, REMOVE_FAV, RANDOMIZE_ALL, QUERY, ORDER, ORDER_BY, FILTER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS, SET_VALUES
 } from "./action-types"
 import {
-  orderByOptions, filterOptions, cardOptions, detailOptions, homeCardsPerPage, favoritesCardsPerPage
+  orderByOptions, filterOptions, cardOptions, detailOptions
 } from '../config';
-import { useAuth } from "../context/AuthContext.js";
 
 const generateCardOptions = (options, isRadio) => {
   const generatedOptions = [];
@@ -57,24 +56,24 @@ const initialState = {
   randomizedCards: [],
   queriedCards: [],
   searchQuery: '',
-  selectedFilters: 'user && user.selectedFilters',
-  selectedCardsPerPage: 'user && user.homeCardsPerPage',
+  selectedFilters: 'userOptions && userOptions.selectedFilters',
+  selectedCardsPerPage: 'userOptions && userOptions.homeCardsPerPage',
   isAscending: true,
-  selectedOrder: 'user && user.orderByOptions.checked',
-  homeCardRadioOptions: 'user && generateCardOptions(cardOptions, true)',
-  homeDetailRadioOptions: 'user && generateCardOptions(detailOptions, true)',
-  homeCardCheckboxOptions: 'user && generateCardOptions(cardOptions, false)',
-  homeDetailCheckboxOptions: 'user && generateCardOptions(detailOptions, false)',
+  selectedOrder: 'userOptions && userOptions.orderByOptions.checked',
+  homeCardRadioOptions: 'userOptions && generateCardOptions(cardOptions, true)',
+  homeDetailRadioOptions: 'userOptions && generateCardOptions(detailOptions, true)',
+  homeCardCheckboxOptions: 'userOptions && generateCardOptions(cardOptions, false)',
+  homeDetailCheckboxOptions: 'userOptions && generateCardOptions(detailOptions, false)',
   favoritesIcon: ['🤍', '❤️'],
   allFavorites: [],
   filteredFavorites: [],
   randomizedFavorites: [],
   queriedFavorites: [],
   searchQueryFavorites: '',
-  selectedFiltersFavorites: 'user && user.selectedFiltersF',
-  selectedCardsPerPageFavorites: 'user && user.favoritesCardsPerPage',
+  selectedFiltersFavorites: 'userOptions && userOptions.selectedFiltersF',
+  selectedCardsPerPageFavorites: 'userOptions && userOptions.favoritesCardsPerPage',
   isAscendingFavorites: true,
-  selectedOrderFavorites: 'user && user.orderByOptions.checkedFavorites',
+  selectedOrderFavorites: 'userOptions && userOptions.orderByOptions.checkedFavorites',
 }
 
 const reducer = (state = initialState, action) => {
@@ -86,30 +85,29 @@ const reducer = (state = initialState, action) => {
         filteredCards: action.payload,
         queriedCards: action.payload
       };
-    case 'SET_VALUES': {
-      const user = action.payload;
+    case SET_VALUES: {
+      const userOptions = action.payload;
       console.log(action.payload);
-      console.log(user.homeCardsPerPage);
       return {
         ...state,
-        selectedFilters: user && user.selectedFilters,
-        selectedCardsPerPage: user && user.selectedCardsPerPage,
+        selectedFilters: userOptions && userOptions.selectedFilters,
+        selectedCardsPerPage: userOptions && userOptions.selectedCardsPerPage,
         isAscending: true,
-        selectedOrder: user && user.orderByOptions,
-        homeCardRadioOptions: user && generateCardOptions(cardOptions, true),
-        homeDetailRadioOptions: user && generateCardOptions(detailOptions, true),
-        homeCardCheckboxOptions: user && generateCardOptions(cardOptions, false),
-        homeDetailCheckboxOptions: user && generateCardOptions(detailOptions, false),
+        selectedOrder: userOptions && userOptions.orderByOptions,
+        homeCardRadioOptions: userOptions && generateCardOptions(cardOptions, true),
+        homeDetailRadioOptions: userOptions && generateCardOptions(detailOptions, true),
+        homeCardCheckboxOptions: userOptions && generateCardOptions(cardOptions, false),
+        homeDetailCheckboxOptions: userOptions && generateCardOptions(detailOptions, false),
         favoritesIcon: ['🤍', '❤️'],
         allFavorites: [],
         filteredFavorites: [],
         randomizedFavorites: [],
         queriedFavorites: [],
         searchQueryFavorites: '',
-        selectedFiltersFavorites: user && user.selectedFiltersF,
-        selectedCardsPerPageFavorites: user && user.selectedCardsPerPageF,
+        selectedFiltersFavorites: userOptions && userOptions.selectedFiltersF,
+        selectedCardsPerPageFavorites: userOptions && userOptions.selectedCardsPerPageF,
         isAscendingFavorites: true,
-        selectedOrderFavorites: user && user.orderByOptions,
+        selectedOrderFavorites: userOptions && userOptions.orderByOptions,
       }
     }
     case ADD_FAV:

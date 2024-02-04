@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 
 export default function UserSideBarLeft() {
   const videoRef = useRef(null);
-  const { user } = useAuth();
+  const { userOptions } = useAuth();
 
   const handleUserInfoChange = () => {
 
@@ -23,6 +23,9 @@ export default function UserSideBarLeft() {
       </div>
       <div>
         <label>Change Image</label>
+        <div>
+          {}
+        </div>
       </div>
       <div>
         <label>Change Home Background</label>
@@ -41,7 +44,7 @@ export default function UserSideBarLeft() {
             type='text'
             key='name'
             id='name'
-            value={user.name}
+            value={userOptions.name}
             onChange={handleUserInfoChange} />
         </div>
         <div className='user-info-input-label-container' >
@@ -50,7 +53,7 @@ export default function UserSideBarLeft() {
             type='text'
             key='surName'
             id='surName'
-            value={user.surName}
+            value={userOptions.surName}
             onChange={handleUserInfoChange} />
         </div>
         <div className='user-info-input-label-container' >
@@ -59,7 +62,7 @@ export default function UserSideBarLeft() {
             type='text'
             key='userName'
             id='userName'
-            value={user.userName}
+            value={userOptions.userName}
             onChange={handleUserInfoChange} />
         </div>
         <div className='user-info-input-label-container' >
@@ -68,7 +71,7 @@ export default function UserSideBarLeft() {
             type='date'
             key='dateOfBirth'
             id='dateOfBirth'
-            value={user.dateOfBirth}
+            value={userOptions.dateOfBirth}
             onChange={handleUserInfoChange} />
         </div>
       </details>
@@ -80,7 +83,7 @@ export default function UserSideBarLeft() {
             type='email'
             key='registerEmail'
             id='registerEmail'
-            value={user.email}
+            value={userOptions.email}
             onChange={handleUserInfoChange} />
         </div>
       </details>
@@ -92,7 +95,7 @@ export default function UserSideBarLeft() {
             type='password'
             key='registerPassword'
             id='registerPassword'
-            value={user.password}
+            value={userOptions.password}
             onChange={handleUserInfoChange} />
         </div>
         <div className='user-info-input-label-container' >
@@ -101,7 +104,7 @@ export default function UserSideBarLeft() {
             type='password'
             key='registerPassword'
             id='registerPassword'
-            value={user.password}
+            value={userOptions.password}
             onChange={handleUserInfoChange} />
         </div>
         <div className='user-info-input-label-container' >
@@ -110,7 +113,7 @@ export default function UserSideBarLeft() {
             type='password'
             key='registerPasswordRepeat'
             id='registerPasswordRepeat'
-            value={user.password}
+            value={userOptions.password}
             onChange={handleUserInfoChange} />
         </div>
       </details>
