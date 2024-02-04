@@ -2,7 +2,6 @@ export default function registerValidation(input) {
   const errors = {};
   const regexEmail = /^\w+([.\-]?\w+)*@\w+([.\-]?\w+)*(\.\w{2,3})+$/;
 
-  console.log(typeof input.dateOfBirth);
   const dateOfBirth = new Date(input.dateOfBirth);
 
   if (dateOfBirth > new Date(new Date().setFullYear(new Date().getFullYear() - 13))) {

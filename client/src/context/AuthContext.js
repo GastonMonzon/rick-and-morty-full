@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     // return unsubscribe;
     (async function onAuthStateChanged() {
       try {
-        const { data } = await axios.get('http://localhost:3001/change');
+        const { data } = await axios.get('http://localhost:3001/user/change');
         setUserInfo(data);
       } catch (error) {
         console.error('Error fetching userInfo:', error);

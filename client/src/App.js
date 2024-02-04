@@ -31,13 +31,12 @@ export default function App() {
         const { data } = await axios('http://localhost:3001/characters');
         dispatch(setAllCards(data))
       } catch (error) {
-        console.error('Error retrieving characters:', error);
+        console.error(error);
       }
     })();
   }, [dispatch]);
 
   if (!userOptions) {
-    console.log(userOptions);
     return (
       <LoginRegister />
     );

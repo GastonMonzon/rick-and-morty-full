@@ -337,8 +337,8 @@
 .card-container:hover {
   z-index: 10;
   transform: scale(1.1);
-  background-color: #fff;
-  color: rgb(0, 0, 255);
+  /* background-color: rgb(0, 0, 0); */
+  color: rgb(51, 0, 255);
   box-shadow: 0px 0px 10px 5px rgba(0, 255, 47, 1);
 }
 

@@ -133,7 +133,6 @@ const reducer = (state = initialState, action) => {
         const j = Math.floor(Math.random() * (i + 1));
         [randomizedCards[i], randomizedCards[j]] = [randomizedCards[j], randomizedCards[i]];
       }
-      console.log(randomizedCards);
       if (action.payload) {
         return {
           ...state,

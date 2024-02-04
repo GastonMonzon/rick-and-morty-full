@@ -32,7 +32,6 @@ export default function Home() {
   const selectPage = (event) => {
     setCurrentPage(Number(event.target.id));
   }
-  console.log(selectedCardsPerPage);
   return (
     <div className='home'>
       <div className="home-video-container">
