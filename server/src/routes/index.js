@@ -14,6 +14,7 @@ import patchUserFavorites from '../controllers/patchUserFavorites.js';
 import postUser from '../controllers/postUser.js';
 import loginUser from '../controllers/loginUser.js';
 import logoutUser from '../controllers/logoutUser.js';
+import getUserChange from '../controllers/getUserChange.js';
 
 router.get('/characters', getCharacters);
 router.get('/characters/query', getCharactersByName);
@@ -27,6 +28,7 @@ router.patch('/userOptions', patchUserOptions);
 router.patch('/userFavorites', patchUserFavorites);
 router.post('/user/login', loginUser);
 router.get('/user/logout', logoutUser);
+router.get('/user/change', getUserChange);
 router.post('/user', postUser);
 
 

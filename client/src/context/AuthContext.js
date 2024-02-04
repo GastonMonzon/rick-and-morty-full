@@ -4,41 +4,50 @@ import auth from "./firebase.js";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
-  const [user, setUser] = useState('');
+export const AuthProvider = ({ children }) => {
+  const [userInfo, setUserInfo] = useState('');
+  const [userOptions, setUserOptions] = useState('');
 
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged(user => {
-  //     setUser(user);
-  //   })
-  //   return unsubscribe;
-  // },[])
+  useEffect(() => {
+    // const unsubscribe = auth.onAuthStateChanged(userInfo => {
+    //   setUserInfo(userInfo);
+    // })
+    // return unsubscribe;
+    (async function onAuthStateChanged() {
+      try {
+        const { data } = await axios.get('http://localhost:3001/userChange');
+        setUserInfo(data);
+      } catch (error) {
+        console.error('Error fetching userInfo:', error);
+      }
+    })();
+  }, []);
 
   async function createUser(email, password) {
     try {
-      return await axios.post('http://localhost:3001/user', { email, password });
+      return await axios.post('http://localhost:3001/userInfo', { email, password });
     } catch (error) {
-      console.error('Error creating new user', error);
+      console.error('Error creating new userInfo', error);
     }
   }
   const logIn = async (email, password) => {
     try {
-      const { data } = await axios.post('http://localhost:3001/user/login', { email, password });
-      setUser(data);
-      console.log(data);
-      return data;
+      const { data } = await axios.post('http://localhost:3001/userInfo/login', { email, password });
+      setUserInfo(data.user);
+      setUserOptions(data.userOptions);
+      return data.userOptions;
     } catch (error) {
       console.error('Error loging in:', error);
     }
   }
   const logOut = async (email, password) => {
     try {
-      await axios.get('http://localhost:3001/user/logout');
+      await axios.get('http://localhost:3001/userInfo/logout');
     } catch (error) {
       console.error('Error loging out:', error);
     }
   }
-  const authContextValue = { user, createUser, logIn, logOut };
+  const authContextValue = { userInfo, userOptions, createUser, logIn, logOut };
   return (
     <AuthContext.Provider value={authContextValue}>
       {children}
