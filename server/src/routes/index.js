@@ -15,7 +15,6 @@ import postUser from '../controllers/postUser.js';
 import loginUser from '../controllers/loginUser.js';
 import logoutUser from '../controllers/logoutUser.js';
 import getUserChange from '../controllers/getUserChange.js';
-import getNumberOfFilesOfExtension from '../controllers/getNumberOfFilesOfExtension.js';
 
 router.get('/characters', getCharacters);
 router.get('/characters/query', getCharactersByName);
@@ -31,7 +30,5 @@ router.post('/user/login', loginUser);
 router.get('/user/logout', logoutUser);
 router.get('/user/change', getUserChange);
 router.post('/user', postUser);
-router.post('/count', getNumberOfFilesOfExtension);
-
 
 export default router;

@@ -283,22 +283,3 @@ export const filterOptions = {
   species: ['Human', 'Alien', 'Humanoid', 'Poopybutthole', 'Mythological Creature', 'Animal', 'Robot', 'Cronenberg', 'Disease', 'unknown Species'],
   gender: ['Male', 'Female', 'Genderless', 'unknown Gender']
 }
-
-// export const backgroundVideoNumber = countFilesWithExtension('./assets/loadingGifs', '.gif');
-// export const backgroundGifsNumber = countFilesWithExtension('./assets/videos', '.mp4');
-
-async function checkFilesCount(type, extension) {
-  try {
-    const { data } = await axios.post('http://localhost:3001/count', { type, extension });
-    return data;
-  } catch (error) {
-    console.error('Error counting files', error);
-  }
-}
-
-export const backgroundImagesNumber = checkFilesCount('images', '.jpg') + checkFilesCount('images', '.png');
-export const backgroundVideoNumber = checkFilesCount('videos', '.mp4');
-export const backgroundGifsNumber = checkFilesCount('gifs', '.gif');
-console.log(backgroundImagesNumber);
-console.log(backgroundVideoNumber);
-console.log(backgroundGifsNumber);

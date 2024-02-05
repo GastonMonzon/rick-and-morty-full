@@ -40,6 +40,26 @@
   font-weight: normal;
 }
 
+.background-images-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.thumbnail-image-div {
+  width: 70px;
+  /* height: 50px; */
+}
+
+.thumbnail-image-div img {
+  width: 100%;
+  height: fit-content;
+}
+
+.thumbnail-image-div:hover {
+  outline: 1px solid #00ff1a;
+}
+
 .user-info-input-label-container {
   display: flex;
   flex-wrap: wrap;
