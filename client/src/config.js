@@ -12,7 +12,6 @@
 // // const episodesViewSelected = localStorage.getItem('episodesView'); 
 // // const episodeListViewSelected = localStorage.getItem('episodeListView'); 
 // // const charactersViewSelected = localStorage.getItem('charactersView');
-import axios from 'axios';
 import { useAuth } from './context/AuthContext.js';
 
 const { userOptions } = useAuth;

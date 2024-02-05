@@ -30,6 +30,10 @@
   overflow-x: hidden;
 }
 
+.optionsSidebar::-webkit-scrollbar-thumb {
+  background-color: rgb(67, 0, 98);
+}
+
 .optionsSidebar h3 {
   font-size: 20px;
   font-weight: normal;
@@ -47,6 +51,7 @@
 .favorites-options-container {
   margin-top: 185%;
   margin-bottom: 5%;
+  max-width: 95%;
 }
 
 .move-away {
@@ -114,11 +119,13 @@
 
 .cards-per-page-input:hover {
   outline: 2.5px solid rgb(67, 0, 98);
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
 }
 
 .sidebar-button:hover {
   outline: 1px solid rgb(67, 0, 98);
-  background-color: black;
+  background-color: rgb(0, 0, 0);
   color: rgb(255, 255, 255);
 }
 

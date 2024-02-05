@@ -44,7 +44,7 @@ summary {
 }
 
 button {
-  background-color: #000;
+  background-color: rgb(0, 0, 0);
   color: rgb(2, 255, 2);
   transition: all 0.2s ease-in-out;
   cursor: pointer;
@@ -54,16 +54,11 @@ input[type="checkbox"] {
   align-items: center;
   accent-color: rgb(67, 0, 98);
   height: 15px;
-}
-
-input[type="checkbox"]:hover {
   transition: all 0.2s ease-in-out;
-  transform: scale(1.25);
 }
 
 input[type="checkbox"]:hover,
 input[type="checkbox"]:checked {
-  transition: all 0.2s ease-in-out;
   transform: scale(1.25);
 }
 
@@ -71,10 +66,7 @@ input[type="radio"] {
   align-items: center;
   accent-color: rgb(67, 0, 98);
   height: 15px;
-}
-
-input[type="radio"]:hover {
-  transform: scale(1.25);
+  transition: all 0.2s ease-in-out;
 }
 
 input[type="radio"]:hover,
@@ -88,4 +80,21 @@ input[type="radio"]:checked {
 
 .no-display {
   display: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(26, 26, 26);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(0, 0, 0);
+}
+
+::-webkit-scrollbar-button {
+  background-color: rgb(0, 0, 0);
 }

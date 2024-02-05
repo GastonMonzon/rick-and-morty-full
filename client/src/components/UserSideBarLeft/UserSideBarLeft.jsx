@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import './UserSideBarLeft.css'
-import userBackgroundVideo from '../../assets/videos/optionsBackgroundVideo.mp4';
-import {  } from '../../config.js';
+import userBackgroundVideo from '../../assets/videos/optionsBackgroundVideo2.mp4';
 import { useAuth } from '../../context/AuthContext';
 import background1 from '../../assets/thumbnails/background1_thumbnail_1280x720.jpg';
 import background2 from '../../assets/thumbnails/background2_thumbnail_1280x720.jpg';
@@ -61,13 +60,13 @@ export default function UserSideBarLeft() {
     loading10,
     loading11,
     loading12,
-    loading13,
-    loading14,
-    loading15,
-    loading16,
     loading17,
+    loading15,
+    loading19,
+    loading14,
+    loading16,
     loading18,
-    loading19
+    loading13
   ];
 
   const handleUserInfoChange = () => {
@@ -137,8 +136,8 @@ export default function UserSideBarLeft() {
           <label>Name</label>
           <input
             type='text'
-            key='name'
-            id='name'
+            key='changeName'
+            id='changeName'
             value={userOptions.name}
             onChange={handleUserInfoChange} />
         </div>
@@ -146,8 +145,8 @@ export default function UserSideBarLeft() {
           <label>Surname</label>
           <input
             type='text'
-            key='surName'
-            id='surName'
+            key='changeSurName'
+            id='changeSurName'
             value={userOptions.surName}
             onChange={handleUserInfoChange} />
         </div>
@@ -155,8 +154,8 @@ export default function UserSideBarLeft() {
           <label>Username</label>
           <input
             type='text'
-            key='userName'
-            id='userName'
+            key='changeUserName'
+            id='changeUserName'
             value={userOptions.userName}
             onChange={handleUserInfoChange} />
         </div>
@@ -164,8 +163,8 @@ export default function UserSideBarLeft() {
           <label>Date Of Birth</label>
           <input
             type='date'
-            key='dateOfBirth'
-            id='dateOfBirth'
+            key='changeDateOfBirth'
+            id='changeDateOfBirth'
             value={userOptions.dateOfBirth}
             onChange={handleUserInfoChange} />
         </div>
@@ -176,8 +175,8 @@ export default function UserSideBarLeft() {
           <label>Email</label>
           <input
             type='email'
-            key='registerEmail'
-            id='registerEmail'
+            key='changeEmail'
+            id='changeEmail'
             value={userOptions.email}
             onChange={handleUserInfoChange} />
         </div>
@@ -188,8 +187,8 @@ export default function UserSideBarLeft() {
           <label>Old Password</label>
           <input
             type='password'
-            key='registerPassword'
-            id='registerPassword'
+            key='changePasswordOld'
+            id='changePasswordOld'
             value={userOptions.password}
             onChange={handleUserInfoChange} />
         </div>
@@ -197,8 +196,8 @@ export default function UserSideBarLeft() {
           <label>New Password</label>
           <input
             type='password'
-            key='registerPasswordRepeat'
-            id='registerPasswordRepeat'
+            key='changePasswordNew'
+            id='changePasswordNew'
             value={userOptions.password}
             onChange={handleUserInfoChange} />
         </div>
@@ -206,8 +205,8 @@ export default function UserSideBarLeft() {
           <label>Repeat New Password</label>
           <input
             type='password'
-            key='registerPasswordRepeat'
-            id='registerPasswordRepeat'
+            key='changePasswordNewRepeat'
+            id='changePasswordNewRepeat'
             value={userOptions.password}
             onChange={handleUserInfoChange} />
         </div>

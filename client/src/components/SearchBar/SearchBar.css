@@ -47,7 +47,6 @@
 .searchBar-container input:focus {
   box-shadow: none;
   transform: translateY(4px);
-  border: 1px solid greenyellow;
 }
 
 .reset-query {
