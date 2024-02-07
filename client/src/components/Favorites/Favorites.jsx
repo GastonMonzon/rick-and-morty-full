@@ -2,22 +2,23 @@
 import './Favorites.css';
 
 /* components */
-import backgroundVideo from '../../assets/backgroundVideos/backgroundVideo.mp4';
+import Pages from '../Pages/Pages.jsx';
 
 /* hooks */
 import { useSelector } from "react-redux";
-import Cards from '../Cards/Cards.jsx';
+import useBackground from '../../hooks/useBackground.jsx';
 
 export default function Favorites() {
-  const myFavorites = useSelector((state) => state.allFavorites);
+  const myFavorites = useSelector((state) => state.filteredFavorites);
+  const selectedCardsPerPageF = useSelector((state) => state.selectedCardsPerPageFavorites);
+  const favoritesBackground = useSelector((state) => state.favoritesBackground);
 
   return (
     <div className='favorites' >
-      <div className="favorites-video-container">
-        <video src={backgroundVideo} className="favorites-background-video" autoPlay muted loop>
-        </video>
+      <div className='favorites-container'>
+        {useBackground(favoritesBackground, 'favorites')}
       </div>
-      <Cards characters={myFavorites} />
+      <Pages cardsPerPage={Number(selectedCardsPerPageF)} cards={myFavorites} />
     </div>
   )
 }

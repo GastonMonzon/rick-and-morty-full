@@ -30,44 +30,56 @@ import loading16 from '../../assets/loadingGifs/loading16.gif'
 import loading17 from '../../assets/loadingGifs/loading17.gif'
 import loading18 from '../../assets/loadingGifs/loading18.gif'
 import loading19 from '../../assets/loadingGifs/loading19.gif'
+import { useDispatch, useSelector } from 'react-redux';
+import { changeBackground } from '../../redux/actions';
 
 export default function UserSideBarLeft() {
   const videoRef = useRef(null);
   const { userOptions } = useAuth();
+  const dispatch = useDispatch();
+  const selectedHomeBackground = useSelector((state) => state.homeBackground);
+  const selectedFavoritesBackground = useSelector((state) => state.favoritesBackground);
+  const selectedDetailBackground = useSelector((state) => state.detailBackground);
+  const selectedLoadingScreen = useSelector((state) => state.loadingScreen);
 
   const backgroundImages = [
-    background1,
-    background2,
-    background3,
-    background4,
-    background5,
-    background6,
-    background7,
-    backgroundVideo1,
-    backgroundVideo2
+    { name: 'background1', src: background1 },
+    { name: 'background2', src: background2 },
+    { name: 'background3', src: background3 },
+    { name: 'background4', src: background4 },
+    { name: 'background5', src: background5 },
+    { name: 'background6', src: background6 },
+    { name: 'background7', src: background7 },
+    { name: 'backgroundVideo1', src: backgroundVideo1 },
+    { name: 'backgroundVideo2', src: backgroundVideo2 }
   ];
 
   const loadingGifs = [
-    loading1,
-    loading2,
-    loading3,
-    loading4,
-    loading5,
-    loading6,
-    loading7,
-    loading8,
-    loading9,
-    loading10,
-    loading11,
-    loading12,
-    loading17,
-    loading15,
-    loading19,
-    loading14,
-    loading16,
-    loading18,
-    loading13
+    { name: 'loading1', src: loading1 },
+    { name: 'loading2', src: loading2 },
+    { name: 'loading3', src: loading3 },
+    { name: 'loading4', src: loading4 },
+    { name: 'loading5', src: loading5 },
+    { name: 'loading6', src: loading6 },
+    { name: 'loading7', src: loading7 },
+    { name: 'loading8', src: loading8 },
+    { name: 'loading9', src: loading9 },
+    { name: 'loading10', src: loading10 },
+    { name: 'loading11', src: loading11 },
+    { name: 'loading12', src: loading12 },
+    { name: 'loading17', src: loading17 },
+    { name: 'loading15', src: loading15 },
+    { name: 'loading19', src: loading19 },
+    { name: 'loading14', src: loading14 },
+    { name: 'loading16', src: loading16 },
+    { name: 'loading18', src: loading18 },
+    { name: 'loading13', src: loading13 }
   ];
+
+  const handleBackgroundChange = (event) => {
+    const { name, alt } = event.target;
+    dispatch(changeBackground({ name: name, alt: alt }))
+  }
 
   const handleUserInfoChange = () => {
 
@@ -95,7 +107,12 @@ export default function UserSideBarLeft() {
             {backgroundImages.map((background, index) => (
               <div key={index}
                 className='thumbnail-image-div' >
-                <img src={background} alt={background} />
+                <img
+                  src={background.src}
+                  alt={background.name}
+                  name='home'
+                  className={selectedHomeBackground === background.name ? 'selected-background' : ''}
+                  onClick={handleBackgroundChange} />
               </div>
             ))}
           </div>
@@ -108,7 +125,12 @@ export default function UserSideBarLeft() {
             {backgroundImages.map((background, index) => (
               <div key={index}
                 className='thumbnail-image-div' >
-                <img src={background} alt={background} />
+                <img
+                  src={background.src}
+                  alt={background.name}
+                  name='favorites'
+                  className={selectedFavoritesBackground === background.name ? 'selected-background' : ''}
+                  onClick={handleBackgroundChange} />
               </div>
             ))}
           </div>
@@ -121,7 +143,12 @@ export default function UserSideBarLeft() {
             {backgroundImages.map((background, index) => (
               <div key={index}
                 className='thumbnail-image-div' >
-                <img src={background} alt={background} />
+                <img
+                  src={background.src}
+                  alt={background.name}
+                  name='detail'
+                  className={selectedDetailBackground === background.name ? 'selected-background' : ''}
+                  onClick={handleBackgroundChange} />
               </div>
             ))}
           </div>
@@ -134,7 +161,12 @@ export default function UserSideBarLeft() {
             {loadingGifs.map((gif, index) => (
               <div key={index}
                 className='thumbnail-image-div' >
-                <img src={gif} alt={gif} />
+                <img 
+                src={gif.src} 
+                alt={gif.name} 
+                name='loading' 
+                className={selectedLoadingScreen === gif.name ? 'selected-background' : ''}
+                onClick={handleBackgroundChange} />
               </div>
             ))}
           </div>

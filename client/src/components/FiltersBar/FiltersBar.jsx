@@ -4,17 +4,19 @@ import './FiltersBar.css';
 /* components */
 import { filterOptions, orderByOptions } from '../../config';
 import { orderDirection, orderBy, filter, randomizeAll, query } from '../../redux/actions';
-import backgroundVideo from '../../assets/backgroundVideos/backgroundVideo.mp4';
 
 /* hooks */
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
+import useBackground from '../../hooks/useBackground';
 
 export default function FiltersBar() {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const [isOrderFocused, setIsOrderFocused] = useState(false);
+  const filtersBackground = useSelector((state) => state.homeBackground);
+  const filtersBackgroundFavorites = useSelector((state) => state.favoritesBackground);
   const selectedOrder = useSelector(state =>
     pathname === '/home'
       ? state.selectedOrder
@@ -69,11 +71,16 @@ export default function FiltersBar() {
     dispatch(filter({ name: id, value: value, isHome: isHome }));
     dispatch(orderBy({ order: selectedOrder, isAscending: isAscending, isHome: isHome }));
   }
+  const homeBackground = useBackground(filtersBackground, 'filters');
+  const favoritesBackground = useBackground(filtersBackgroundFavorites, 'filters');
   return (
-    <div className='filtersBar-container' id='filtersBar-container'>
-      <div className='filters-background-video-container' >
-        <video src={backgroundVideo} className="filters-background-video" autoPlay muted loop>
-        </video>
+    <div className='filters-bar-container' id='filters-bar-container'>
+      <div className='filters-background-container' >
+        {
+          pathname === '/home'
+            ? homeBackground
+            : favoritesBackground
+        }
       </div>
       <div className='first-set-buttons-container'>
         <div className='reset-button-container' >

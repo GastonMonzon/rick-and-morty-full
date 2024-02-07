@@ -1,5 +1,5 @@
 import {
-  SET_ALL_CARDS, RANDOMIZE_ALL, ADD_FAV, REMOVE_FAV, QUERY, ORDER, ORDER_BY, FILTER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS, SET_VALUES
+  SET_ALL_CARDS, SET_VALUES, CHANGE_BACKGROUND, RANDOMIZE_ALL, ADD_FAV, REMOVE_FAV, QUERY, ORDER, ORDER_BY, FILTER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS
 } from "./action-types"
 import axios from "axios";
 
@@ -9,29 +9,35 @@ export const setAllCards = (cards) => {
 export const setAllValues = (user) => {
   return { type: SET_VALUES, payload: user }
 }
+export const changeBackground = (backgroundInfo) => {
+  return { type: CHANGE_BACKGROUND, payload: backgroundInfo }
+}
 export const randomizeAll = (isHome) => {
   return { type: RANDOMIZE_ALL, payload: isHome }
 }
 export const addFav = (character) => {
-  return async (dispatch) => {
-    try {
-      const { data } = await axios.patch('http://localhost:3001/userFavorites', character);
-      return dispatch({ type: ADD_FAV, payload: data });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // return async (dispatch) => {
+  //   try {
+  //     const { data } = await axios.patch('http://localhost:3001/userFavorites', character);
+  //     console.log(data);
+  //     return dispatch({ type: ADD_FAV, payload: data });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  return { type: ADD_FAV, payload: character }
 }
 export const removeFav = (id) => {
-  const endpoint = 'http://localhost:3001/rickandmorty/fav/' + id;
-   return async (dispatch) => {
-      try {
-         const { data } = await axios.delete(endpoint);
-         return dispatch({ type: REMOVE_FAV, payload: data });
-      } catch (error) {
-         console.log(error);
-      }
-   }
+  // const endpoint = 'http://localhost:3001/rickandmorty/fav/' + id;
+  //  return async (dispatch) => {
+  //     try {
+  //        const { data } = await axios.delete(endpoint);
+  //        return dispatch({ type: REMOVE_FAV, payload: data });
+  //     } catch (error) {
+  //        console.log(error);
+  //     }
+  //  }
+  return { type: REMOVE_FAV, payload: id }
 }
 export const query = (queryData) => {
   return { type: QUERY, payload: queryData }

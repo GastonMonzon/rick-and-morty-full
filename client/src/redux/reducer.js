@@ -1,5 +1,5 @@
 import {
-  SET_ALL_CARDS, ADD_FAV, REMOVE_FAV, RANDOMIZE_ALL, QUERY, ORDER, ORDER_BY, FILTER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS, SET_VALUES
+  SET_ALL_CARDS, SET_VALUES, CHANGE_BACKGROUND, ADD_FAV, REMOVE_FAV, RANDOMIZE_ALL, QUERY, ORDER, ORDER_BY, FILTER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS
 } from "./action-types"
 import {
   orderByOptions, filterOptions, cardOptions, detailOptions
@@ -56,24 +56,28 @@ const initialState = {
   randomizedCards: [],
   queriedCards: [],
   searchQuery: '',
-  selectedFilters: 'userOptions && userOptions.selectedFilters',
-  selectedCardsPerPage: 'userOptions && userOptions.homeCardsPerPage',
+  selectedFilters: [],
+  selectedCardsPerPage: '',
   isAscending: true,
-  selectedOrder: 'userOptions && userOptions.orderByOptions.checked',
-  homeCardRadioOptions: 'userOptions && generateCardOptions(cardOptions, true)',
-  homeDetailRadioOptions: 'userOptions && generateCardOptions(detailOptions, true)',
-  homeCardCheckboxOptions: 'userOptions && generateCardOptions(cardOptions, false)',
-  homeDetailCheckboxOptions: 'userOptions && generateCardOptions(detailOptions, false)',
+  selectedOrder: '',
+  cardRadioOptions: {},
+  cardCheckboxOptions: {},
+  detailRadioOptions: {},
+  detailCheckboxOptions: {},
   favoritesIcon: ['🤍', '❤️'],
   allFavorites: [],
   filteredFavorites: [],
   randomizedFavorites: [],
   queriedFavorites: [],
   searchQueryFavorites: '',
-  selectedFiltersFavorites: 'userOptions && userOptions.selectedFiltersF',
-  selectedCardsPerPageFavorites: 'userOptions && userOptions.favoritesCardsPerPage',
+  selectedFiltersFavorites: [],
+  selectedCardsPerPageFavorites: '',
   isAscendingFavorites: true,
-  selectedOrderFavorites: 'userOptions && userOptions.orderByOptions.checkedFavorites',
+  selectedOrderFavorites: '',
+  homeBackground: '',
+  favoritesBackground: '',
+  detailBackground: '',
+  loadingScreen: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -89,30 +93,61 @@ const reducer = (state = initialState, action) => {
       const userOptions = action.payload;
       return {
         ...state,
-        selectedFilters: userOptions && userOptions.selectedFilters,
-        selectedCardsPerPage: userOptions && userOptions.selectedCardsPerPage,
+        selectedFilters: userOptions.selectedFilters,
+        selectedCardsPerPage: userOptions.selectedCardsPerPage,
         isAscending: true,
-        selectedOrder: userOptions && userOptions.orderByOptions,
-        homeCardRadioOptions: userOptions && generateCardOptions(cardOptions, true),
-        homeDetailRadioOptions: userOptions && generateCardOptions(detailOptions, true),
-        homeCardCheckboxOptions: userOptions && generateCardOptions(cardOptions, false),
-        homeDetailCheckboxOptions: userOptions && generateCardOptions(detailOptions, false),
+        selectedOrder: userOptions.orderByOptions,
+        cardRadioOptions: generateCardOptions(cardOptions, true),
+        detailRadioOptions: generateCardOptions(detailOptions, true),
+        cardCheckboxOptions: generateCardOptions(cardOptions, false),
+        detailCheckboxOptions: generateCardOptions(detailOptions, false),
         favoritesIcon: ['🤍', '❤️'],
-        allFavorites: [],
+        allFavorites: userOptions.favorites === null ? [] : userOptions.favorites,
         filteredFavorites: [],
         randomizedFavorites: [],
         queriedFavorites: [],
         searchQueryFavorites: '',
-        selectedFiltersFavorites: userOptions && userOptions.selectedFiltersF,
-        selectedCardsPerPageFavorites: userOptions && userOptions.selectedCardsPerPageF,
+        selectedFiltersFavorites: userOptions.selectedFiltersF,
+        selectedCardsPerPageFavorites: userOptions.selectedCardsPerPageF,
         isAscendingFavorites: true,
-        selectedOrderFavorites: userOptions && userOptions.orderByOptions,
+        selectedOrderFavorites: userOptions.orderByOptions,
+        homeBackground: userOptions.homeBackground,
+        favoritesBackground: userOptions.favoritesBackground,
+        detailBackground: userOptions.detailBackground,
+        loadingScreen: userOptions.loadingScreen
       }
     }
+    case CHANGE_BACKGROUND:
+      switch (action.payload.name) {
+        case 'home':
+          return {
+            ...state,
+            homeBackground: action.payload.alt
+          }
+        case 'favorites':
+          return {
+            ...state,
+            favoritesBackground: action.payload.alt
+          }
+        case 'detail':
+          return {
+            ...state,
+            detailBackground: action.payload.alt
+          }
+        case 'loading':
+          return {
+            ...state,
+            loadingScreen: action.payload.alt
+          }
+        default:
+          return {
+            ...state
+          }
+      }
     case ADD_FAV:
       return {
         ...state,
-        allFavorites: action.payload
+        allFavorites: [...state.allFavorites, action.payload],
       };
     case REMOVE_FAV:
       return {
@@ -521,24 +556,24 @@ const reducer = (state = initialState, action) => {
       }
     }
     case OPTIONS_SIDEBAR_RADIOS: {
-      let updatedRadioOptions = [...state.homeDetailRadioOptions];
+      let updatedRadioOptions = [...state.detailRadioOptions];
       const index = updatedRadioOptions.findIndex(option => option.name === action.payload.name);
       if (index !== -1) {
         updatedRadioOptions[index].value = action.payload.value;
         localStorage.setItem(action.payload.name, action.payload.value)
         return {
           ...state,
-          homeDetailRadioOptions: updatedRadioOptions
+          detailRadioOptions: updatedRadioOptions
         }
       } else {
-        updatedRadioOptions = [...state.homeCardRadioOptions];
+        updatedRadioOptions = [...state.cardRadioOptions];
         if (action.payload.isHome) {
           const index = updatedRadioOptions.findIndex(option => option.name === action.payload.name);
           updatedRadioOptions[index].value = action.payload.value;
           localStorage.setItem(action.payload.name, action.payload.value)
           return {
             ...state,
-            homeCardRadioOptions: updatedRadioOptions
+            cardRadioOptions: updatedRadioOptions
           }
         } else {
           const index = updatedRadioOptions.findIndex(option => option.nameF === action.payload.name);
@@ -546,30 +581,30 @@ const reducer = (state = initialState, action) => {
           localStorage.setItem(action.payload.name, action.payload.value)
           return {
             ...state,
-            homeCardRadioOptions: updatedRadioOptions
+            cardRadioOptions: updatedRadioOptions
           }
         }
       }
     }
     case OPTIONS_SIDEBAR_CHECKBOXES: {
-      let updatedCheckboxOptions = [...state.homeDetailCheckboxOptions];
+      let updatedCheckboxOptions = [...state.detailCheckboxOptions];
       const index = updatedCheckboxOptions.findIndex(option => option.name === action.payload.name);
       if (index !== -1) {
         updatedCheckboxOptions[index].value = action.payload.isChecked;
         localStorage.setItem(action.payload.name, action.payload.isChecked);
         return {
           ...state,
-          homeDetailCheckboxOptions: updatedCheckboxOptions
+          detailCheckboxOptions: updatedCheckboxOptions
         }
       } else {
-        updatedCheckboxOptions = [...state.homeCardRadioOptions];
+        updatedCheckboxOptions = [...state.cardRadioOptions];
         if (action.payload.isHome) {
           const index = updatedCheckboxOptions.findIndex(option => option.name === action.payload.name);
           updatedCheckboxOptions[index].value = action.payload.isChecked;
           localStorage.setItem(action.payload.name, action.payload.isChecked);
           return {
             ...state,
-            homeCardRadioOptions: updatedCheckboxOptions
+            cardRadioOptions: updatedCheckboxOptions
           }
         } else {
           const index = updatedCheckboxOptions.findIndex(option => option.nameF === action.payload.name);
@@ -577,7 +612,7 @@ const reducer = (state = initialState, action) => {
           localStorage.setItem(action.payload.name + 'F', action.payload.isChecked)
           return {
             ...state,
-            homeCardRadioOptions: updatedCheckboxOptions
+            cardRadioOptions: updatedCheckboxOptions
           }
         }
       }

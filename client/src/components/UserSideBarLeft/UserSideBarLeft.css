@@ -27,7 +27,7 @@
   color: white;
   border-radius: 0 10px 0 10px;
   overflow: scroll;
-  padding: 10px;
+  padding: 15px;
   transition: .25s transform ease;
 }
 
@@ -96,4 +96,12 @@
 .user-info-input-label-container input:focus {
   box-shadow: none;
   transform: translateY(4px);
+}
+
+.selected-background {
+  border: inset;
+  transform: scale(1.2);
+  border-radius: 3px;
+  border: solid rgb(2, 255, 2) 2px;
+  /* outline: 2px solid red; */
 }

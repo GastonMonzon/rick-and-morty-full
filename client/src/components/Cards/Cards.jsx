@@ -3,9 +3,9 @@ import Card from '../Card/Card';
 import { useSelector } from 'react-redux';
 
 export default function Cards({ characters }) {
-  const verticalCardsPerRow = useSelector(state => state.homeCardRadioOptions[0].value);
-  const horizontalCardsPerRow = useSelector(state => state.homeCardRadioOptions[1].value);
-  const infoLabelsPosition = useSelector((state) => state.homeCardRadioOptions[2].value);
+  const verticalCardsPerRow = useSelector(state => state.cardRadioOptions[0].value);
+  const horizontalCardsPerRow = useSelector(state => state.cardRadioOptions[1].value);
+  const infoLabelsPosition = useSelector((state) => state.cardRadioOptions[2].value);
   let cardsPerRow;
   if (infoLabelsPosition === 'left' || infoLabelsPosition === 'right') {
     cardsPerRow = horizontalCardsPerRow;

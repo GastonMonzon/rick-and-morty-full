@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import './Nav.css';
-import backgroundVideo from '../../assets/backgroundVideos/backgroundVideo.mp4';
 import Button from '../Button/Button';
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import UserSideBarLeft from "../UserSideBarLeft/UserSideBarLeft";
@@ -10,6 +9,7 @@ import FiltersBar from "../FiltersBar/FiltersBar";
 import { useDispatch, useSelector } from "react-redux";
 import { filter, query, randomizeAll } from "../../redux/actions";
 import useDetailsTagAnimations from "../../hooks/useDetailsTagAnimations";
+import useBackground from "../../hooks/useBackground";
 
 export default function Nav() {
   const handleDetailsClick = useDetailsTagAnimations();
@@ -19,6 +19,9 @@ export default function Nav() {
   const optionsSideBarRef = useRef(null);
   const { pathname } = useLocation();
   const allCards = useSelector(state => state.allCards);
+  const navBackgroundHome = useSelector((state) => state.homeBackground);
+  const navBackgroundFavorites = useSelector((state) => state.favoritesBackground);
+  const navBackgroundDetail = useSelector((state) => state.detailBackground);
   const searchQuery = useSelector(state =>
     pathname === '/home'
       ? state.searchQuery
@@ -38,11 +41,17 @@ export default function Nav() {
     dispatch(query({ query: searchQuery, isHome: isHome }));
     dispatch(filter({ name: '', value: '', isHome: isHome }));
   }
+  const homeBackground = useBackground(navBackgroundHome, 'nav');
+  const favoritesBackground = useBackground(navBackgroundFavorites, 'nav');
+  const detailBackground = useBackground(navBackgroundDetail, 'nav');
   return (
-    <nav className='navBar'>
-      <div className='nav-background-video-container' >
-        <video src={backgroundVideo} className="nav-background-video" autoPlay muted loop>
-        </video>
+    <nav className='nav-bar'>
+      <div className='nav-background-container' >
+        {pathname === '/home'
+          ? homeBackground
+          : pathname === '/favorites'
+            ? favoritesBackground
+            : detailBackground}
       </div>
       <div className='options-filters-container' >
         <details id='userOptionsDetailsTag' ref={userSideBarRef} >

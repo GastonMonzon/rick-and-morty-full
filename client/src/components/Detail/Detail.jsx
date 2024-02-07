@@ -3,18 +3,20 @@ import axios from 'axios';
 import { useParams, NavLink } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import backgroundVideo from '../../assets/backgroundVideos/backgroundVideo.mp4';
+import backgroundVideo from '../../assets/backgroundVideos/backgroundVideo1.mp4';
+import useBackground from '../../hooks/useBackground';
 
 export default function Detail() {
   const { id } = useParams();
   const [character, setCharacter] = useState({});
-  const episodeNameView = useSelector((state) => state.homeDetailCheckboxOptions[0].value);
-  const episodeCodeView = useSelector((state) => state.homeDetailCheckboxOptions[1].value);
-  const episodeDateView = useSelector((state) => state.homeDetailCheckboxOptions[2].value);
-  const episodeCharactersView = useSelector((state) => state.homeDetailCheckboxOptions[3].value);
-  const episodeView = useSelector((state) => state.homeDetailRadioOptions[0].value);
-  const episodeListView = useSelector((state) => state.homeDetailRadioOptions[1].value);
-  const charactersView = useSelector((state) => state.homeDetailRadioOptions[2].value);
+  const episodeNameView = useSelector((state) => state.detailCheckboxOptions[0].value);
+  const episodeCodeView = useSelector((state) => state.detailCheckboxOptions[1].value);
+  const episodeDateView = useSelector((state) => state.detailCheckboxOptions[2].value);
+  const episodeCharactersView = useSelector((state) => state.detailCheckboxOptions[3].value);
+  const episodeView = useSelector((state) => state.detailRadioOptions[0].value);
+  const episodeListView = useSelector((state) => state.detailRadioOptions[1].value);
+  const charactersView = useSelector((state) => state.detailRadioOptions[2].value);
+  const detailBackground = useSelector((state) => state.detailBackground);
 
   useEffect(() => {
     axios(`http://localhost:3001/characters/${id}`)
@@ -121,9 +123,8 @@ export default function Detail() {
 
   return (
     <div className='detail-container' >
-      <div className='detail-video-container' >
-        <video src={backgroundVideo} className='detail-background-video' autoPlay muted loop>
-        </video>
+      <div className='detail-background-container' >
+        {useBackground(detailBackground, 'detail')}
       </div>
       <h2 className='detail-name'>{character.name}</h2>
       <table className='detail-table' >

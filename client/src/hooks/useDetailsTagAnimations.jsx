@@ -6,15 +6,15 @@ const useDetailsTagAnimations = () => {
   const [detailsRef, setDetailsRef] = useState(null);
   const [animation, setAnimation] = useState(null);
 
-  const handleDetailsClick = (event, ref, isOpen) => {
+  const handleDetailsClick = (event, ref) => {
     event.preventDefault();
     const { id } = event.target;
     setDetailsRef(ref);
     const detailsTag = document.getElementById(`${id}DetailsTag`);
     const summaryTag = document.getElementById(id);
-    if (/* isClosing ||  */!detailsTag.open) {
+    if (isClosing || !detailsTag.open) {
       open(detailsTag, summaryTag, id);
-    } else if (/* isExpanding ||  */detailsTag.open) {
+    } else if (isExpanding || detailsTag.open) {
       shrink(detailsTag, summaryTag, id);
     }
   }
@@ -54,7 +54,7 @@ const useDetailsTagAnimations = () => {
         }
       );
     } else {
-      const content = document.getElementById('filtersBar-container');
+      const content = document.getElementById('filters-bar-container');
       newAnimation = content.animate(
         {
           top: ['-300px', '50px']
@@ -99,7 +99,7 @@ const useDetailsTagAnimations = () => {
         }
       );
     } else {
-      const content = document.getElementById('filtersBar-container');
+      const content = document.getElementById('filters-bar-container');
       newAnimation = content.animate(
         {
           top: ['50px', '-100px']

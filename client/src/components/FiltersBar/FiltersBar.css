@@ -1,17 +1,21 @@
-.filters-background-video-container {
+.filters-background-container {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
   z-index: -1;
 }
 
-.filters-background-video {
+.filters-background {
+  position: absolute;
+  top: -7vh;
   width: 100vw;
+  height: 100vh;
   object-fit: cover;
 }
 
-.filtersBar-container {
+.filters-bar-container {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 20px;
@@ -19,6 +23,7 @@
   margin-left: -7px;
   padding: 10px;
   padding-top: 5px;
+  overflow: hidden;
 }
 
 .first-set-buttons-container {

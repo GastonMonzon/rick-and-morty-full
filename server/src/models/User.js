@@ -38,22 +38,22 @@ const getUserModel =  (sequelize) => {
     homeBackground: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'backgroundVideo.mp4'
+      defaultValue: 'backgroundVideo1'
     },
     favoritesBackground: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'backgroundVideo.mp4'
+      defaultValue: 'backgroundVideo1'
     },
     detailBackground: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'backgroundVideo.mp4'
+      defaultValue: 'backgroundVideo1'
     },
     loadingScreen: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'backgroundVideo.mp4'
+      defaultValue: 'backgroundVideo1'
     },
     searchBy: {
       type: DataTypes.ARRAY(DataTypes.STRING),

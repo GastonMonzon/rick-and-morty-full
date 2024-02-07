@@ -1,45 +1,15 @@
-.home-video-container {
+.home-background-container {
   position: fixed;
-  z-index: -1;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: -1;
   overflow: hidden;
 }
 
-.home-background-video {
-  width: 100%;
-  height: 100%;
+.home-background {
+  width: 100vw;
+  height: 100vh;
   object-fit: cover;
-}
-
-.pages-selector {
-  width: 95vw;
-  margin: 2% auto 2% auto;
-}
-
-.pages-selector button {
-  font-family: neuropolitical;
-  font-size: 10px;
-  min-width: 3em;
-  border: 1px solid black;
-  margin-right: 1px;
-}
-
-.pages-selector button:hover {
-  transform: scale(1.2);
-  border: 1px solid rgb(255, 251, 0);
-  outline: 1px solid rgb(255, 251, 0);
-  color: rgb(255, 251, 0);
-}
-
-.selected-page {
-  color: aqua;
-  border: 1px solid aqua;
-  outline: 1px solid aqua;
-}
-
-.pages-selector button:active {
-  transform: translateY(4px);
 }

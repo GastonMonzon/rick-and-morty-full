@@ -4,20 +4,19 @@
   width: 70vw;
 }
 
-.detail-video-container {
+.detail-background-container {
   position: fixed;
-  z-index: -1;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-
-}
-
-.detail-background-video {
   width: 100%;
   height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.detail-background {
+  width: 100vw;
+  height: 100vh;
   object-fit: cover;
 }
 
@@ -45,12 +44,12 @@
   vertical-align: top;
 }
 
-.detail-container ul {
+.detail-background-container ul {
   position: relative;
   z-index: 10;
 }
 
-.detail-container p {
+.detail-background-container p {
   margin-left: 5px;
 }
 
