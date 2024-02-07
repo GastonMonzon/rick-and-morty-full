@@ -41,7 +41,6 @@ export default function App() {
       <LoginRegister />
     );
   } else {
-    console.log(userOptions);
     return (
       <div className='app'>
         <div>

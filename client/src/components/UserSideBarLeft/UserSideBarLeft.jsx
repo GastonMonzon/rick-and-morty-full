@@ -74,7 +74,7 @@ export default function UserSideBarLeft() {
   }
 
   return (
-    <div className='user-sidebar'>
+    <div className='user-sidebar' id='user-sidebar' >
       <div className='video-container-user-options'>
         <video ref={videoRef} src={userBackgroundVideo} id='user-options-background-video' autoPlay muted loop>
         </video>
@@ -84,51 +84,61 @@ export default function UserSideBarLeft() {
         </video>
       </div>
       <div>
-        <label>Change User Image</label>
+        <details>
+          <summary>Change User Image</summary>
+        </details>
       </div>
       <div>
-        <label>Change Home Background</label>
-        <div className='background-images-container' >
-          {backgroundImages.map((background, index) => (
-            <div key={index}
-              className='thumbnail-image-div' >
-              <img src={background} alt={background} />
-            </div>
-          ))}
-        </div>
+        <details>
+          <summary>Change Home Background</summary>
+          <div className='background-images-container' >
+            {backgroundImages.map((background, index) => (
+              <div key={index}
+                className='thumbnail-image-div' >
+                <img src={background} alt={background} />
+              </div>
+            ))}
+          </div>
+        </details>
       </div>
       <div>
-        <label>Change Favorites Background</label>
-        <div className='background-images-container' >
-          {backgroundImages.map((background, index) => (
-            <div key={index}
-              className='thumbnail-image-div' >
-              <img src={background} alt={background} />
-            </div>
-          ))}
-        </div>
+        <details>
+          <summary>Change Favorites Background</summary>
+          <div className='background-images-container' >
+            {backgroundImages.map((background, index) => (
+              <div key={index}
+                className='thumbnail-image-div' >
+                <img src={background} alt={background} />
+              </div>
+            ))}
+          </div>
+        </details>
       </div>
       <div>
-        <label>Change Detail Background</label>
-        <div className='background-images-container' >
-          {backgroundImages.map((background, index) => (
-            <div key={index}
-              className='thumbnail-image-div' >
-              <img src={background} alt={background} />
-            </div>
-          ))}
-        </div>
+        <details>
+          <summary>Change Detail Background</summary>
+          <div className='background-images-container' >
+            {backgroundImages.map((background, index) => (
+              <div key={index}
+                className='thumbnail-image-div' >
+                <img src={background} alt={background} />
+              </div>
+            ))}
+          </div>
+        </details>
       </div>
       <div>
-        <label>Change Loading Screen</label>
-        <div className='background-images-container' >
-          {loadingGifs.map((gif, index) => (
-            <div key={index}
-              className='thumbnail-image-div' >
-              <img src={gif} alt={gif} />
-            </div>
-          ))}
-        </div>
+        <details>
+          <summary>Change Loading Screen</summary>
+          <div className='background-images-container' >
+            {loadingGifs.map((gif, index) => (
+              <div key={index}
+                className='thumbnail-image-div' >
+                <img src={gif} alt={gif} />
+              </div>
+            ))}
+          </div>
+        </details>
       </div>
       <details>
         <summary>Change User Info</summary>

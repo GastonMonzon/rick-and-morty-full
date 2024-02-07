@@ -17,7 +17,7 @@
   height: 700px;
 }
 
-.optionsSidebar {
+.options-sidebar {
   width: 25%;
   height: 100%;
   position: fixed;
@@ -27,19 +27,19 @@
   border-radius: 10px 0 0px 10px;
   overflow: scroll;
   padding: 10px;
-  overflow-x: hidden;
+  transition: .25s transform ease;
 }
 
-.optionsSidebar::-webkit-scrollbar-thumb {
+.options-sidebar::-webkit-scrollbar-thumb {
   background-color: rgb(67, 0, 98);
 }
 
-.optionsSidebar h3 {
+.options-sidebar h3 {
   font-size: 20px;
   font-weight: normal;
 }
 
-.optionsSidebar h4 {
+.options-sidebar h4 {
   font-size: 18px;
   font-weight: normal;
 }
@@ -64,6 +64,7 @@
 .load-save-option-container {
   display: flex;
   justify-content: space-between;
+  margin: 10px 0 10px 0;
 }
 
 .home-options-button,
@@ -118,7 +119,7 @@
 }
 
 .cards-per-page-input:hover {
-  outline: 2.5px solid rgb(67, 0, 98);
+  outline: 1px solid rgb(67, 0, 98);
   background-color: rgb(0, 0, 0);
   color: rgb(255, 255, 255);
 }
@@ -134,6 +135,8 @@
   box-shadow: none;
   outline: 1px solid rgb(67, 0, 98);
   transform: translate(3px, 3px);
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
 }
 
 .home-options-button-active,

@@ -125,7 +125,7 @@ export default function OptionsSideBarRight() {
   }
 
   return (
-    <div className='optionsSidebar'>
+    <div className='options-sidebar' id='options-sidebar' >
       <div className='video-container'>
         <video ref={videoRef} src={optionsBackgroundVideo} id='background-video' autoPlay muted loop>
         </video>

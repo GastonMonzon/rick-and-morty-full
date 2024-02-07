@@ -70,7 +70,7 @@ export default function FiltersBar() {
     dispatch(orderBy({ order: selectedOrder, isAscending: isAscending, isHome: isHome }));
   }
   return (
-    <div className='FiltersBar-container'>
+    <div className='filtersBar-container' id='filtersBar-container'>
       <div className='filters-background-video-container' >
         <video src={backgroundVideo} className="filters-background-video" autoPlay muted loop>
         </video>

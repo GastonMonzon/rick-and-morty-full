@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap");
-
 .filters-background-video-container {
   position: absolute;
   width: 100%;
@@ -13,7 +11,7 @@
   object-fit: cover;
 }
 
-.FiltersBar-container {
+.filtersBar-container {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 20px;
@@ -21,7 +19,6 @@
   margin-left: -7px;
   padding: 10px;
   padding-top: 5px;
-  z-index: 15;
 }
 
 .first-set-buttons-container {

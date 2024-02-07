@@ -1,6 +1,5 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
-import auth from "./firebase.js";
 
 const AuthContext = createContext();
 
@@ -9,10 +8,6 @@ export const AuthProvider = ({ children }) => {
   const [userOptions, setUserOptions] = useState('');
 
   useEffect(() => {
-    // const unsubscribe = auth.onAuthStateChanged(userInfo => {
-    //   setUserInfo(userInfo);
-    // })
-    // return unsubscribe;
     (async function onAuthStateChanged() {
       try {
         const { data } = await axios.get('http://localhost:3001/user/change');

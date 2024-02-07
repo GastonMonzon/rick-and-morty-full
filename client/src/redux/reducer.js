@@ -87,7 +87,6 @@ const reducer = (state = initialState, action) => {
       };
     case SET_VALUES: {
       const userOptions = action.payload;
-      console.log(action.payload);
       return {
         ...state,
         selectedFilters: userOptions && userOptions.selectedFilters,

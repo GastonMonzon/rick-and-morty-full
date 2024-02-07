@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import './Nav.css';
 import backgroundVideo from '../../assets/backgroundVideos/backgroundVideo.mp4';
 import Button from '../Button/Button';
@@ -9,11 +9,16 @@ import SearchBar from "../SearchBar/SearchBar";
 import FiltersBar from "../FiltersBar/FiltersBar";
 import { useDispatch, useSelector } from "react-redux";
 import { filter, query, randomizeAll } from "../../redux/actions";
+import useDetailsTagAnimations from "../../hooks/useDetailsTagAnimations";
+
 export default function Nav() {
-  const allCards = useSelector(state => state.allCards);
+  const handleDetailsClick = useDetailsTagAnimations();
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const dispatch = useDispatch();
+  const userSideBarRef = useRef(null);
+  const optionsSideBarRef = useRef(null);
+  const { pathname } = useLocation();
+  const allCards = useSelector(state => state.allCards);
   const searchQuery = useSelector(state =>
     pathname === '/home'
       ? state.searchQuery
@@ -26,14 +31,13 @@ export default function Nav() {
   const handleRandomize = () => {
     const randomId = Math.floor(Math.random() * allCards.length);
     navigate(`/detail/${randomId}`);
-  };
+  }
   const handleRandomizeAll = () => {
     const isHome = pathname === '/home';
     dispatch(randomizeAll(isHome));
     dispatch(query({ query: searchQuery, isHome: isHome }));
     dispatch(filter({ name: '', value: '', isHome: isHome }));
-  };
-
+  }
   return (
     <nav className='navBar'>
       <div className='nav-background-video-container' >
@@ -41,12 +45,12 @@ export default function Nav() {
         </video>
       </div>
       <div className='options-filters-container' >
-        <details>
-          <summary>User Options</summary>
+        <details id='userOptionsDetailsTag' ref={userSideBarRef} >
+          <summary onClick={(event) => handleDetailsClick(event, userSideBarRef)} id='userOptions' >User Options</summary>
           <UserSideBarLeft />
         </details>
         <details className={pathname !== '/home' ? 'no-display' : ''} >
-          <summary>Filters</summary>
+          <summary >Filters</summary>
           <FiltersBar />
         </details>
         <details className={pathname !== '/favorites' ? 'no-display' : ''} >
@@ -72,8 +76,8 @@ export default function Nav() {
       {pathname === '/home' && <SearchBar />}
       {pathname === '/favorites' && <SearchBar />}
       {pathname !== '/home' && pathname !== '/favorites' && <div className='searchBar-space-div' ></div>}
-      <details>
-        <summary>Options</summary>
+      <details id='optionsOptionsDetailsTag' ref={optionsSideBarRef} >
+        <summary onClick={(event) => handleDetailsClick(event, optionsSideBarRef)} id='optionsOptions' >Options</summary>
         <OptionsSideBarRight />
       </details>
     </nav>
