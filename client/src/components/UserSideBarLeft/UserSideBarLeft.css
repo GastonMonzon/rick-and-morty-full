@@ -80,7 +80,7 @@
   width: 230px;
   border-radius: 5px;
   color: rgb(0, 255, 242);
-  background: transparent;
+  background: rgb(0, 0, 0);
   border: 1px solid rgb(0, 0, 255);
   transition: .2s ease-in-out;
 }
@@ -103,5 +103,4 @@
   transform: scale(1.2);
   border-radius: 3px;
   border: solid rgb(2, 255, 2) 2px;
-  /* outline: 2px solid red; */
 }

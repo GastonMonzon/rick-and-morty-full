@@ -253,6 +253,7 @@ export default function UserSideBarLeft() {
             onChange={handleUserInfoChange} />
         </div>
       </details>
+      <button className='sidebar-button' >Log Out</button>
     </div>
   )
 }

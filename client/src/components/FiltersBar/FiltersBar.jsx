@@ -93,7 +93,11 @@ export default function FiltersBar() {
         </div>
         <div className='order-by-container' >
           <div className='order-by-select-container' >
-            <label htmlFor={orderByOptions.title} className='order-by-select-label' >Order By</label>
+            <label
+              htmlFor={orderByOptions.title}
+              className='order-by-select-label' >
+              Order By
+            </label>
             <button
               className='order-by-button'
               id='selectedOrder'
@@ -101,9 +105,10 @@ export default function FiltersBar() {
               onClick={handleOrderFocus} >
               {selectedOrder}
             </button>
-            <div className={`order-by-options-container ${isOrderFocused ? '' : 'invisible'}`} key='order-list-container' >
+            <div className={`order-by-options-container ${isOrderFocused ? '' : 'invisible'}`}
+              key='order-list-container' >
               {orderByOptions.options.map((order) => {
-                const orderByClassname = `order-by-options-button ${order === selectedOrder ? 'selected' : ''}`;
+                const orderByClassname = `order-by-options-button ${order === selectedOrder ? 'selected-order' : ''}`;
                 return (
                   <div className='order-by-options-button-div' key={order} >
                     <button

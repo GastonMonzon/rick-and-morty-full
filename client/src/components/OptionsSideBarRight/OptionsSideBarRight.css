@@ -44,6 +44,10 @@
   font-weight: normal;
 }
 
+.autosave-option-container label {
+  font-weight: bold;
+}
+
 .card-options-container {
   position: absolute;
 }
@@ -84,6 +88,7 @@
   font-weight: bold;
   display: flex;
   justify-content: space-between;
+  margin-right: 10px;
 }
 
 .cards-per-page-label {
@@ -100,43 +105,31 @@
 
 .sidebar-button,
 .cards-per-page-input {
-  font-family: neuropolitical;
-  font-size: 14px;
-  width: 5em;
-  color: rgb(67, 0, 98);
-  border: 2px solid transparent;
-  border-radius: 10px;
-  padding: 1px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: rgb(255, 255, 255);
   box-shadow: 3px 3px 0px 0px rgb(67, 0, 98);
-  transition: all 0.2s ease-in-out;
+  border-color: rgb(67, 0, 98);
 }
 
-.sidebar-button {
-  font-family: "IBM Plex Sans", sans-serif;
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(67, 0, 98);
-  width: 80px;
+.cards-per-page-input {
+  width: 60px;
 }
 
-.cards-per-page-input:hover {
-  outline: 1px solid rgb(67, 0, 98);
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-}
-
+.cards-per-page-input:hover,
 .sidebar-button:hover {
-  outline: 1px solid rgb(67, 0, 98);
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
+  border-color: rgb(255, 255, 255);
+  outline-color: rgb(255, 255, 255);
 }
 
 .sidebar-button:active,
 .cards-per-page-input:focus {
   box-shadow: none;
-  outline: 1px solid rgb(67, 0, 98);
-  transform: translate(3px, 3px);
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
+  outline-color: rgb(255, 255, 255);
+}
+
+.cards-per-page-input:focus {
+  border-color: rgb(255, 255, 255);
+  outline: none;
 }
 
 .home-options-button-active,
@@ -147,5 +140,5 @@
 
 .home-options-button:hover,
 .favorites-options-button:hover {
-  outline: 1px solid rgb(67, 0, 98);
+  outline-color: rgb(67, 0, 98);
 }

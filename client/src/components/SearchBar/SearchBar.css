@@ -19,17 +19,11 @@
 }
 
 .searchBar-container input {
-  padding: 1px;
   width: 230px;
-  border-radius: 5px;
-  font-family: neuropolitical;
   font-size: 21px;
-  border: 0;
   color: rgb(0, 255, 242);
-  background: rgb(0, 0, 0);
-  border: 1px solid rgb(0, 0, 255);
+  border-color: rgb(0, 0, 255);
   box-shadow: 3px 3px 0px 0px rgb(0, 0, 255);
-  transition: .2s ease-in-out;
 }
 
 .searchBar-container input::placeholder {
@@ -39,14 +33,13 @@
 }
 
 .searchBar-container input:hover {
-  border: 1px solid rgb(0, 255, 242);
-  outline: 1px solid rgb(0, 255, 242);
-  box-shadow: 3px 3px 0px 0px rgb(0, 255, 242);
+  border-color: rgb(0, 255, 242);
+  outline-color: rgb(0, 255, 242);
 }
 
 .searchBar-container input:focus {
-  box-shadow: none;
-  transform: translateY(4px);
+  border-color: rgb(0, 255, 242);
+  outline: none;
 }
 
 .reset-query {

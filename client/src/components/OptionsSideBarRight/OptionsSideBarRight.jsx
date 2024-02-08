@@ -23,7 +23,7 @@ export default function OptionsSideBarRight() {
   const [cardsPerPageFavorites, setCardPerPageFavorites] = useState(selectedCardsPerPageFavorites);
 
   const handleCardsPerPageChange = () => {
-    if (Number.isInteger(Number(cardsPerPage)) && cardsPerPage >= 0 && cardsPerPage < 1000) {
+    if (Number.isInteger(Number(cardsPerPage)) && cardsPerPage > 0 && cardsPerPage < 1000) {
       dispatch(optionsCardsPerPage({ value: cardsPerPage, isHome: isHomeOptions }))
     }
   }
@@ -138,17 +138,11 @@ export default function OptionsSideBarRight() {
       <div>
         <div className='autosave-option-container' >
           <label>Autosave</label>
-          <button
-            className='sidebar-button'
-          >On</button>
+          <button className='sidebar-button'>On</button>
         </div>
         <div className='load-save-option-container' >
-          <button
-            className='sidebar-button'
-          >Load</button>
-          <button
-            className='sidebar-button'
-          >Save</button>
+          <button className='sidebar-button' >Load</button>
+          <button className='sidebar-button' >Save</button>
         </div>
       </div>
       <div>

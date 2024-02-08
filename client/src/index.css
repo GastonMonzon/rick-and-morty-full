@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap");
+
 @font-face {
   font-family: 'neuropolitical';
   src: url('../src/assets/fonts/neuropolitical rg.otf');
@@ -9,7 +10,9 @@ html {
   scroll-behavior: smooth;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
   padding: 0;
   margin: 0;
@@ -41,28 +44,41 @@ label {
 }
 
 summary {
-    cursor: pointer;
-}
-
-button {
-  background-color: rgb(0, 0, 0);
-  color: rgb(2, 255, 2);
-  transition: all 0.2s ease-in-out;
   cursor: pointer;
 }
 
-input[type="checkbox"] {
-  align-items: center;
-  accent-color: rgb(67, 0, 98);
-  height: 15px;
+button {
+  width: 90px;
+  height: 30px;
+  background-color: rgb(0, 0, 0);
+  border: 1px solid;
+  color: rgb(2, 255, 2);
+  border-radius: 5px;
+  cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
-input[type="checkbox"]:hover,
-input[type="checkbox"]:checked {
-  transform: scale(1.25);
+input {
+  background: rgb(0, 0, 0);
+  font-family: neuropolitical;
+  height: 30px;
+  border: 1px solid;
+  border-radius: 5px;
+  transition: 0.2s ease-in-out;
 }
 
+button:hover,
+input:hover {
+  outline: 1px solid;
+}
+
+button:active:enabled,
+input:focus {
+  box-shadow: none;
+  transform: translate(3px, 3px);
+}
+
+input[type="checkbox"],
 input[type="radio"] {
   align-items: center;
   accent-color: rgb(67, 0, 98);
@@ -70,8 +86,11 @@ input[type="radio"] {
   transition: all 0.2s ease-in-out;
 }
 
+input[type="checkbox"]:hover,
+input[type="checkbox"]:checked,
 input[type="radio"]:hover,
 input[type="radio"]:checked {
+  outline: none;
   transform: scale(1.25);
 }
 
@@ -109,10 +128,10 @@ summary {
 }
 
 details summary::-webkit-details-marker {
-  display:none;
+  display: none;
 }
 
-details[open] > summary:before {
+details[open]>summary:before {
   transform: rotate(90deg);
 }
 
