@@ -35,6 +35,17 @@
   background-color: var(--user-sidebar-color);
 }
 
+.autosave-option-container label {
+  font-weight: bold;
+}
+
+.autosave-option-container,
+.load-save-option-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 10px 0;
+}
+
 .title-label {
   font-weight: bold;
 }

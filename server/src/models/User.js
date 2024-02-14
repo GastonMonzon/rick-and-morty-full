@@ -31,7 +31,17 @@ const getUserModel =  (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true
     },
-    autoSave: {
+    autoSaveSearch: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false
+    },
+    autoSaveFilters: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false
+    },
+    autoSaveOptions: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
       defaultValue: true

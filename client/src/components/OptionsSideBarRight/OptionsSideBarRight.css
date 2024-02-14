@@ -43,10 +43,6 @@
   font-weight: normal;
 }
 
-.autosave-option-container label {
-  font-weight: bold;
-}
-
 .card-options-container {
   position: absolute;
 }
@@ -62,9 +58,7 @@
 }
 
 .home-favorites-option-container,
-.home-favorites-buttons-container,
-.autosave-option-container,
-.load-save-option-container {
+.home-favorites-buttons-container {
   display: flex;
   justify-content: space-between;
   margin: 10px 0 10px 0;

@@ -147,16 +147,6 @@ export default function OptionsSideBarRight() {
       </div>
       <h3>⚙️ Options Sidebar</h3>
       <div>
-        <div className='autosave-option-container' >
-          <label>Autosave</label>
-          <button className='sidebar-button'>On</button>
-        </div>
-        <div className='load-save-option-container' >
-          <button className='sidebar-button' >Load</button>
-          <button className='sidebar-button' >Save</button>
-        </div>
-      </div>
-      <div>
         <div className='home-favorites-option-container' >
           <label>Home / Favorites</label>
           <button

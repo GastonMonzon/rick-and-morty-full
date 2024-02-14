@@ -137,6 +137,35 @@ export default function UserSideBarLeft() {
         <video ref={videoRef} src={userBackgroundVideo} id='user-options-background-video2' autoPlay muted loop>
         </video>
       </div>
+      <h4>Autosave</h4>
+      <div className='autosave-option-container' >
+        <label>Search & Search Options</label>
+        <button className='user-options-button' >On</button>
+      </div>
+      <div className='autosave-option-container' >
+        <label>Selected Filters</label>
+        <button className='user-options-button'>On</button>
+      </div>
+      <div className='autosave-option-container' >
+        <label>View Options</label>
+        <button className='user-options-button'>On</button>
+      </div>
+      <h4>Load Last Save / Save Options</h4>
+      <label>Search & Search Options</label>
+      <div className='autosave-option-container' >
+        <button className='user-options-button' >Load</button>
+        <button className='user-options-button' >Save</button>
+      </div>
+        <label>Selected Filters</label>
+      <div className='autosave-option-container' >
+        <button className='user-options-button' >Load</button>
+        <button className='user-options-button' >Save</button>
+      </div>
+        <label>View Options</label>
+      <div className='autosave-option-container' >
+        <button className='user-options-button' >Load</button>
+        <button className='user-options-button' >Save</button>
+      </div>
       <div>
         <details>
           <summary>Change User Image</summary>
