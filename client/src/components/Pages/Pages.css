@@ -7,24 +7,26 @@
 .pages-selector button {
   font-family: neuropolitical;
   font-size: 10px;
-  min-width: 3em;
-  border: 1px solid black;
+  width: 3em;
+  height: 15px;
+  border-color: rgb(0, 0, 0);
   margin-right: 1px;
+  padding: 0;
 }
 
 .pages-selector button:hover {
   transform: scale(1.2);
-  border: 1px solid rgb(255, 251, 0);
-  outline: 1px solid rgb(255, 251, 0);
-  color: rgb(255, 251, 0);
+  color: var(--pages-hover-color);
+  border-color: var(--pages-hover-color);
+  outline-color: var(--pages-hover-color);
 }
 
 .selected-page {
-  color: aqua;
-  border: 1px solid aqua;
-  outline: 1px solid aqua;
+  color: var(--pages-selected-color);
+  border-color: var(--pages-selected-color);
+  outline-color: var(--pages-selected-color);
 }
 
 .pages-selector button:active {
-  transform: translateY(4px);
+  transform: translate(3px 3px);
 }

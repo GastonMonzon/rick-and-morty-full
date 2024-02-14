@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useParams, NavLink } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import backgroundVideo from '../../assets/backgroundVideos/backgroundVideo1.mp4';
 import useBackground from '../../hooks/useBackground';
 
 export default function Detail() {
@@ -24,7 +23,7 @@ export default function Detail() {
         setCharacter(data);
       })
       .catch((error) => {
-        console.error('Error fetching dog details:', error);
+        console.error('Error fetching character details:', error);
       });
 
   }, [id]);

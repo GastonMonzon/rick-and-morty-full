@@ -39,7 +39,6 @@
 
 .searchBar-container input:focus {
   border-color: rgb(0, 255, 242);
-  outline: none;
 }
 
 .reset-query {

@@ -55,8 +55,10 @@ const initialState = {
   filteredCards: [],
   randomizedCards: [],
   queriedCards: [],
+  autoSave: true,
   searchQuery: '',
   selectedFilters: [],
+  isFavoritesTogether: true,
   selectedCardsPerPage: '',
   isAscending: true,
   selectedOrder: '',
@@ -93,7 +95,9 @@ const reducer = (state = initialState, action) => {
       const userOptions = action.payload;
       return {
         ...state,
+        autoSave: userOptions.autoSave,
         selectedFilters: userOptions.selectedFilters,
+        isFavoritesTogether: userOptions.isFavoritesTogether,
         selectedCardsPerPage: userOptions.selectedCardsPerPage,
         isAscending: true,
         selectedOrder: userOptions.orderByOptions,

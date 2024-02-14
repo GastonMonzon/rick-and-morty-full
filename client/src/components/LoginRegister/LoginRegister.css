@@ -62,7 +62,6 @@
 .register-form input {
   background: transparent;
   border: none;
-  outline: none;
   width: 100%;
   border-radius: 20px;
   padding: 3px;
@@ -77,16 +76,15 @@
 
 .login-form input:focus,
 .register-form input:focus,
-#loginEmail.color-input,
-#loginPassword.color-input,
+#email.color-input,
+#password.color-input,
 #name.color-input,
 #surName.color-input,
 #userName.color-input,
-#registerEmail.color-input,
-#registerPassword.color-input,
-#registerPasswordRepeat.color-input {
+#email.color-input,
+#password.color-input,
+#repeatPassword.color-input {
   background-color: rgb(255, 255, 255);
-  outline: none;
 }
 
 .login-form p,
@@ -135,13 +133,13 @@ form p {
   font-size: 11px;
 }
 
-#dateOfBirth {
+#registerDateOfBirth {
   padding-left: 90px;
   visibility: hidden;
 }
 
-#dateOfBirth:focus,
-#dateOfBirth:valid {
+#registerDateOfBirth:focus,
+#registerDateOfBirth:valid {
   color: rgb(0, 0, 0);
   background-color: rgb(255, 255, 255);
   visibility: visible;

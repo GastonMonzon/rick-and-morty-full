@@ -1,4 +1,5 @@
 import auth from '../firebase.js';
+import { signOut } from 'firebase/auth';
 
 export default async function logoutUser(request, response) {
   try {

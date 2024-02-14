@@ -35,7 +35,7 @@
 .menu-button:hover:enabled {
     color: rgb(0, 255, 136);
     border-color: rgb(0, 255, 26);
-    outline: 1px solid rgb(0, 255, 26);
+    outline-color: rgb(0, 255, 26);
 }
 
 .searchBar-space-div {

@@ -7,7 +7,7 @@
 .video-container2-user-options {
   position: absolute;
   right: 0;
-  bottom: -798.5px;
+  top: 1000px;
   z-index: -1;
 }
 
@@ -15,7 +15,7 @@
 #user-options-background-video2 {
   filter: brightness(1.0) contrast(2.0) saturate(2.0) hue-rotate(190deg);
   opacity: 0.8;
-  height: 700px;
+  height: 1000px;
 }
 
 .user-sidebar {
@@ -24,7 +24,7 @@
   position: fixed;
   left: 0;
   z-index: 100;
-  color: white;
+  color: var(--user-sidebar-letter-color);
   border-radius: 0 10px 0 10px;
   overflow: scroll;
   padding: 15px;
@@ -32,7 +32,7 @@
 }
 
 .user-sidebar::-webkit-scrollbar-thumb {
-  background-color: rgb(0, 16, 98);
+  background-color: var(--user-sidebar-color);
 }
 
 .title-label {
@@ -58,49 +58,53 @@
 }
 
 .thumbnail-image-div img:hover {
-  outline: 1px solid rgb(0, 16, 98);
+  outline: 1px solid var(--user-sidebar-selected-color);
   position: relative;
   transform: scale(1.2);
   z-index: 1;
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: 5px;
+}
+
+.selected-background {
+  border: inset;
+  transform: scale(1.2);
+  border-radius: 5px;
+  border:  2px solid var(--user-sidebar-color);
 }
 
 .user-info-input-label-container {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
+  margin: 5px 0;
 }
 
 .user-info-input-label-container input {
-  font-family: neuropolitical;
   font-size: 12px;
-  color: white;
-  box-shadow: 3px 3px 0px 0px rgb(0, 7, 98);
-  width: 230px;
-  border-radius: 5px;
-  color: rgb(0, 255, 242);
-  background: rgb(0, 0, 0);
-  border: 1px solid rgb(0, 0, 255);
-  transition: .2s ease-in-out;
+  width: 100%;
+}
+
+.user-info-input-label-container input,
+.user-options-button {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: var(--user-sidebar-letter-color);
+  border-color: var(--user-sidebar-color);
+  box-shadow: 3px 3px 0px 0px var(--user-sidebar-color);
+}
+
+.user-options-button {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  justify-content: center;
 }
 
 .user-info-input-label-container input:active,
-.user-info-input-label-container input:hover {
-  border: 1px solid rgb(0, 255, 242);
-  outline: 1px solid rgb(0, 255, 242);
-  box-shadow: 3px 3px 0px 0px rgb(0, 255, 242);
-}
-
-
-.user-info-input-label-container input:focus {
-  box-shadow: none;
-  transform: translateY(4px);
-}
-
-.selected-background {
-  border: inset;
-  transform: scale(1.2);
-  border-radius: 3px;
-  border: solid rgb(2, 255, 2) 2px;
+.user-info-input-label-container input:hover,
+.user-options-button:hover {
+  color: var(--user-sidebar-selected-color);
+  border-color: var(--user-sidebar-selected-color);
+  outline-color: var(--user-sidebar-selected-color);
 }

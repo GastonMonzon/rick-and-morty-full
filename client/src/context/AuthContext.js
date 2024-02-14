@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     try {
       return await axios.post('http://localhost:3001/user', { email, password });
     } catch (error) {
-      console.error('Error creating new userInfo', error);
+      return error;
     }
   }
   const logIn = async (email, password) => {
@@ -32,17 +32,33 @@ export const AuthProvider = ({ children }) => {
       setUserOptions(data.userOptions);
       return data.userOptions;
     } catch (error) {
-      console.error('Error loging in:', error);
+      return error;
     }
   }
-  const logOut = async (email, password) => {
+  const changeEmail = async (email, password) => {
+    try {
+      return await axios.post('http://localhost:3001/user/changeEmail', { previousEmail: userInfo.email, email, password });
+    } catch (error) {
+      return error;
+    }
+  }
+  const changePassword = async (currentPassword, newPassword) => {
+    try {
+      return await axios.post('http://localhost:3001/user/changePassword', { email: userInfo.email, currentPassword, newPassword });
+    } catch (error) {
+      return error;
+    }
+  }
+  const logOut = async () => {
     try {
       await axios.get('http://localhost:3001/user/logout');
+      setUserInfo('');
+      setUserOptions('');
     } catch (error) {
-      console.error('Error loging out:', error);
+      return error;
     }
   }
-  const authContextValue = { userInfo, userOptions, createUser, logIn, logOut };
+  const authContextValue = { userInfo, userOptions, createUser, logIn, changeEmail, changePassword, logOut };
   return (
     <AuthContext.Provider value={authContextValue}>
       {children}

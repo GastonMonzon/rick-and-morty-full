@@ -1,5 +1,5 @@
 import {
-  SET_ALL_CARDS, SET_VALUES, CHANGE_BACKGROUND, RANDOMIZE_ALL, ADD_FAV, REMOVE_FAV, QUERY, ORDER, ORDER_BY, FILTER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS
+  SET_ALL_CARDS, SET_VALUES, SAVE_USER_OPTIONS, CHANGE_BACKGROUND, RANDOMIZE_ALL, ADD_FAV, REMOVE_FAV, QUERY, ORDER, ORDER_BY, FILTER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS
 } from "./action-types"
 import axios from "axios";
 
@@ -8,6 +8,9 @@ export const setAllCards = (cards) => {
 }
 export const setAllValues = (user) => {
   return { type: SET_VALUES, payload: user }
+}
+export const saveUserOptions = () => {
+  return { type: SAVE_USER_OPTIONS }
 }
 export const changeBackground = (backgroundInfo) => {
   return { type: CHANGE_BACKGROUND, payload: backgroundInfo }

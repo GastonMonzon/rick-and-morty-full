@@ -5,22 +5,33 @@ import './OptionsSideBarRight.css'
 import Checkbox from '../Checkbox/Checkbox';
 import RadioButtons from '../RadioButtons/RadioButtons';
 import { cardOptions, favoritesIconRadio, detailOptions } from '../../config';
-import { optionsRadios, optionsCheckboxes, optionsCardsPerPage } from '../../redux/actions';
+import { optionsRadios, optionsCheckboxes, optionsCardsPerPage, saveUserOptions } from '../../redux/actions';
 import optionsBackgroundVideo from '../../assets/videos/optionsBackgroundVideo2.mp4';
 
 /* hooks */
 import { useDispatch, useSelector } from 'react-redux';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function OptionsSideBarRight() {
   const dispatch = useDispatch();
   const videoRef = useRef(null);
-  const [isHomeOptions, setIsHomeOptions] = useState(true);
-  const [areOptionsTogether, setAreOptionsTogether] = useState('Together');
   const selectedCardsPerPage = useSelector(state => state.selectedCardsPerPage);
   const selectedCardsPerPageFavorites = useSelector(state => state.selectedCardsPerPageFavorites);
-  const [cardsPerPage, setCardPerPage] = useState(selectedCardsPerPage);
+  const isAutoSaveOn = useSelector(state => state.autoSave);
+  const [isHomeOptions, setIsHomeOptions] = useState(true);
+  const [areOptionsTogether, setAreOptionsTogether] = useState('Together');
   const [cardsPerPageFavorites, setCardPerPageFavorites] = useState(selectedCardsPerPageFavorites);
+  const [cardsPerPage, setCardPerPage] = useState(selectedCardsPerPage);
+
+  useEffect(() => {
+    if (isAutoSaveOn) {
+      setInterval(saveOptions(), 5 * 60 * 1000);
+    }
+  }, [isAutoSaveOn])
+
+  const saveOptions = () => {
+    dispatch(saveUserOptions());
+  }
 
   const handleCardsPerPageChange = () => {
     if (Number.isInteger(Number(cardsPerPage)) && cardsPerPage > 0 && cardsPerPage < 1000) {

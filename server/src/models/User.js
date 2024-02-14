@@ -31,6 +31,11 @@ const getUserModel =  (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true
     },
+    autoSave: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: true
+    },
     favorites: {
       type: DataTypes.ARRAY(DataTypes.JSONB),
       allowNull: true
@@ -84,6 +89,11 @@ const getUserModel =  (sequelize) => {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
       defaultValue: []
+    },
+    isFavoritesTogether: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: true
     },
     selectedCardsPerPage: {
       type: DataTypes.INTEGER,

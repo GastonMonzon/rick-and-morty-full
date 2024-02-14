@@ -1,5 +1,6 @@
 export const SET_ALL_CARDS = 'SET_ALL_CARDS';
 export const SET_VALUES = 'SET_VALUES';
+export const SAVE_USER_OPTIONS = 'SAVE_USER_OPTIONS';
 export const CHANGE_BACKGROUND = 'CHANGE_BACKGROUND';
 export const RANDOMIZE_ALL = 'RANDOMIZE_ALL';
 export const ADD_FAV = 'ADD_FAV';
