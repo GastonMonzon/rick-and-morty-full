@@ -102,12 +102,18 @@ input[type="radio"] {
   transition: all 0.2s ease-in-out;
 }
 
+input[type="checkbox"]:hover~label,
+input[type="radio"]:hover~label {
+  cursor: pointer;
+}
+
 input[type="checkbox"]:hover,
 input[type="checkbox"]:checked,
 input[type="radio"]:hover,
 input[type="radio"]:checked {
   outline: none;
   transform: scale(1.25);
+  cursor: pointer;
 }
 
 .invisible {

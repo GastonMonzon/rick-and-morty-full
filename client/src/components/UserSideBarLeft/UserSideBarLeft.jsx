@@ -37,10 +37,10 @@ import dataValidation from '../../dataValidation.js';
 
 export default function UserSideBarLeft() {
   const videoRef = useRef(null);
-  const { userInfo, userOptions, logOut } = useAuth();
+  const { userOptions, logOut } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [changeData, setChangeData] = useState({ name: '', surName: '', userName: '', dateOfBirth: '', email: '', changeEmailPassword: '', changePasswordPassword: '', password: '', repeatPassword: '' });
+  const [changeData, setChangeData] = useState({ name: '', surName: '', userName: '', dateOfBirth: '', email: '', changeEmailNewEmail: '', changeEmailPassword: '', changePasswordPassword: '', password: '', repeatPassword: '' });
   const [changeDataErrors, setChangeDataErrors] = useState({ name: '', surName: '', userName: '', dateOfBirth: '', email: '', changeEmailPassword: '', changePasswordPassword: '', password: '', repeatPassword: '' });
   const selectedHomeBackground = useSelector((state) => state.homeBackground);
   const selectedFavoritesBackground = useSelector((state) => state.favoritesBackground);
@@ -81,17 +81,6 @@ export default function UserSideBarLeft() {
     { name: 'loading13', src: loading13 }
   ];
 
-  // (function loadUserInfo() {
-  // const nameInput = document.getElementById('changeName');
-  // const surNameInput = document.getElementById('changeSurName');
-  // const userNameInput = document.getElementById('changeUserName');
-  // const dateOfBirthInput = document.getElementById('changeDateOfBirth');
-  // nameInput.textContent(userInfo.name);
-  // surNameInput.textContent(userInfo.surName);
-  // userNameInput.textContent(userInfo.userName);
-  // dateOfBirthInput.textContent(userInfo.dateOfBirth);
-  // })();
-
   const handleBackgroundChange = (event) => {
     const { name, alt } = event.target;
     dispatch(changeBackground({ name: name, alt: alt }))
@@ -102,6 +91,7 @@ export default function UserSideBarLeft() {
     // console.log(name, value);
     setChangeData({
       ...changeData,
+      [name]: value
     });
     setChangeDataErrors(
       dataValidation({
@@ -299,17 +289,25 @@ export default function UserSideBarLeft() {
       </details>
       <details>
         <summary>Change Email</summary>
-        <form autoComplete='off' onSubmit={handleUserEmailChangeSubmit} >
-          <input autoComplete="false" name="hidden" type="text" style={{ display: 'none' }} />
+        <form onSubmit={handleUserEmailChangeSubmit} >
+          <div className='user-info-input-label-container' >
+            <label>Current Email</label>
+            <input
+              type='email'
+              key='changeEmailEmail'
+              id='changeEmailEmail'
+              name='email'
+              value={changeData.email}
+              onChange={handleUserInfoChange} />
+          </div>
           <div className='user-info-input-label-container' >
             <label>New Email</label>
             <input
               type='email'
-              key='changeEmail'
-              id='changeEmail'
+              key='changeEmailNew'
+              id='changeEmailNew'
               name='email'
-              autoComplete='false'
-              value={changeData.email}
+              value={changeData.changeEmailNewEmail}
               onChange={handleUserInfoChange} />
           </div>
           <p className={changeDataErrors.email ? '' : 'invisible'} >{changeDataErrors.email ? `${changeDataErrors.email}` : 'invisible'}</p>
@@ -320,7 +318,6 @@ export default function UserSideBarLeft() {
               key='changeEmailPassword'
               id='changeEmailPassword'
               name='changeEmailPassword'
-              autoComplete='false'
               value={changeData.changeEmailPassword}
               onChange={handleUserInfoChange} />
           </div>
@@ -342,7 +339,6 @@ export default function UserSideBarLeft() {
               key='changePasswordPassword'
               id='changePasswordPassword'
               name='changePasswordPassword'
-              autoComplete='false'
               value={changeData.changePasswordPassword}
               onChange={handleUserInfoChange} />
           </div>
@@ -354,7 +350,6 @@ export default function UserSideBarLeft() {
               key='changePasswordNew'
               id='changePasswordNew'
               name='password'
-              autoComplete='false'
               value={changeData.password}
               onChange={handleUserInfoChange} />
           </div>
@@ -366,7 +361,6 @@ export default function UserSideBarLeft() {
               key='changePasswordNewRepeat'
               id='changePasswordNewRepeat'
               name='repeatPassword'
-              autoComplete='false'
               value={changeData.repeatPassword}
               onChange={handleUserInfoChange} />
           </div>

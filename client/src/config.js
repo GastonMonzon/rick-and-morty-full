@@ -33,8 +33,6 @@ const getUserOptions = () => {
         checked: userOptions.orderBy,
         checkedFavorites: userOptions.orderByF
       },
-      homeCardsPerPage: userOptions.selectedCardsPerPage,
-      favoritesCardsPerPage: userOptions.selectedCardsPerPageF,
       cardOptions: [
         {
           name: 'verticalCardsPerRow',
@@ -175,8 +173,8 @@ const getUserOptions = () => {
         nameF: 'horizontalCardsPerRowF',
         mainTitle: 'Horizontal Cards Per Row:',
         titles: ['2', '3', '4'],
-        ids: ['twoCards', 'threeCards', 'fourCards'],
-        idsF: ['twoCards', 'threeCards', 'fourCards'],
+        ids: ['twoCardsH', 'threeCardsH', 'fourCardsH'],
+        idsF: ['twoCardsHF', 'threeCardsHF', 'fourCardsHF'],
         checked: 'fourCards',
         checkedFavorites: 'twoCards'
       },
@@ -270,8 +268,6 @@ const getUserOptions = () => {
 export const {
   searchByCheckbox,
   orderByOptions,
-  homeCardsPerPage,
-  favoritesCardsPerPage,
   cardOptions,
   favoritesIconRadio,
   detailOptions,

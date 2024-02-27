@@ -4,61 +4,57 @@ import { createContext, useContext, useEffect, useState } from "react";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [userInfo, setUserInfo] = useState('');
   const [userOptions, setUserOptions] = useState('');
 
   useEffect(() => {
     (async function onAuthStateChanged() {
       try {
-        const { data } = await axios.get('http://localhost:3001/user/change');
-        setUserInfo(data);
+        await axios.get('http://localhost:3001/user/change');
       } catch (error) {
         console.error('Error fetching userInfo:', error);
       }
     })();
   }, []);
 
-  async function createUser(email, password) {
+  async function createUser(registerData) {
     try {
-      return await axios.post('http://localhost:3001/user', { email, password });
+      return await axios.post('http://localhost:3001/user', registerData );
     } catch (error) {
-      return error;
+      throw error;
     }
   }
   const logIn = async (email, password) => {
     try {
       const { data } = await axios.post('http://localhost:3001/user/login', { email, password });
-      setUserInfo(data.user);
       setUserOptions(data.userOptions);
       return data.userOptions;
     } catch (error) {
-      return error;
+      throw error;
     }
   }
   const changeEmail = async (email, password) => {
     try {
-      return await axios.post('http://localhost:3001/user/changeEmail', { previousEmail: userInfo.email, email, password });
+      return await axios.post('http://localhost:3001/user/changeEmail', { email, password });
     } catch (error) {
-      return error;
+      throw error;
     }
   }
   const changePassword = async (currentPassword, newPassword) => {
     try {
-      return await axios.post('http://localhost:3001/user/changePassword', { email: userInfo.email, currentPassword, newPassword });
+      return await axios.post('http://localhost:3001/user/changePassword', { currentPassword, newPassword });
     } catch (error) {
-      return error;
+      throw error;
     }
   }
   const logOut = async () => {
     try {
       await axios.get('http://localhost:3001/user/logout');
-      setUserInfo('');
       setUserOptions('');
     } catch (error) {
-      return error;
+      throw error;
     }
   }
-  const authContextValue = { userInfo, userOptions, createUser, logIn, changeEmail, changePassword, logOut };
+  const authContextValue = { userOptions, createUser, logIn, changeEmail, changePassword, logOut };
   return (
     <AuthContext.Provider value={authContextValue}>
       {children}

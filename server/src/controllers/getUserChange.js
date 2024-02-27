@@ -1,16 +1,15 @@
-import models from '../db.js';
-const { User } = models.models;
-import { onAuthStateChanged } from 'firebase/auth';
 import auth from '../firebase.js';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default async function getUserChange(request, response) {
   try {
-    const unsubscribe = auth.onAuthStateChanged(user => {
+    const unsubscribe = onAuthStateChanged(auth, user => {
       return user;
     })
+    console.log(unsubscribe);
     response.status(200).json(unsubscribe);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     response.status(404).send({ error, message: 'Error loging in' });
   }
 }

@@ -8,9 +8,9 @@ export default async function loginUser(request, response) {
     const { email, password } = request.body;
     const { user } = await signInWithEmailAndPassword(auth, email, password);
     const userOptions = await User.findOne({ where: { uid: user.uid } });
-    response.status(200).json({ user, userOptions });
+    response.status(200).json({ userOptions });
   } catch (error) {
-    console.log(error);
-    response.status(404).send({ error, message: 'Error loging in' });
+    console.error(error);
+    response.status(500).json(error);
   }
 }

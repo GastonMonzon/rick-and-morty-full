@@ -17,15 +17,15 @@ export default function LoginRegister() {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ name: '', surName: '', userName: '', dateOfBirth: '', email: '', password: '', repeatPassword: '' });
   const [registerErrors, setRegisterErrors] = useState({ name: '', surName: '', userName: '', dateOfBirth: '', email: '', password: '', repeatPassword: '' });
-  const [loginErrors, setLoginErrors] = useState({ email: '', password: ''});
-  // const [mainError, setMainError] = useState('');
+  const [loginErrors, setLoginErrors] = useState({ email: '', password: '' });
+  const [modalMessage, setModalMessage] = useState({ title: '', message: '' });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleRegisterInputChange = (event) => {
     const { name, value } = event.target;
-    // console.log(name, value);
     setRegisterData({
-      ...registerData, // Trae todo lo que ya está en registerData
-      [name]: value // Altera el valor con el nombre de la propiedad = [nombrePropiedad]
+      ...registerData,
+      [name]: value
     });
     setRegisterErrors(
       dataValidation({
@@ -35,7 +35,6 @@ export default function LoginRegister() {
   }
   const handleLoginInputChange = (event) => {
     const { name, value } = event.target;
-    // console.log(name, value);
     setLoginData({
       ...loginData,
       [name]: value
@@ -50,20 +49,32 @@ export default function LoginRegister() {
   const handleRegister = async (event) => {
     event.preventDefault();
     try {
-      createUser(registerData.email, registerData.password);
+      const response = await createUser(registerData);
+      setModalMessage({ title: 'Success', message: response.data.message});
+      setIsModalOpen(true);
+      setLoginData({ email: registerData.email, password: registerData.password });
+      setLoginErrors({ email: '', password: '' });
+      setRegisterData({ name: '', surName: '', userName: '', dateOfBirth: '', email: '', password: '', repeatPassword: '' });
     } catch (error) {
-      console.error('Error creating new user', error);
+      setModalMessage({ title: 'Error', message: error.response.data.code });
+      setIsModalOpen(true);
     }
   }
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const user = await logIn(loginData.email, loginData.password)
+      const user = await logIn(loginData.email, loginData.password);
+      setLoginData({ email: '', password: '' });
       dispatch(setAllValues(user));
       navigate('/home');
     } catch (error) {
-      console.error('Error loging in:', error);
+      setModalMessage({ title: 'Error', name: error.response.data.code });
+      setIsModalOpen(true);
     }
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   }
 
   return (
@@ -106,7 +117,7 @@ export default function LoginRegister() {
       </div>
       <div className='register-container'>
         <h2>Register</h2>
-        <form className='register-form' onSubmit={handleRegister} >
+        <form className='register-form' onSubmit={handleRegister} noValidate={true} >
           <div className='input-icon-container'>
             <input
               type='text'
@@ -199,11 +210,24 @@ export default function LoginRegister() {
           <p className={registerErrors.repeatPassword ? '' : 'invisible'} >{registerErrors.repeatPassword ? `${registerErrors.repeatPassword}` : 'invisible'}</p>
           <button
             type='submit'
-            disabled={!registerData.email || !registerData.password || !registerData.repeatPassword ||(registerErrors.name || registerErrors.surName || registerErrors.userName || registerErrors.dateOfBirth || registerErrors.email || registerErrors.password || registerErrors.repeatPassword)} >
+            disabled={!registerData.email || !registerData.password || !registerData.repeatPassword || (registerErrors.name || registerErrors.surName || registerErrors.userName || registerErrors.dateOfBirth || registerErrors.email || registerErrors.password || registerErrors.repeatPassword)} >
             Register
           </button>
         </form>
       </div>
+      {isModalOpen && (
+        <div className='modal-overlay'>
+          <div className='modal'>
+            <div className='modal-content'>
+              <h3>{modalMessage.title}</h3>
+              <br />
+              <h6>{modalMessage.message}</h6>
+              <br />
+              <button className='modal-button' onClick={handleCloseModal}>Accept</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -104,7 +104,7 @@ const reducer = (state = initialState, action) => {
         isFavoritesTogether: userOptions.isFavoritesTogether,
         selectedCardsPerPage: userOptions.selectedCardsPerPage,
         isAscending: true,
-        selectedOrder: userOptions.orderByOptions,
+        selectedOrder: userOptions.orderBy,
         cardRadioOptions: generateCardOptions(cardOptions, true),
         detailRadioOptions: generateCardOptions(detailOptions, true),
         cardCheckboxOptions: generateCardOptions(cardOptions, false),
@@ -118,7 +118,7 @@ const reducer = (state = initialState, action) => {
         selectedFiltersFavorites: userOptions.selectedFiltersF,
         selectedCardsPerPageFavorites: userOptions.selectedCardsPerPageF,
         isAscendingFavorites: true,
-        selectedOrderFavorites: userOptions.orderByOptions,
+        selectedOrderFavorites: userOptions.orderByF,
         homeBackground: userOptions.homeBackground,
         favoritesBackground: userOptions.favoritesBackground,
         detailBackground: userOptions.detailBackground,
@@ -550,13 +550,11 @@ const reducer = (state = initialState, action) => {
     }
     case OPTIONS_SIDEBAR_CARDS_PER_PAGE: {
       if (action.payload.isHome) {
-        localStorage.setItem('cardsPerPage', action.payload.value);
         return {
           ...state,
           selectedCardsPerPage: action.payload.value
         }
       } else {
-        localStorage.setItem('cardsPerPageFavorites', action.payload.value);
         return {
           ...state,
           selectedCardsPerPageFavorites: action.payload.value
@@ -568,7 +566,6 @@ const reducer = (state = initialState, action) => {
       const index = updatedRadioOptions.findIndex(option => option.name === action.payload.name);
       if (index !== -1) {
         updatedRadioOptions[index].value = action.payload.value;
-        localStorage.setItem(action.payload.name, action.payload.value)
         return {
           ...state,
           detailRadioOptions: updatedRadioOptions
@@ -578,7 +575,7 @@ const reducer = (state = initialState, action) => {
         if (action.payload.isHome) {
           const index = updatedRadioOptions.findIndex(option => option.name === action.payload.name);
           updatedRadioOptions[index].value = action.payload.value;
-          localStorage.setItem(action.payload.name, action.payload.value)
+          console.log(updatedRadioOptions);
           return {
             ...state,
             cardRadioOptions: updatedRadioOptions
@@ -586,7 +583,6 @@ const reducer = (state = initialState, action) => {
         } else {
           const index = updatedRadioOptions.findIndex(option => option.nameF === action.payload.name);
           updatedRadioOptions[index].valueF = action.payload.value;
-          localStorage.setItem(action.payload.name, action.payload.value)
           return {
             ...state,
             cardRadioOptions: updatedRadioOptions
@@ -599,28 +595,27 @@ const reducer = (state = initialState, action) => {
       const index = updatedCheckboxOptions.findIndex(option => option.name === action.payload.name);
       if (index !== -1) {
         updatedCheckboxOptions[index].value = action.payload.isChecked;
-        localStorage.setItem(action.payload.name, action.payload.isChecked);
         return {
           ...state,
           detailCheckboxOptions: updatedCheckboxOptions
         }
       } else {
-        updatedCheckboxOptions = [...state.cardRadioOptions];
+        updatedCheckboxOptions = [...state.cardCheckboxOptions];
         if (action.payload.isHome) {
+          console.log(action.payload.name);
           const index = updatedCheckboxOptions.findIndex(option => option.name === action.payload.name);
+          console.log(updatedCheckboxOptions);
           updatedCheckboxOptions[index].value = action.payload.isChecked;
-          localStorage.setItem(action.payload.name, action.payload.isChecked);
           return {
             ...state,
-            cardRadioOptions: updatedCheckboxOptions
+            cardCheckboxOptions: updatedCheckboxOptions
           }
         } else {
           const index = updatedCheckboxOptions.findIndex(option => option.nameF === action.payload.name);
           updatedCheckboxOptions[index].valueF = action.payload.isChecked;
-          localStorage.setItem(action.payload.name + 'F', action.payload.isChecked)
           return {
             ...state,
-            cardRadioOptions: updatedCheckboxOptions
+            cardCheckboxOptions: updatedCheckboxOptions
           }
         }
       }
@@ -739,7 +734,6 @@ const reducer = (state = initialState, action) => {
         default:
           return tempFavoritesIcon;
       }
-      localStorage.setItem('favoritesIcon', tempFavoritesIcon)
       return {
         ...state,
         favoritesIcon: [...tempFavoritesIcon]

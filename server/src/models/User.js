@@ -7,26 +7,6 @@ const getUserModel =  (sequelize) => {
       allowNull: false,
       unique: true,
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    surName: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    userName: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    dateOfBirth: {
-      type: DataTypes.DATEONLY,
-      allowNull: true
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
     image: {
       type: DataTypes.STRING,
       allowNull: true
