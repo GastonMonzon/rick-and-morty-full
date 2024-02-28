@@ -35,5 +35,8 @@ export default function dataValidation(input) {
   if (input.repeatPassword && (input.password !== '' && input.repeatPassword !== '' && input.password !== input.repeatPassword)) {
     errors.repeatPassword = 'Password don\'t match';
   }
+  if (input.changeUserInfoPassword && (input.changeUserInfoPassword.length < 8 || input.changeUserInfoPassword.length > 128)) {
+    errors.changeUserInfoPassword = 'Password must be between 8 and 128 characters';
+  }
   return errors;
 }

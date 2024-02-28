@@ -6,33 +6,30 @@ const useDetailsTagAnimations = () => {
   const [detailsRef, setDetailsRef] = useState(null);
   const [animation, setAnimation] = useState(null);
 
-  const handleDetailsClick = (event, ref) => {
+  const handleDetailsClick = (event, ref, contentId) => {
     event.preventDefault();
     const { id } = event.target;
     setDetailsRef(ref);
     const detailsTag = document.getElementById(`${id}DetailsTag`);
     const summaryTag = document.getElementById(id);
     if (isClosing || !detailsTag.open) {
-      open(detailsTag, summaryTag, id);
+      open(detailsTag, summaryTag, id, contentId);
     } else if (isExpanding || detailsTag.open) {
-      shrink(detailsTag, summaryTag, id);
+      shrink(detailsTag, summaryTag, id, contentId);
     }
   }
-  const open = (detailsTag, summaryTag, id) => {
+  const open = (detailsTag, summaryTag, id, contentId) => {
     detailsTag.open = true;
-    window.requestAnimationFrame(() => expand(detailsTag, summaryTag, id));
+    window.requestAnimationFrame(() => expand(detailsTag, summaryTag, id, contentId));
   }
-  const expand = (detailsTag, summaryTag, id) => {
+  const expand = (detailsTag, summaryTag, id, contentId) => {
     setIsExpanding(true);
-    // const startHeight = `${detailsTag.offsetHeight}px`;
-    // const endHeight = `${summaryTag.offsetHeight + content.offsetHeight}px`;
-    // console.log(startHeight, endHeight);
     if (animation) {
       animation.cancel();
     }
     let newAnimation;
+    const content = document.getElementById(contentId);
     if (id === 'userOptions') {
-      const content = document.getElementById('user-sidebar');
       newAnimation = content.animate(
         {
           left: ['-300px', '0']
@@ -43,7 +40,6 @@ const useDetailsTagAnimations = () => {
         }
       );
     } else if (id === 'optionsOptions') {
-      const content = document.getElementById('options-sidebar');
       newAnimation = content.animate(
         {
           right: ['-300px', '0']
@@ -54,30 +50,48 @@ const useDetailsTagAnimations = () => {
         }
       );
     } else {
-      const content = document.getElementById('filters-bar-container');
+      // const startHeight = `${detailsTag.offsetHeight}px`;
+      const endHeight = `${content.offsetHeight}px`;
+      const endMargin = `${content.offsetHeight + 20}px`;
+      console.log(endHeight, endMargin);
       newAnimation = content.animate(
         {
-          top: ['-300px', '50px']
+          height: [0, endHeight],
+          marginTop: [0, '10px']
         },
         {
-          duration: 300,
-          easing: 'ease-in'
+          duration: 200,
+          easing: 'ease-in-out'
         }
       );
+      setAnimation(newAnimation);
+      newAnimation = detailsTag.animate(
+        {
+          marginBottom: [0, endMargin]
+        },
+        {
+          duration: 200,
+          easing: 'ease-in-out'
+        }
+      );
+      setTimeout(() => {
+        content.style.overflow = 'visible';
+        content.style.marginTop = '10px';
+        content.style.marginBottom = '10px';
+        detailsTag.style.marginBottom = endMargin;
+      }, 100);
     }
     setAnimation(newAnimation);
   }
-  const shrink = (detailsTag, summaryTag, id) => {
+  const shrink = (detailsTag, summaryTag, id, contentId) => {
     setIsClosing(true);
-    // const startHeight = `${detailsTag.offsetHeight}px`;
-    // const endHeight = `${summaryTag.offsetHeight + content.offsetHeight}px`;
 
     if (animation) {
       animation.cancel();
     }
     let newAnimation;
+    const content = document.getElementById(contentId);
     if (id === 'userOptions') {
-      const content = document.getElementById('user-sidebar');
       newAnimation = content.animate(
         {
           left: ['0', '-300px']
@@ -88,7 +102,6 @@ const useDetailsTagAnimations = () => {
         }
       )
     } else if (id === 'optionsOptions') {
-      const content = document.getElementById('options-sidebar');
       newAnimation = content.animate(
         {
           right: ['0', '-300px']
@@ -99,16 +112,34 @@ const useDetailsTagAnimations = () => {
         }
       );
     } else {
-      const content = document.getElementById('filters-bar-container');
+      const startHeight = `${content.offsetHeight}px`;
+      const startMargin = `${content.offsetHeight + 20}px`;
+      // const endHeight = `${detailsTag.offsetHeight}px`;
+      content.style.overflow = 'hidden';
       newAnimation = content.animate(
         {
-          top: ['50px', '-100px']
+          height: [startHeight, 0],
+          marginTop: ['10px', 0]
         },
         {
-          duration: 300,
-          easing: 'ease-in'
+          duration: 200,
+          easing: 'ease-in-out'
         }
       );
+      setAnimation(newAnimation);
+      newAnimation = detailsTag.animate(
+        {
+          marginBottom: [startMargin, 0]
+        },
+        {
+          duration: 200,
+          easing: 'ease-in-out'
+        }
+      );
+      setTimeout(() => {
+        content.style.marginTop = 0;
+        detailsTag.style.marginBottom = 0;
+      }, 100);
     }
     setAnimation(newAnimation);
   }

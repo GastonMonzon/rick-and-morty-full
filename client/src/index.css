@@ -84,6 +84,14 @@ input:hover {
   outline: 1px solid;
 }
 
+button:disabled,
+button:hover:disabled {
+  color: rgb(128, 128, 128);
+  transform: translate(3px, 3px);
+  box-shadow: none;
+  outline: none;
+}
+
 button:active:enabled,
 input:focus {
   box-shadow: none;

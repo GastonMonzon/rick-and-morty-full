@@ -18,8 +18,8 @@ export default function LoginRegister() {
   const [registerData, setRegisterData] = useState({ name: '', surName: '', userName: '', dateOfBirth: '', email: '', password: '', repeatPassword: '' });
   const [registerErrors, setRegisterErrors] = useState({ name: '', surName: '', userName: '', dateOfBirth: '', email: '', password: '', repeatPassword: '' });
   const [loginErrors, setLoginErrors] = useState({ email: '', password: '' });
-  const [modalMessage, setModalMessage] = useState({ title: '', message: '' });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState({ title: '', message: '' });
 
   const handleRegisterInputChange = (event) => {
     const { name, value } = event.target;
@@ -72,7 +72,6 @@ export default function LoginRegister() {
       setIsModalOpen(true);
     }
   }
-
   const handleCloseModal = () => {
     setIsModalOpen(false);
   }

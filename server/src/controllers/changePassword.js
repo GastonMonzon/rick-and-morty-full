@@ -1,5 +1,4 @@
 import auth from '../firebase.js';
-import { signOut } from 'firebase/auth';
 
 export default async function changePassword(request, response) {
   try {

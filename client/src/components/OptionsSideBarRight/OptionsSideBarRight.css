@@ -22,7 +22,7 @@
   width: 25%;
   height: 100%;
   right: 0;
-  z-index: 100;
+  z-index: 20;
   border-radius: 10px 0 0 10px;
   overflow: scroll;
   padding: 15px;

@@ -34,14 +34,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeBackground } from '../../redux/actions';
 import { useNavigate } from 'react-router';
 import dataValidation from '../../dataValidation.js';
+import useDetailsTagAnimations from '../../hooks/useDetailsTagAnimations.jsx';
 
 export default function UserSideBarLeft() {
   const videoRef = useRef(null);
-  const { userOptions, logOut } = useAuth();
+  const changeUserInfoRef = useRef(null);
+  const homeBackgroundRef = useRef(null);
+  const favoritesBackgroundRef = useRef(null);
+  const detailBackgroundRef = useRef(null);
+  const loadingScreenRef = useRef(null);
+  const changeEmailRef = useRef(null);
+  const changePasswordRef = useRef(null);
+  const { userOptions, reauthenticate, logOut } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [changeData, setChangeData] = useState({ name: '', surName: '', userName: '', dateOfBirth: '', email: '', changeEmailNewEmail: '', changeEmailPassword: '', changePasswordPassword: '', password: '', repeatPassword: '' });
-  const [changeDataErrors, setChangeDataErrors] = useState({ name: '', surName: '', userName: '', dateOfBirth: '', email: '', changeEmailPassword: '', changePasswordPassword: '', password: '', repeatPassword: '' });
+  const [changeData, setChangeData] = useState({ changeUserInfoPassword: '', name: '', surName: '', userName: '', dateOfBirth: '', email: '', changeEmailNewEmail: '', changeEmailPassword: '', changePasswordPassword: '', password: '', repeatPassword: '' });
+  const [changeDataErrors, setChangeDataErrors] = useState({ changeUserInfoPassword: '', name: '', surName: '', userName: '', dateOfBirth: '', email: '', changeEmailPassword: '', changePasswordPassword: '', password: '', repeatPassword: '' });
+  const addAnimations = useDetailsTagAnimations();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [userInfoEvent, setUserInfoEvent] = useState({});
   const selectedHomeBackground = useSelector((state) => state.homeBackground);
   const selectedFavoritesBackground = useSelector((state) => state.favoritesBackground);
   const selectedDetailBackground = useSelector((state) => state.detailBackground);
@@ -81,11 +93,23 @@ export default function UserSideBarLeft() {
     { name: 'loading13', src: loading13 }
   ];
 
+  const handleDetailsClick = (event, ref, contentId) => {
+    addAnimations(event, ref, contentId);
+  }
   const handleBackgroundChange = (event) => {
     const { name, alt } = event.target;
     dispatch(changeBackground({ name: name, alt: alt }))
   }
-
+  const handleUserInfoChangeClick = (event) => {
+    event.preventDefault();
+    const detailsTag = document.getElementById(`changeUserInfoDetailsTag`);
+    if (detailsTag.open) {
+      handleDetailsClick(event, changeUserInfoRef, 'user-info');
+    } else {
+      setUserInfoEvent(event);
+      setIsModalOpen(true);
+    }
+  }
   const handleUserInfoChange = (event) => {
     const { name, value } = event.target;
     // console.log(name, value);
@@ -98,6 +122,16 @@ export default function UserSideBarLeft() {
         ...changeData,
         [name]: value
       }));
+  }
+  const handleUserInfoPasswordSubmit = async () => {
+    try {
+      await reauthenticate(changeData.changeUserInfoPassword);
+      
+      setIsModalOpen(false);
+      handleDetailsClick(userInfoEvent, changeUserInfoRef, 'user-info');
+    } catch (error) {
+      setModalMessage('Wrong password');
+    }
   }
   const handleUserInfoChangeSubmit = () => {
 
@@ -115,6 +149,9 @@ export default function UserSideBarLeft() {
     } catch (error) {
       console.log(error);
     }
+  }
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   }
 
   return (
@@ -134,11 +171,11 @@ export default function UserSideBarLeft() {
       </div>
       <div className='autosave-option-container' >
         <label>Selected Filters</label>
-        <button className='user-options-button'>On</button>
+        <button className='user-options-button' >On</button>
       </div>
       <div className='autosave-option-container' >
         <label>View Options</label>
-        <button className='user-options-button'>On</button>
+        <button className='user-options-button' >On</button>
       </div>
       <h4>Load Last Save / Save Options</h4>
       <label>Search & Search Options</label>
@@ -146,12 +183,12 @@ export default function UserSideBarLeft() {
         <button className='user-options-button' >Load</button>
         <button className='user-options-button' >Save</button>
       </div>
-        <label>Selected Filters</label>
+      <label>Selected Filters</label>
       <div className='autosave-option-container' >
         <button className='user-options-button' >Load</button>
         <button className='user-options-button' >Save</button>
       </div>
-        <label>View Options</label>
+      <label>View Options</label>
       <div className='autosave-option-container' >
         <button className='user-options-button' >Load</button>
         <button className='user-options-button' >Save</button>
@@ -162,9 +199,12 @@ export default function UserSideBarLeft() {
         </details>
       </div>
       <div>
-        <details>
-          <summary>Change Home Background</summary>
-          <div className='background-images-container' >
+        <details id='homeBackgroundDetailsTag' ref={homeBackgroundRef}>
+          <summary
+            id='homeBackground'
+            onClick={(event) => handleDetailsClick(event, homeBackgroundRef, 'home-background')} >
+            Change Home Background</summary>
+          <div className='background-images-container' id='home-background' >
             {backgroundImages.map((background, index) => (
               <div key={index}
                 className='thumbnail-image-div' >
@@ -180,9 +220,12 @@ export default function UserSideBarLeft() {
         </details>
       </div>
       <div>
-        <details>
-          <summary>Change Favorites Background</summary>
-          <div className='background-images-container' >
+        <details id='favoritesBackgroundDetailsTag' ref={favoritesBackgroundRef}>
+          <summary
+            id='favoritesBackground'
+            onClick={(event) => handleDetailsClick(event, favoritesBackgroundRef, 'favorites-background')} >
+            Change Favorites Background</summary>
+          <div className='background-images-container' id='favorites-background' >
             {backgroundImages.map((background, index) => (
               <div key={index}
                 className='thumbnail-image-div' >
@@ -198,9 +241,12 @@ export default function UserSideBarLeft() {
         </details>
       </div>
       <div>
-        <details>
-          <summary>Change Detail Background</summary>
-          <div className='background-images-container' >
+        <details id='detailBackgroundDetailsTag' ref={detailBackgroundRef} >
+          <summary
+            id='detailBackground'
+            onClick={(event) => handleDetailsClick(event, detailBackgroundRef, 'detail-background')} >
+            Change Detail Background</summary>
+          <div className='background-images-container' id='detail-background' >
             {backgroundImages.map((background, index) => (
               <div key={index}
                 className='thumbnail-image-div' >
@@ -216,9 +262,12 @@ export default function UserSideBarLeft() {
         </details>
       </div>
       <div>
-        <details>
-          <summary>Change Loading Screen</summary>
-          <div className='background-images-container' >
+        <details id='loadingScreenDetailsTag' ref={loadingScreenRef} >
+          <summary
+            id='loadingScreen'
+            onClick={(event) => handleDetailsClick(event, loadingScreenRef, 'loading-screen')} >
+            Change Loading Screen</summary>
+          <div className='background-images-container' id='loading-screen' >
             {loadingGifs.map((gif, index) => (
               <div key={index}
                 className='thumbnail-image-div' >
@@ -233,150 +282,200 @@ export default function UserSideBarLeft() {
           </div>
         </details>
       </div>
-      <details>
-        <summary>Change User Info</summary>
-        <form onSubmit={handleUserInfoChangeSubmit} >
-          <div className='user-info-input-label-container' >
-            <label>Name</label>
-            <input
-              type='text'
-              key='changeName'
-              id='changeName'
-              name='name'
-              value={changeData.name}
-              onChange={handleUserInfoChange} />
-          </div>
-          <p className={changeDataErrors.name ? '' : 'invisible'} >{changeDataErrors.name ? `${changeDataErrors.name}` : 'invisible'}</p>
-          <div className='user-info-input-label-container' >
-            <label>Surname</label>
-            <input
-              type='text'
-              key='changeSurName'
-              id='changeSurName'
-              name='surName'
-              value={changeData.surName}
-              onChange={handleUserInfoChange} />
-          </div>
-          <p className={changeDataErrors.surName ? '' : 'invisible'} >{changeDataErrors.surName ? `${changeDataErrors.surName}` : 'invisible'}</p>
-          <div className='user-info-input-label-container' >
-            <label>Username</label>
-            <input
-              type='text'
-              key='changeUserName'
-              id='changeUserName'
-              name='userName'
-              value={changeData.userName}
-              onChange={handleUserInfoChange} />
-          </div>
-          <p className={changeDataErrors.userName ? '' : 'invisible'} >{changeDataErrors.userName ? `${changeDataErrors.userName}` : 'invisible'}</p>
-          <div className='user-info-input-label-container' >
-            <label>Date Of Birth</label>
-            <input
-              type='date'
-              key='changeDateOfBirth'
-              id='changeDateOfBirth'
-              name='dateOfBirth'
-              value={changeData.dateOfBirth}
-              onChange={handleUserInfoChange} />
-          </div>
-          <p className={changeDataErrors.dateOfBirth ? '' : 'invisible'} >{changeDataErrors.dateOfBirth ? `${changeDataErrors.dateOfBirth}` : 'invisible'}</p>
-          <button
-            type='submit'
-            className='user-options-button' >
-            Save
-          </button>
-        </form>
+      <details id='changeUserInfoDetailsTag' ref={changeUserInfoRef} >
+        <summary id='changeUserInfo' onClick={handleUserInfoChangeClick} >Change User Info</summary>
+        <div className='user-info' id='user-info' >
+          <form onSubmit={handleUserInfoChangeSubmit} >
+            <div className='user-info-input-label-container' >
+              <label htmlFor='changeName' >Name</label>
+              <input
+                type='text'
+                key='changeName'
+                id='changeName'
+                name='name'
+                value={changeData.name}
+                onChange={handleUserInfoChange} />
+            </div>
+            <p className={changeDataErrors.name ? '' : 'invisible'} >{changeDataErrors.name ? `${changeDataErrors.name}` : 'invisible'}</p>
+            <div className='user-info-input-label-container' >
+              <label htmlFor='changeSurName' >Surname</label>
+              <input
+                type='text'
+                key='changeSurName'
+                id='changeSurName'
+                name='surName'
+                value={changeData.surName}
+                onChange={handleUserInfoChange} />
+            </div>
+            <p className={changeDataErrors.surName ? '' : 'invisible'} >{changeDataErrors.surName ? `${changeDataErrors.surName}` : 'invisible'}</p>
+            <div className='user-info-input-label-container' >
+              <label htmlFor='changeUserName' >Username</label>
+              <input
+                type='text'
+                key='changeUserName'
+                id='changeUserName'
+                name='userName'
+                value={changeData.userName}
+                onChange={handleUserInfoChange} />
+            </div>
+            <p className={changeDataErrors.userName ? '' : 'invisible'} >{changeDataErrors.userName ? `${changeDataErrors.userName}` : 'invisible'}</p>
+            <div className='user-info-input-label-container' >
+              <label htmlFor='changeDateOfBirth' >Date Of Birth</label>
+              <input
+                type='date'
+                key='changeDateOfBirth'
+                id='changeDateOfBirth'
+                name='dateOfBirth'
+                value={changeData.dateOfBirth}
+                onChange={handleUserInfoChange} />
+            </div>
+            <p className={changeDataErrors.dateOfBirth ? '' : 'invisible'} >{changeDataErrors.dateOfBirth ? `${changeDataErrors.dateOfBirth}` : 'invisible'}</p>
+            <button
+              type='submit'
+              className='user-options-button' >
+              Save
+            </button>
+          </form>
+        </div>
       </details>
-      <details>
-        <summary>Change Email</summary>
-        <form onSubmit={handleUserEmailChangeSubmit} >
-          <div className='user-info-input-label-container' >
-            <label>Current Email</label>
-            <input
-              type='email'
-              key='changeEmailEmail'
-              id='changeEmailEmail'
-              name='email'
-              value={changeData.email}
-              onChange={handleUserInfoChange} />
+      {isModalOpen && (
+        <div className='modal-overlay'>
+          <div className='modal'>
+            <div className='modal-content'>
+              <h3>User Info View Requires Password</h3>
+              <br />
+              <div className='user-info-input-label-container' >
+                <label htmlFor='changeUserInfoPassword'>Input Password</label>
+                <input
+                  type='password'
+                  key='changeUserInfoPassword'
+                  id='changeUserInfoPassword'
+                  name='changeUserInfoPassword'
+                  value={changeData.changeUserInfoPassword}
+                  onChange={handleUserInfoChange}
+                />
+              </div>
+              <h6>{modalMessage}</h6>
+              <br />
+              <div className='modal-button-container' >
+                <button
+                  className='modal-cancel-button'
+                  onClick={handleCloseModal} >
+                  Cancel
+                </button>
+                <button
+                  className='modal-submit-button'
+                  onClick={handleUserInfoPasswordSubmit}
+                  disabled={!changeData.changeUserInfoPassword || changeDataErrors.changeUserInfoPassword} >
+                  Submit
+                </button>
+              </div>
+            </div>
           </div>
-          <div className='user-info-input-label-container' >
-            <label>New Email</label>
-            <input
-              type='email'
-              key='changeEmailNew'
-              id='changeEmailNew'
-              name='email'
-              value={changeData.changeEmailNewEmail}
-              onChange={handleUserInfoChange} />
-          </div>
-          <p className={changeDataErrors.email ? '' : 'invisible'} >{changeDataErrors.email ? `${changeDataErrors.email}` : 'invisible'}</p>
-          <div className='user-info-input-label-container' >
-            <label>Password</label>
-            <input
-              type='password'
-              key='changeEmailPassword'
-              id='changeEmailPassword'
-              name='changeEmailPassword'
-              value={changeData.changeEmailPassword}
-              onChange={handleUserInfoChange} />
-          </div>
-          <p className={changeDataErrors.changeEmailPassword ? '' : 'invisible'} >{changeDataErrors.changeEmailPassword ? `${changeDataErrors.changeEmailPassword}` : 'invisible'}</p>
-          <button
-            type='submit'
-            className='user-options-button' >
-            Save
-          </button>
-        </form>
+        </div>
+      )}
+      <details id='changeEmailDetailsTag' ref={changeEmailRef} >
+        <summary
+          id='changeEmail'
+          onClick={(event) => handleDetailsClick(event, changeEmailRef, 'change-email')} >
+          Change Email</summary>
+        <div className='change-email-container' id='change-email'>
+          <form onSubmit={handleUserEmailChangeSubmit}  >
+            <div className='user-info-input-label-container' >
+              <label>Current Email</label>
+              <input
+                type='email'
+                key='changeEmailEmail'
+                id='changeEmailEmail'
+                name='email'
+                value={changeData.email}
+                onChange={handleUserInfoChange} />
+            </div>
+            <div className='user-info-input-label-container' >
+              <label>New Email</label>
+              <input
+                type='email'
+                key='changeEmailNew'
+                id='changeEmailNew'
+                name='email'
+                value={changeData.changeEmailNewEmail}
+                onChange={handleUserInfoChange} />
+            </div>
+            <p className={changeDataErrors.email ? '' : 'invisible'} >{changeDataErrors.email ? `${changeDataErrors.email}` : 'invisible'}</p>
+            <div className='user-info-input-label-container' >
+              <label>Password</label>
+              <input
+                type='password'
+                key='changeEmailPassword'
+                id='changeEmailPassword'
+                name='changeEmailPassword'
+                value={changeData.changeEmailPassword}
+                onChange={handleUserInfoChange} />
+            </div>
+            <p className={changeDataErrors.changeEmailPassword ? '' : 'invisible'} >{changeDataErrors.changeEmailPassword ? `${changeDataErrors.changeEmailPassword}` : 'invisible'}</p>
+            <button
+              type='submit'
+              className='user-options-button' >
+              Save
+            </button>
+          </form>
+        </div>
       </details>
-      <details>
-        <summary>Change Password</summary>
-        <form autoComplete='off' onSubmit={handleUserPasswordChangeSubmit} >
-          <div className='user-info-input-label-container' >
-            <label>Current Password</label>
-            <input
-              type='password'
-              key='changePasswordPassword'
-              id='changePasswordPassword'
-              name='changePasswordPassword'
-              value={changeData.changePasswordPassword}
-              onChange={handleUserInfoChange} />
-          </div>
-          <p className={changeDataErrors.changePasswordPassword ? '' : 'invisible'} >{changeDataErrors.changePasswordPassword ? `${changeDataErrors.changePasswordPassword}` : 'invisible'}</p>
-          <div className='user-info-input-label-container' >
-            <label>New Password</label>
-            <input
-              type='password'
-              key='changePasswordNew'
-              id='changePasswordNew'
-              name='password'
-              value={changeData.password}
-              onChange={handleUserInfoChange} />
-          </div>
-          <p className={changeDataErrors.password ? '' : 'invisible'} >{changeDataErrors.password ? `${changeDataErrors.password}` : 'invisible'}</p>
-          <div className='user-info-input-label-container' >
-            <label>Repeat New Password</label>
-            <input
-              type='password'
-              key='changePasswordNewRepeat'
-              id='changePasswordNewRepeat'
-              name='repeatPassword'
-              value={changeData.repeatPassword}
-              onChange={handleUserInfoChange} />
-          </div>
-          <p className={changeDataErrors.repeatPassword ? '' : 'invisible'} >{changeDataErrors.repeatPassword ? `${changeDataErrors.repeatPassword}` : 'invisible'}</p>
-          <button
-            type='submit'
-            className='user-options-button' >
-            Save
-          </button>
-        </form>
+      <details id='changePasswordDetailsTag' ref={changePasswordRef} >
+        <summary
+          id='changePassword'
+          onClick={(event) => handleDetailsClick(event, changePasswordRef, 'change-password')} >
+          Change Password
+          </summary>
+        <div className='change-password-container' id='change-password' >
+          <form autoComplete='off' onSubmit={handleUserPasswordChangeSubmit} >
+            <div className='user-info-input-label-container' >
+              <label>Current Password</label>
+              <input
+                type='password'
+                key='changePasswordPassword'
+                id='changePasswordPassword'
+                name='changePasswordPassword'
+                value={changeData.changePasswordPassword}
+                onChange={handleUserInfoChange} />
+            </div>
+            <p className={changeDataErrors.changePasswordPassword ? '' : 'invisible'} >{changeDataErrors.changePasswordPassword ? `${changeDataErrors.changePasswordPassword}` : 'invisible'}</p>
+            <div className='user-info-input-label-container' >
+              <label>New Password</label>
+              <input
+                type='password'
+                key='changePasswordNew'
+                id='changePasswordNew'
+                name='password'
+                value={changeData.password}
+                onChange={handleUserInfoChange} />
+            </div>
+            <p className={changeDataErrors.password ? '' : 'invisible'} >{changeDataErrors.password ? `${changeDataErrors.password}` : 'invisible'}</p>
+            <div className='user-info-input-label-container' >
+              <label>Repeat New Password</label>
+              <input
+                type='password'
+                key='changePasswordNewRepeat'
+                id='changePasswordNewRepeat'
+                name='repeatPassword'
+                value={changeData.repeatPassword}
+                onChange={handleUserInfoChange} />
+            </div>
+            <p className={changeDataErrors.repeatPassword ? '' : 'invisible'} >{changeDataErrors.repeatPassword ? `${changeDataErrors.repeatPassword}` : 'invisible'}</p>
+            <button
+              type='submit'
+              className='user-options-button' >
+              Save
+            </button>
+          </form>
+        </div>
       </details>
       <button
         className='user-options-button'
         onClick={handleLogOut} >
         Log Out
       </button>
+      <br /><br />
     </div>
   )
 }

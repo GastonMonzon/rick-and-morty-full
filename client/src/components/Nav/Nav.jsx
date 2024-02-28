@@ -55,7 +55,11 @@ export default function Nav() {
       </div>
       <div className='options-filters-container' >
         <details id='userOptionsDetailsTag' ref={userSideBarRef} >
-          <summary onClick={(event) => handleDetailsClick(event, userSideBarRef)} id='userOptions' >User Options</summary>
+          <summary
+            id='userOptions'
+            onClick={(event) => handleDetailsClick(event, userSideBarRef, 'user-sidebar')} >
+            User Options
+          </summary>
           <UserSideBarLeft />
         </details>
         <details className={pathname !== '/home' ? 'no-display' : ''} >
@@ -86,7 +90,11 @@ export default function Nav() {
       {pathname === '/favorites' && <SearchBar />}
       {pathname !== '/home' && pathname !== '/favorites' && <div className='searchBar-space-div' ></div>}
       <details id='optionsOptionsDetailsTag' ref={optionsSideBarRef} >
-        <summary onClick={(event) => handleDetailsClick(event, optionsSideBarRef)} id='optionsOptions' >Options</summary>
+        <summary
+          id='optionsOptions'
+          onClick={(event) => handleDetailsClick(event, optionsSideBarRef, 'options-sidebar')} >
+          Options
+        </summary>
         <OptionsSideBarRight />
       </details>
     </nav>

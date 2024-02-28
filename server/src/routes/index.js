@@ -15,6 +15,7 @@ import getUserChange from '../controllers/getUserChange.js';
 import loginUser from '../controllers/loginUser.js';
 import changeEmail from '../controllers/changeEmail.js';
 import changePassword from '../controllers/changePassword.js';
+import getPasswordAuth from '../controllers/getPasswordAuth.js';
 import logoutUser from '../controllers/logoutUser.js';
 
 router.get('/characters', getCharacters);
@@ -30,6 +31,7 @@ router.patch('/userInfo', patchUserData);
 router.patch('/userOptions', patchUserOptions);
 router.get('/user/change', getUserChange);
 router.post('/user/login', loginUser);
+router.post('/user/auth', getPasswordAuth);
 router.get('/user/logout', logoutUser);
 router.post('/user', postUser);
 
