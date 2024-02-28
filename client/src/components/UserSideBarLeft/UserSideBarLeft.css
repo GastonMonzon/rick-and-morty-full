@@ -86,10 +86,18 @@
   border:  2px solid var(--user-sidebar-color);
 }
 
-.user-info {
+.user-info-container,
+.change-password-container,
+.change-email-container {
   position: absolute;
   overflow: hidden;
-  width: 90%;
+  width: 89%;
+}
+
+.user-info-container p,
+.change-email-container p,
+.change-password-container p {
+  color: white;
 }
 
 .user-info-input-label-container {
@@ -135,18 +143,8 @@
 
 .user-info-input-label-container input:active,
 .user-info-input-label-container input:hover,
-.user-options-button:hover {
+.user-options-button:hover:enabled {
   color: var(--user-sidebar-selected-color);
   border-color: var(--user-sidebar-selected-color);
   outline-color: var(--user-sidebar-selected-color);
-}
-
-.change-password-container,
-.change-email-container {
-  position: absolute;
-  width: 90%;
-  height: fit-content;
-  margin: 0;
-  /* margin-right: 15px; */
-  overflow: hidden;
 }

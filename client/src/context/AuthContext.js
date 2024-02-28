@@ -39,6 +39,13 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   }
+  const getUserInfo = async (password) => {
+    try {
+      return await axios.get('http://localhost:3001/userInfo');
+    } catch (error) {
+      throw error;
+    }
+  }
   const changeEmail = async (email, password) => {
     try {
       return await axios.post('http://localhost:3001/user/changeEmail', { email, password });
@@ -61,7 +68,7 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   }
-  const authContextValue = { userOptions, createUser, reauthenticate, logIn, changeEmail, changePassword, logOut };
+  const authContextValue = { userOptions, createUser, reauthenticate, getUserInfo, logIn, changeEmail, changePassword, logOut };
   return (
     <AuthContext.Provider value={authContextValue}>
       {children}

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './UserSideBarLeft.css'
 import userBackgroundVideo from '../../assets/videos/optionsBackgroundVideo2.mp4';
 import { useAuth } from '../../context/AuthContext';
@@ -45,15 +45,16 @@ export default function UserSideBarLeft() {
   const loadingScreenRef = useRef(null);
   const changeEmailRef = useRef(null);
   const changePasswordRef = useRef(null);
-  const { userOptions, reauthenticate, logOut } = useAuth();
+  const { userOptions, getUserInfo, reauthenticate, logOut } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [changeData, setChangeData] = useState({ changeUserInfoPassword: '', name: '', surName: '', userName: '', dateOfBirth: '', email: '', changeEmailNewEmail: '', changeEmailPassword: '', changePasswordPassword: '', password: '', repeatPassword: '' });
-  const [changeDataErrors, setChangeDataErrors] = useState({ changeUserInfoPassword: '', name: '', surName: '', userName: '', dateOfBirth: '', email: '', changeEmailPassword: '', changePasswordPassword: '', password: '', repeatPassword: '' });
+  const [changeData, setChangeData] = useState({ changeUserInfoPassword: '', name: '', surName: '', userName: '', dateOfBirth: '', currentEmail: '', email: '', emailPassword: '', passwordPassword: '', password: '', repeatPassword: '' });
+  const [changeDataErrors, setChangeDataErrors] = useState({ changeUserInfoPassword: '', userInfo: '', name: '', surName: '', userName: '', dateOfBirth: '', currentEmail: '', email: '', emailPassword: '', passwordPassword: '', password: '', repeatPassword: '' });
   const addAnimations = useDetailsTagAnimations();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [userInfoEvent, setUserInfoEvent] = useState({});
+  const [isUserInfoChanged, setIsUserInfoChanged] = useState(false);
   const selectedHomeBackground = useSelector((state) => state.homeBackground);
   const selectedFavoritesBackground = useSelector((state) => state.favoritesBackground);
   const selectedDetailBackground = useSelector((state) => state.detailBackground);
@@ -93,6 +94,18 @@ export default function UserSideBarLeft() {
     { name: 'loading13', src: loading13 }
   ];
 
+  useEffect(() => {
+    setTimeout(() => {
+      const event = {
+        target: {
+          name: 'currentEmail',
+          value: ''
+        }
+      }
+      handleUserInfoChange(event);
+    }, 1000);
+  }, []);
+
   const handleDetailsClick = (event, ref, contentId) => {
     addAnimations(event, ref, contentId);
   }
@@ -110,9 +123,40 @@ export default function UserSideBarLeft() {
       setIsModalOpen(true);
     }
   }
+  const handleUserInfoPasswordSubmit = async () => {
+    try {
+      await reauthenticate(changeData.changeUserInfoPassword);
+
+      setIsModalOpen(false);
+      handleUserInfo();
+      handleDetailsClick(userInfoEvent, changeUserInfoRef, 'user-info');
+    } catch (error) {
+      setModalMessage('Wrong password');
+    }
+  }
+  const handleUserInfo = async () => {
+    try {
+      const { data } = await getUserInfo();
+      setIsUserInfoChanged(false);
+      setChangeData({
+        ...changeData,
+        name: data.name,
+        surName: data.surName,
+        userName: data.userName,
+        dateOfBirth: data.dateOfBirth
+      })
+    } catch (error) {
+      setChangeDataErrors({
+        ...changeDataErrors,
+        userInfo: error
+      })
+    }
+  }
   const handleUserInfoChange = (event) => {
     const { name, value } = event.target;
-    // console.log(name, value);
+    if (!isUserInfoChanged && (event.target.type === 'email' || event.target.type === 'password')) {
+      setIsUserInfoChanged(true);
+    }
     setChangeData({
       ...changeData,
       [name]: value
@@ -122,16 +166,6 @@ export default function UserSideBarLeft() {
         ...changeData,
         [name]: value
       }));
-  }
-  const handleUserInfoPasswordSubmit = async () => {
-    try {
-      await reauthenticate(changeData.changeUserInfoPassword);
-      
-      setIsModalOpen(false);
-      handleDetailsClick(userInfoEvent, changeUserInfoRef, 'user-info');
-    } catch (error) {
-      setModalMessage('Wrong password');
-    }
   }
   const handleUserInfoChangeSubmit = () => {
 
@@ -284,7 +318,7 @@ export default function UserSideBarLeft() {
       </div>
       <details id='changeUserInfoDetailsTag' ref={changeUserInfoRef} >
         <summary id='changeUserInfo' onClick={handleUserInfoChangeClick} >Change User Info</summary>
-        <div className='user-info' id='user-info' >
+        <div className='user-info-container' id='user-info' >
           <form onSubmit={handleUserInfoChangeSubmit} >
             <div className='user-info-input-label-container' >
               <label htmlFor='changeName' >Name</label>
@@ -330,9 +364,11 @@ export default function UserSideBarLeft() {
                 onChange={handleUserInfoChange} />
             </div>
             <p className={changeDataErrors.dateOfBirth ? '' : 'invisible'} >{changeDataErrors.dateOfBirth ? `${changeDataErrors.dateOfBirth}` : 'invisible'}</p>
+            <p className={changeDataErrors.userInfo ? '' : 'invisible'} >{changeDataErrors.userInfo ? `${changeDataErrors.userInfo}` : 'invisible'}</p>
             <button
               type='submit'
-              className='user-options-button' >
+              className='user-options-button'
+              disabled={!isUserInfoChanged || (!changeData.name && !changeData.surName && !changeData.userName && !changeData.dateOfBirth) || (changeDataErrors.name || changeDataErrors.surName || changeDataErrors.userName || changeDataErrors.dateOfBirth)} >
               Save
             </button>
           </form>
@@ -380,15 +416,17 @@ export default function UserSideBarLeft() {
           onClick={(event) => handleDetailsClick(event, changeEmailRef, 'change-email')} >
           Change Email</summary>
         <div className='change-email-container' id='change-email'>
-          <form onSubmit={handleUserEmailChangeSubmit}  >
+          <form autoComplete='off' onSubmit={handleUserEmailChangeSubmit}  >
             <div className='user-info-input-label-container' >
               <label>Current Email</label>
+              <input type="hidden" autoComplete="new-password" />
               <input
                 type='email'
                 key='changeEmailEmail'
                 id='changeEmailEmail'
-                name='email'
-                value={changeData.email}
+                name='currentEmail'
+                value={changeData.currentEmail}
+                autoComplete="off"
                 onChange={handleUserInfoChange} />
             </div>
             <div className='user-info-input-label-container' >
@@ -398,7 +436,7 @@ export default function UserSideBarLeft() {
                 key='changeEmailNew'
                 id='changeEmailNew'
                 name='email'
-                value={changeData.changeEmailNewEmail}
+                value={changeData.email}
                 onChange={handleUserInfoChange} />
             </div>
             <p className={changeDataErrors.email ? '' : 'invisible'} >{changeDataErrors.email ? `${changeDataErrors.email}` : 'invisible'}</p>
@@ -406,16 +444,17 @@ export default function UserSideBarLeft() {
               <label>Password</label>
               <input
                 type='password'
-                key='changeEmailPassword'
-                id='changeEmailPassword'
-                name='changeEmailPassword'
-                value={changeData.changeEmailPassword}
+                key='emailPassword'
+                id='emailPassword'
+                name='emailPassword'
+                value={changeData.emailPassword}
                 onChange={handleUserInfoChange} />
             </div>
-            <p className={changeDataErrors.changeEmailPassword ? '' : 'invisible'} >{changeDataErrors.changeEmailPassword ? `${changeDataErrors.changeEmailPassword}` : 'invisible'}</p>
+            <p className={changeDataErrors.emailPassword ? '' : 'invisible'} >{changeDataErrors.emailPassword ? `${changeDataErrors.emailPassword}` : 'invisible'}</p>
             <button
               type='submit'
-              className='user-options-button' >
+              className='user-options-button'
+              disabled={!changeData.currentEmail || !changeData.email || !changeData.emailPassword || changeDataErrors.currentEmail || changeDataErrors.email || changeDataErrors.emailPassword} >
               Save
             </button>
           </form>
@@ -426,20 +465,20 @@ export default function UserSideBarLeft() {
           id='changePassword'
           onClick={(event) => handleDetailsClick(event, changePasswordRef, 'change-password')} >
           Change Password
-          </summary>
+        </summary>
         <div className='change-password-container' id='change-password' >
           <form autoComplete='off' onSubmit={handleUserPasswordChangeSubmit} >
             <div className='user-info-input-label-container' >
               <label>Current Password</label>
               <input
                 type='password'
-                key='changePasswordPassword'
-                id='changePasswordPassword'
-                name='changePasswordPassword'
-                value={changeData.changePasswordPassword}
+                key='passwordPassword'
+                id='passwordPassword'
+                name='passwordPassword'
+                value={changeData.passwordPassword}
                 onChange={handleUserInfoChange} />
             </div>
-            <p className={changeDataErrors.changePasswordPassword ? '' : 'invisible'} >{changeDataErrors.changePasswordPassword ? `${changeDataErrors.changePasswordPassword}` : 'invisible'}</p>
+            <p className={changeDataErrors.passwordPassword ? '' : 'invisible'} >{changeDataErrors.passwordPassword ? `${changeDataErrors.passwordPassword}` : 'invisible'}</p>
             <div className='user-info-input-label-container' >
               <label>New Password</label>
               <input
@@ -464,7 +503,8 @@ export default function UserSideBarLeft() {
             <p className={changeDataErrors.repeatPassword ? '' : 'invisible'} >{changeDataErrors.repeatPassword ? `${changeDataErrors.repeatPassword}` : 'invisible'}</p>
             <button
               type='submit'
-              className='user-options-button' >
+              className='user-options-button'
+              disabled={!changeData.passwordPassword || !changeData.password || !changeData.repeatPassword || changeDataErrors.passwordPassword || changeDataErrors.password || changeDataErrors.repeatPassword} >
               Save
             </button>
           </form>

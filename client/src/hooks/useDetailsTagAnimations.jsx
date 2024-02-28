@@ -53,7 +53,6 @@ const useDetailsTagAnimations = () => {
       // const startHeight = `${detailsTag.offsetHeight}px`;
       const endHeight = `${content.offsetHeight}px`;
       const endMargin = `${content.offsetHeight + 20}px`;
-      console.log(endHeight, endMargin);
       newAnimation = content.animate(
         {
           height: [0, endHeight],
