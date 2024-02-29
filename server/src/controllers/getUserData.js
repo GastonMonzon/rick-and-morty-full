@@ -2,7 +2,7 @@ import auth from '../firebase.js';
 import { firestore } from '../firebase.js';
 import { doc, getDoc } from 'firebase/firestore';
 
-export default async function getUserInfo(request, response) {
+export default async function getUserData(request, response) {
   try {
     const user = auth.currentUser;
     if (user) {
@@ -12,7 +12,6 @@ export default async function getUserInfo(request, response) {
 
       if (snapshot.exists()) {
         const userData = snapshot.data();
-        console.log('User data:', userData);
         response.status(200).json(userData);
       } else {
         response.status(404).json({ message: 'User data not found.' });
@@ -22,6 +21,6 @@ export default async function getUserInfo(request, response) {
     }
   } catch (error) {
     console.error(error);
-    response.status(500).json({ error, message: 'Error getting user data' });
+    response.status(500).json({ error, message: 'Error getting user data.' });
   }
 }

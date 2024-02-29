@@ -250,7 +250,7 @@
 
 .image-right {
   position: relative;
-  z-index: -1;
+  /* z-index: -1; */
   width: 50%;
   height: fit-content;
 }
@@ -324,13 +324,17 @@
   height: 300px;
 }
 
-.image-threeCards-right,
-.image-threeCards-left {
+.image-threeCardsH-right,
+.image-threeCardsH-left,
+.image-threeCardsHF-right,
+.image-threeCardsHF-left {
   height: 200px;
 }
 
-.image-fourCards-right,
-.image-fourCards-left {
+.image-fourCardsH-right,
+.image-fourCardsH-left,
+.image-fourCardsHF-right,
+.image-fourCardsHF-left {
   height: 145px;
 }
 

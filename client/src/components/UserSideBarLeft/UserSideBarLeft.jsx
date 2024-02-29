@@ -35,26 +35,32 @@ import { changeBackground } from '../../redux/actions';
 import { useNavigate } from 'react-router';
 import dataValidation from '../../dataValidation.js';
 import useDetailsTagAnimations from '../../hooks/useDetailsTagAnimations.jsx';
+import PromptPasswordModal from '../PromptPasswordModal/PromptPasswordModal.jsx';
+import NotificationModal from '../NotificationModal/NotificationModal.jsx';
 
 export default function UserSideBarLeft() {
   const videoRef = useRef(null);
-  const changeUserInfoRef = useRef(null);
+  const changeUserDataRef = useRef(null);
   const homeBackgroundRef = useRef(null);
   const favoritesBackgroundRef = useRef(null);
   const detailBackgroundRef = useRef(null);
   const loadingScreenRef = useRef(null);
   const changeEmailRef = useRef(null);
   const changePasswordRef = useRef(null);
-  const { userOptions, getUserInfo, reauthenticate, logOut } = useAuth();
+  const deleteAccountRef = useRef(null);
+  const { userOptions, getUserData, changeUserData, changeEmail, changePassword, reauthenticate, logOut, deleteAccount } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [changeData, setChangeData] = useState({ changeUserInfoPassword: '', name: '', surName: '', userName: '', dateOfBirth: '', currentEmail: '', email: '', emailPassword: '', passwordPassword: '', password: '', repeatPassword: '' });
-  const [changeDataErrors, setChangeDataErrors] = useState({ changeUserInfoPassword: '', userInfo: '', name: '', surName: '', userName: '', dateOfBirth: '', currentEmail: '', email: '', emailPassword: '', passwordPassword: '', password: '', repeatPassword: '' });
+  const [changeData, setChangeData] = useState({ promptModalPassword: '', name: '', surName: '', userName: '', dateOfBirth: '', currentEmail: '', email: '', emailPassword: '', passwordPassword: '', password: '', repeatPassword: '' });
+  const [changeDataErrors, setChangeDataErrors] = useState({ promptModalPassword: '', userData: '', name: '', surName: '', userName: '', dateOfBirth: '', changeEmail: '', currentEmail: '', email: '', emailPassword: '', passwordPassword: '', password: '', repeatPassword: '' });
   const addAnimations = useDetailsTagAnimations();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
-  const [userInfoEvent, setUserInfoEvent] = useState({});
-  const [isUserInfoChanged, setIsUserInfoChanged] = useState(false);
+  const [isUserDataModalOpen, setIsUserDataModalOpen] = useState(false);
+  const [isNotificationModalOpen, setIsNotificatioModalOpen] = useState(false);
+  const [isDeletePromptModalOpen, setIsDeletePromptModalOpen] = useState(false);
+  const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState({ title: '', requiresInput: false, message: '', cancelButtonText: '', submitButtontext: '' });
+  const [userDataEvent, setUserDataEvent] = useState({});
+  const [isUserDataChanged, setIsUserDataChanged] = useState(false);
   const selectedHomeBackground = useSelector((state) => state.homeBackground);
   const selectedFavoritesBackground = useSelector((state) => state.favoritesBackground);
   const selectedDetailBackground = useSelector((state) => state.detailBackground);
@@ -96,13 +102,20 @@ export default function UserSideBarLeft() {
 
   useEffect(() => {
     setTimeout(() => {
-      const event = {
+      let event = {
         target: {
           name: 'currentEmail',
           value: ''
         }
       }
-      handleUserInfoChange(event);
+      handleUserDataChange(event);
+      event = {
+        target: {
+          name: 'emailPassword',
+          value: ''
+        }
+      }
+      handleUserDataChange(event);
     }, 1000);
   }, []);
 
@@ -113,49 +126,69 @@ export default function UserSideBarLeft() {
     const { name, alt } = event.target;
     dispatch(changeBackground({ name: name, alt: alt }))
   }
-  const handleUserInfoChangeClick = (event) => {
+  const handleUserDataChangeClick = (event) => {
     event.preventDefault();
-    const detailsTag = document.getElementById(`changeUserInfoDetailsTag`);
+    const detailsTag = document.getElementById(`changeUserDataDetailsTag`);
     if (detailsTag.open) {
-      handleDetailsClick(event, changeUserInfoRef, 'user-info');
+      handleDetailsClick(event, changeUserDataRef, 'user-data');
+      setChangeData({
+        ...changeData,
+        name: '',
+        surName: '',
+        userName: '',
+        dateOfBirth: ''
+      });
     } else {
-      setUserInfoEvent(event);
-      setIsModalOpen(true);
+      setUserDataEvent(event);
+      setModalMessage({
+        ...modalMessage,
+        title: 'User Data View Requires Password',
+        requiresInput: true,
+        cancelButtonText: 'Cancel',
+        submitButtontext: 'Submit'
+      });
+      setIsUserDataModalOpen(true);
     }
   }
-  const handleUserInfoPasswordSubmit = async () => {
+  const handleUserDataPasswordSubmit = async () => {
     try {
-      await reauthenticate(changeData.changeUserInfoPassword);
-
-      setIsModalOpen(false);
-      handleUserInfo();
-      handleDetailsClick(userInfoEvent, changeUserInfoRef, 'user-info');
+      await reauthenticate(changeData.promptModalPassword);
+      setIsUserDataModalOpen(false);
+      setChangeData({
+        ...changeData,
+        promptModalPassword: ''
+      });
+      handleUserData();
+      handleDetailsClick(userDataEvent, changeUserDataRef, 'user-data');
     } catch (error) {
-      setModalMessage('Wrong password');
+      setModalMessage({
+        ...modalMessage,
+        message: error.response.data.code
+      });
     }
   }
-  const handleUserInfo = async () => {
+  const handleUserData = async () => {
     try {
-      const { data } = await getUserInfo();
-      setIsUserInfoChanged(false);
+      const { data } = await getUserData();
+      setIsUserDataChanged(false);
       setChangeData({
         ...changeData,
         name: data.name,
         surName: data.surName,
         userName: data.userName,
         dateOfBirth: data.dateOfBirth
-      })
+      });
     } catch (error) {
       setChangeDataErrors({
         ...changeDataErrors,
-        userInfo: error
-      })
+        userData: error.response.data.code
+      });
     }
   }
-  const handleUserInfoChange = (event) => {
+  const handleUserDataChange = (event) => {
     const { name, value } = event.target;
-    if (!isUserInfoChanged && (event.target.type === 'email' || event.target.type === 'password')) {
-      setIsUserInfoChanged(true);
+    if (!isUserDataChanged && (event.target.type !== 'email' || event.target.type !== 'password')) {
+      setIsUserDataChanged(true);
     }
     setChangeData({
       ...changeData,
@@ -167,14 +200,75 @@ export default function UserSideBarLeft() {
         [name]: value
       }));
   }
-  const handleUserInfoChangeSubmit = () => {
-
+  const handleUserDataChangeSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const userData = {
+        name: changeData.name,
+        surName: changeData.surName,
+        userName: changeData.userName,
+        dateOfBirth: changeData.dateOfBirth
+      }
+      await changeUserData(userData);
+      setIsUserDataChanged(false);
+      setModalMessage({
+        ...modalMessage,
+        title: 'Success',
+        message: 'User Data Changed Succesfully'
+      });
+      setIsNotificatioModalOpen(true);
+    } catch (error) {
+      setChangeDataErrors({
+        ...changeDataErrors,
+        userData: error.response.data.code
+      });
+    }
   }
-  const handleUserEmailChangeSubmit = () => {
-
+  const handleUserEmailChangeSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await changeEmail(changeData.email, changeData.emailPassword);
+      setChangeData({
+        ...changeData,
+        email: '',
+        emailPassword: '',
+        password: ''
+      });
+      setModalMessage({
+        ...modalMessage,
+        title: 'Success',
+        message: 'Email Changed Succesfully'
+      });
+      setIsNotificatioModalOpen(true);
+    } catch (error) {
+      setChangeDataErrors({
+        ...changeDataErrors,
+        changeEmail: error.response.data.code
+      });
+    }
   }
-  const handleUserPasswordChangeSubmit = () => {
-
+  const handleUserPasswordChangeSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await changePassword(changeData.passwordPassword, changeData.password, changeData.repeatPassword);
+      setChangeData({
+        ...changeData,
+        passwordPassword: '',
+        password: '',
+        repeatPassword: ''
+      });
+      setModalMessage({
+        ...modalMessage,
+        title: 'Success',
+        message: 'Password Changed Succesfully'
+      });
+      setIsNotificatioModalOpen(true);
+    } catch (error) {
+      setChangeDataErrors({
+        ...changeDataErrors,
+        changePassword: error.response.data.error.code
+      });
+    }
   }
   const handleLogOut = () => {
     try {
@@ -184,8 +278,56 @@ export default function UserSideBarLeft() {
       console.log(error);
     }
   }
+  const handleDeleteAccountDetailsClick = () => {
+    setModalMessage({
+      ...modalMessage,
+      title: 'Deleting Account Requires Password',
+      requiresInput: true,
+      cancelButtonText: 'Cancel',
+      submitButtontext: 'Submit'
+    });
+    setIsDeletePromptModalOpen(true);
+  }
+  const handleDeleteAccountPasswordSubmit = async () => {
+    try {
+      await reauthenticate(changeData.promptModalPassword);
+      setIsDeletePromptModalOpen(false);
+      setChangeData({
+        ...changeData,
+        promptModalPassword: ''
+      });
+      setModalMessage({
+        ...modalMessage,
+        title: 'Are You Sure You Want To Delete Your Account?',
+        message: 'All your user data and options will be erased and your user signed out. You d\' be required to reregister to enter again',
+        requiresInput: false,
+        cancelButtonText: 'No',
+        submitButtontext: 'Yes, Delete'
+      });
+      setIsDeleteConfirmationModalOpen(true);
+    } catch (error) {
+      setModalMessage({
+        ...modalMessage,
+        message: error.response.data.code
+      });
+    }
+  }
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteAccount();
+      setIsDeleteConfirmationModalOpen(false);
+    } catch (error) {
+      setChangeDataErrors({
+        ...changeDataErrors,
+        changePassword: error.response.data.code
+      });
+    }
+  }
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    setIsNotificatioModalOpen(false);
+    setIsUserDataModalOpen(false);
+    setIsDeletePromptModalOpen(false);
+    setIsDeleteConfirmationModalOpen(false);
   }
 
   return (
@@ -316,11 +458,11 @@ export default function UserSideBarLeft() {
           </div>
         </details>
       </div>
-      <details id='changeUserInfoDetailsTag' ref={changeUserInfoRef} >
-        <summary id='changeUserInfo' onClick={handleUserInfoChangeClick} >Change User Info</summary>
-        <div className='user-info-container' id='user-info' >
-          <form onSubmit={handleUserInfoChangeSubmit} >
-            <div className='user-info-input-label-container' >
+      <details id='changeUserDataDetailsTag' ref={changeUserDataRef} >
+        <summary id='changeUserData' onClick={handleUserDataChangeClick} >Change User Data</summary>
+        <div className='user-data-container' id='user-data' >
+          <form onSubmit={handleUserDataChangeSubmit} >
+            <div className='user-data-input-label-container' >
               <label htmlFor='changeName' >Name</label>
               <input
                 type='text'
@@ -328,10 +470,10 @@ export default function UserSideBarLeft() {
                 id='changeName'
                 name='name'
                 value={changeData.name}
-                onChange={handleUserInfoChange} />
+                onChange={handleUserDataChange} />
             </div>
             <p className={changeDataErrors.name ? '' : 'invisible'} >{changeDataErrors.name ? `${changeDataErrors.name}` : 'invisible'}</p>
-            <div className='user-info-input-label-container' >
+            <div className='user-data-input-label-container' >
               <label htmlFor='changeSurName' >Surname</label>
               <input
                 type='text'
@@ -339,10 +481,10 @@ export default function UserSideBarLeft() {
                 id='changeSurName'
                 name='surName'
                 value={changeData.surName}
-                onChange={handleUserInfoChange} />
+                onChange={handleUserDataChange} />
             </div>
             <p className={changeDataErrors.surName ? '' : 'invisible'} >{changeDataErrors.surName ? `${changeDataErrors.surName}` : 'invisible'}</p>
-            <div className='user-info-input-label-container' >
+            <div className='user-data-input-label-container' >
               <label htmlFor='changeUserName' >Username</label>
               <input
                 type='text'
@@ -350,10 +492,10 @@ export default function UserSideBarLeft() {
                 id='changeUserName'
                 name='userName'
                 value={changeData.userName}
-                onChange={handleUserInfoChange} />
+                onChange={handleUserDataChange} />
             </div>
             <p className={changeDataErrors.userName ? '' : 'invisible'} >{changeDataErrors.userName ? `${changeDataErrors.userName}` : 'invisible'}</p>
-            <div className='user-info-input-label-container' >
+            <div className='user-data-input-label-container' >
               <label htmlFor='changeDateOfBirth' >Date Of Birth</label>
               <input
                 type='date'
@@ -361,65 +503,28 @@ export default function UserSideBarLeft() {
                 id='changeDateOfBirth'
                 name='dateOfBirth'
                 value={changeData.dateOfBirth}
-                onChange={handleUserInfoChange} />
+                onChange={handleUserDataChange} />
             </div>
             <p className={changeDataErrors.dateOfBirth ? '' : 'invisible'} >{changeDataErrors.dateOfBirth ? `${changeDataErrors.dateOfBirth}` : 'invisible'}</p>
-            <p className={changeDataErrors.userInfo ? '' : 'invisible'} >{changeDataErrors.userInfo ? `${changeDataErrors.userInfo}` : 'invisible'}</p>
+            <p className={changeDataErrors.userData ? '' : 'invisible'} >{changeDataErrors.userData ? `${changeDataErrors.userData}` : 'invisible'}</p>
             <button
               type='submit'
               className='user-options-button'
-              disabled={!isUserInfoChanged || (!changeData.name && !changeData.surName && !changeData.userName && !changeData.dateOfBirth) || (changeDataErrors.name || changeDataErrors.surName || changeDataErrors.userName || changeDataErrors.dateOfBirth)} >
+              disabled={!isUserDataChanged || (!changeData.name && !changeData.surName && !changeData.userName && !changeData.dateOfBirth) || (changeDataErrors.name || changeDataErrors.surName || changeDataErrors.userName || changeDataErrors.dateOfBirth)} >
               Save
             </button>
           </form>
         </div>
       </details>
-      {isModalOpen && (
-        <div className='modal-overlay'>
-          <div className='modal'>
-            <div className='modal-content'>
-              <h3>User Info View Requires Password</h3>
-              <br />
-              <div className='user-info-input-label-container' >
-                <label htmlFor='changeUserInfoPassword'>Input Password</label>
-                <input
-                  type='password'
-                  key='changeUserInfoPassword'
-                  id='changeUserInfoPassword'
-                  name='changeUserInfoPassword'
-                  value={changeData.changeUserInfoPassword}
-                  onChange={handleUserInfoChange}
-                />
-              </div>
-              <h6>{modalMessage}</h6>
-              <br />
-              <div className='modal-button-container' >
-                <button
-                  className='modal-cancel-button'
-                  onClick={handleCloseModal} >
-                  Cancel
-                </button>
-                <button
-                  className='modal-submit-button'
-                  onClick={handleUserInfoPasswordSubmit}
-                  disabled={!changeData.changeUserInfoPassword || changeDataErrors.changeUserInfoPassword} >
-                  Submit
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
       <details id='changeEmailDetailsTag' ref={changeEmailRef} >
         <summary
           id='changeEmail'
           onClick={(event) => handleDetailsClick(event, changeEmailRef, 'change-email')} >
           Change Email</summary>
         <div className='change-email-container' id='change-email'>
-          <form autoComplete='off' onSubmit={handleUserEmailChangeSubmit}  >
-            <div className='user-info-input-label-container' >
+          <form onSubmit={handleUserEmailChangeSubmit}  >
+            <div className='user-data-input-label-container' >
               <label>Current Email</label>
-              <input type="hidden" autoComplete="new-password" />
               <input
                 type='email'
                 key='changeEmailEmail'
@@ -427,9 +532,9 @@ export default function UserSideBarLeft() {
                 name='currentEmail'
                 value={changeData.currentEmail}
                 autoComplete="off"
-                onChange={handleUserInfoChange} />
+                onChange={handleUserDataChange} />
             </div>
-            <div className='user-info-input-label-container' >
+            <div className='user-data-input-label-container' >
               <label>New Email</label>
               <input
                 type='email'
@@ -437,10 +542,10 @@ export default function UserSideBarLeft() {
                 id='changeEmailNew'
                 name='email'
                 value={changeData.email}
-                onChange={handleUserInfoChange} />
+                onChange={handleUserDataChange} />
             </div>
             <p className={changeDataErrors.email ? '' : 'invisible'} >{changeDataErrors.email ? `${changeDataErrors.email}` : 'invisible'}</p>
-            <div className='user-info-input-label-container' >
+            <div className='user-data-input-label-container' >
               <label>Password</label>
               <input
                 type='password'
@@ -448,12 +553,14 @@ export default function UserSideBarLeft() {
                 id='emailPassword'
                 name='emailPassword'
                 value={changeData.emailPassword}
-                onChange={handleUserInfoChange} />
+                onChange={handleUserDataChange} />
             </div>
             <p className={changeDataErrors.emailPassword ? '' : 'invisible'} >{changeDataErrors.emailPassword ? `${changeDataErrors.emailPassword}` : 'invisible'}</p>
+            <p className={changeDataErrors.changeEmail ? '' : 'invisible'} >{changeDataErrors.changeEmail ? `${changeDataErrors.changeEmail}` : 'invisible'}</p>
             <button
               type='submit'
               className='user-options-button'
+              onClick={handleUserEmailChangeSubmit}
               disabled={!changeData.currentEmail || !changeData.email || !changeData.emailPassword || changeDataErrors.currentEmail || changeDataErrors.email || changeDataErrors.emailPassword} >
               Save
             </button>
@@ -468,7 +575,7 @@ export default function UserSideBarLeft() {
         </summary>
         <div className='change-password-container' id='change-password' >
           <form autoComplete='off' onSubmit={handleUserPasswordChangeSubmit} >
-            <div className='user-info-input-label-container' >
+            <div className='user-data-input-label-container' >
               <label>Current Password</label>
               <input
                 type='password'
@@ -476,10 +583,10 @@ export default function UserSideBarLeft() {
                 id='passwordPassword'
                 name='passwordPassword'
                 value={changeData.passwordPassword}
-                onChange={handleUserInfoChange} />
+                onChange={handleUserDataChange} />
             </div>
             <p className={changeDataErrors.passwordPassword ? '' : 'invisible'} >{changeDataErrors.passwordPassword ? `${changeDataErrors.passwordPassword}` : 'invisible'}</p>
-            <div className='user-info-input-label-container' >
+            <div className='user-data-input-label-container' >
               <label>New Password</label>
               <input
                 type='password'
@@ -487,10 +594,10 @@ export default function UserSideBarLeft() {
                 id='changePasswordNew'
                 name='password'
                 value={changeData.password}
-                onChange={handleUserInfoChange} />
+                onChange={handleUserDataChange} />
             </div>
             <p className={changeDataErrors.password ? '' : 'invisible'} >{changeDataErrors.password ? `${changeDataErrors.password}` : 'invisible'}</p>
-            <div className='user-info-input-label-container' >
+            <div className='user-data-input-label-container' >
               <label>Repeat New Password</label>
               <input
                 type='password'
@@ -498,9 +605,10 @@ export default function UserSideBarLeft() {
                 id='changePasswordNewRepeat'
                 name='repeatPassword'
                 value={changeData.repeatPassword}
-                onChange={handleUserInfoChange} />
+                onChange={handleUserDataChange} />
             </div>
             <p className={changeDataErrors.repeatPassword ? '' : 'invisible'} >{changeDataErrors.repeatPassword ? `${changeDataErrors.repeatPassword}` : 'invisible'}</p>
+            <p className={changeDataErrors.changePassword ? '' : 'invisible'} >{changeDataErrors.changePassword ? `${changeDataErrors.changePassword}` : 'invisible'}</p>
             <button
               type='submit'
               className='user-options-button'
@@ -510,12 +618,33 @@ export default function UserSideBarLeft() {
           </form>
         </div>
       </details>
+      <details id='deleteAccountDetailsTag' ref={deleteAccountRef} >
+        <summary
+          id='deleteAccount'
+          onClick={(event) => handleDetailsClick(event, deleteAccountRef, 'delete-account')} >
+          Delete Account
+        </summary>
+        <div className='change-password-container' id='delete-account' >
+          <button
+            className='user-options-button'
+            onClick={handleDeleteAccountDetailsClick} >
+            Delete
+          </button>
+        </div>
+      </details>
       <button
         className='user-options-button'
         onClick={handleLogOut} >
         Log Out
       </button>
       <br /><br />
+      {isUserDataModalOpen && <PromptPasswordModal requiresInput={modalMessage.requiresInput} title={modalMessage.title} errorMessage={modalMessage.message} inputName='promptModalPassword' inputValue={changeData.promptModalPassword} handleChange={handleUserDataChange} validationMessage={changeDataErrors.promptModalPassword} handleCloseModal={handleCloseModal} handleSubmit={handleUserDataPasswordSubmit} cancelButtonText={modalMessage.cancelButtonText} submitButtontext={modalMessage.submitButtontext} />}
+
+      {isDeletePromptModalOpen && <PromptPasswordModal requiresInput={modalMessage.requiresInput} title={modalMessage.title} errorMessage={modalMessage.message} inputName='promptModalPassword' inputValue={changeData.promptModalPassword} handleChange={handleUserDataChange} validationMessage={changeDataErrors.promptModalPassword} handleCloseModal={handleCloseModal} handleSubmit={handleDeleteAccountPasswordSubmit} cancelButtonText={modalMessage.cancelButtonText} submitButtontext={modalMessage.submitButtontext} />}
+
+      {isDeleteConfirmationModalOpen && <PromptPasswordModal requiresInput={modalMessage.requiresInput} title={modalMessage.title} errorMessage={modalMessage.message} inputName='promptModalPassword' inputValue={changeData.promptModalPassword} handleChange={handleUserDataChange} validationMessage={changeDataErrors.promptModalPassword} handleCloseModal={handleCloseModal} handleSubmit={handleDeleteAccount} cancelButtonText={modalMessage.cancelButtonText} submitButtontext={modalMessage.submitButtontext} />}
+
+      {isNotificationModalOpen && <NotificationModal title={modalMessage.title} message={modalMessage.message} buttonClassname='user-options-button' handleCloseModal={handleCloseModal} />}
     </div>
   )
 }

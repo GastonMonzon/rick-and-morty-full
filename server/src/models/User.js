@@ -27,7 +27,7 @@ const getUserModel =  (sequelize) => {
       defaultValue: true
     },
     favorites: {
-      type: DataTypes.ARRAY(DataTypes.JSONB),
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
       allowNull: true
     },
     homeBackground: {

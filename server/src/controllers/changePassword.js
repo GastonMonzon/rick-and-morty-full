@@ -1,9 +1,10 @@
 import auth from '../firebase.js';
+import { EmailAuthProvider, reauthenticateWithCredential, updatePassword  } from 'firebase/auth';
 
 export default async function changePassword(request, response) {
   try {
     const { currentPassword, newPassword } = request.body;
-    const user = await auth().currentUser;
+    const user = auth.currentUser;
     if (!user) {
       return response.status(401).json({ message: 'No user is currently signed in.' });
     }
@@ -11,11 +12,12 @@ export default async function changePassword(request, response) {
     if (!email) {
       return response.status(400).json({ message: 'User email is not available.' });
     }
-    const credential = await auth.EmailAuthProvider.credential(email, currentPassword);
-    await user.reauthenticateWithCredential(credential);
-    await user.updatePassword(newPassword);
+    const credential = EmailAuthProvider.credential(email, currentPassword);
+    await reauthenticateWithCredential(user, credential);
+    await updatePassword(user, newPassword);
     response.status(200).json({ message: 'Password change successful' });
   } catch (error) {
+    console.error(error);
     response.status(500).send({ error, message: 'Error changing password' });
   }
 }

@@ -6,7 +6,6 @@ export default async function getUserChange(request, response) {
     const unsubscribe = onAuthStateChanged(auth, user => {
       return user;
     })
-    console.log(unsubscribe);
     response.status(200).json(unsubscribe);
   } catch (error) {
     console.error(error);

@@ -6,6 +6,7 @@ export default async function getEpisodes(request, response) {
         const episodes = await Episode.findAll();
         response.status(200).json(episodes);
     } catch (error) {
-        response.status(404).send({error, message: 'Error getting all episodes'});
+    console.error(error);
+    response.status(404).send({error, message: 'Error getting all episodes'});
     }
 }

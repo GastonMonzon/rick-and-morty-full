@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.js';
 import { useDispatch } from 'react-redux';
 import { setAllValues } from '../../redux/actions.js';
+import NotificationModal from '../NotificationModal/NotificationModal.jsx';
 
 export default function LoginRegister() {
   const { createUser, logIn } = useAuth();
@@ -50,7 +51,7 @@ export default function LoginRegister() {
     event.preventDefault();
     try {
       const response = await createUser(registerData);
-      setModalMessage({ title: 'Success', message: response.data.message});
+      setModalMessage({ title: 'Success', message: response.data.message });
       setIsModalOpen(true);
       setLoginData({ email: registerData.email, password: registerData.password });
       setLoginErrors({ email: '', password: '' });
@@ -68,7 +69,7 @@ export default function LoginRegister() {
       dispatch(setAllValues(user));
       navigate('/home');
     } catch (error) {
-      setModalMessage({ title: 'Error', name: error.response.data.code });
+      setModalMessage({ title: 'Error', message: error.response.data.code });
       setIsModalOpen(true);
     }
   }
@@ -214,19 +215,12 @@ export default function LoginRegister() {
           </button>
         </form>
       </div>
-      {isModalOpen && (
-        <div className='modal-overlay'>
-          <div className='modal'>
-            <div className='modal-content'>
-              <h3>{modalMessage.title}</h3>
-              <br />
-              <h6>{modalMessage.message}</h6>
-              <br />
-              <button className='modal-button' onClick={handleCloseModal}>Accept</button>
-            </div>
-          </div>
-        </div>
-      )}
+      {isModalOpen &&
+        <NotificationModal
+          title={modalMessage.title}
+          message={modalMessage.message}
+          buttonClassname='modal-login-button'
+          handleCloseModal={handleCloseModal} />}
     </div>
   )
 }

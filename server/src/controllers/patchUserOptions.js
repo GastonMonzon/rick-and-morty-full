@@ -8,6 +8,7 @@ export default async function patchUserOptions(request, response) {
     
     response.status(201).json({updatedDog,  message: 'User options updated succesfully' });
   } catch (error) {
+    console.error(error);
     response.status(404).send({ error, message: 'Error at updating user options'});
   }
 }

@@ -8,6 +8,7 @@ export default async function getCharacterByRandomId(request, response) {
     const randomCharacter = characters[randomNumber];
     response.status(200).json(randomCharacter);
   } catch (error) {
+    console.error(error);
     response.status(500).send({ error, message: 'Error at searching character by random id'});
   }
 }

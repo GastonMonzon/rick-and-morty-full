@@ -1,5 +1,5 @@
 import './Card.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFav, filter, query, removeFav } from '../../redux/actions';
 import { useEffect, useState } from 'react';
@@ -7,22 +7,76 @@ import { useEffect, useState } from 'react';
 export default function Card(props) {
   const { id, name, status, species, type, gender, origin_name, location_name, image } = props;
   const [isFav, setIsFav] = useState(false);
+  const { pathname } = useLocation();
+  const isFavoritesTogether = useSelector((state) => state.isFavoritesTogether);
   const myFavorites = useSelector((state) => state.allFavorites);
-  const searchQuery = useSelector((state) => state.searchQueryFavorites);
-  const idView = useSelector((state) => state.cardCheckboxOptions[0].value);
-  const nameView = useSelector((state) => state.cardCheckboxOptions[1].value);
-  const statusView = useSelector((state) => state.cardCheckboxOptions[2].value);
-  const speciesView = useSelector((state) => state.cardCheckboxOptions[3].value);
-  const typeView = useSelector((state) => state.cardCheckboxOptions[4].value);
-  const genderView = useSelector((state) => state.cardCheckboxOptions[5].value);
-  const originView = useSelector((state) => state.cardCheckboxOptions[6].value);
-  const locationView = useSelector((state) => state.cardCheckboxOptions[7].value);
-  const verticalCardsPerRow = useSelector(state => state.cardRadioOptions[0].value);
-  const horizontalCardsPerRow = useSelector(state => state.cardRadioOptions[1].value);
-  const infoLabelsPosition = useSelector((state) => state.cardRadioOptions[2].value);
-  const textPositionX = useSelector((state) => state.cardRadioOptions[3].value);
-  const textPositionY = useSelector((state) => state.cardRadioOptions[4].value);
+  const searchQueryFavorites = useSelector((state) => state.searchQueryFavorites);
   const favoritesIcon = useSelector((state) => state.favoritesIcon);
+  const idView = useSelector((state) =>
+    (pathname === '/home' || isFavoritesTogether)
+      ? state.cardCheckboxOptions[0].value
+      : state.cardCheckboxOptions[0].valueF
+  );
+  const nameView = useSelector((state) =>
+    (pathname === '/home' || isFavoritesTogether)
+      ? state.cardCheckboxOptions[1].value
+      : state.cardCheckboxOptions[1].valueF
+  );
+  const statusView = useSelector((state) =>
+    (pathname === '/home' || isFavoritesTogether)
+      ? state.cardCheckboxOptions[2].value
+      : state.cardCheckboxOptions[2].valueF
+  );
+  const speciesView = useSelector((state) =>
+    (pathname === '/home' || isFavoritesTogether)
+      ? state.cardCheckboxOptions[3].value
+      : state.cardCheckboxOptions[3].valueF
+  );
+  const typeView = useSelector((state) =>
+    (pathname === '/home' || isFavoritesTogether)
+      ? state.cardCheckboxOptions[4].value
+      : state.cardCheckboxOptions[4].valueF
+  );
+  const genderView = useSelector((state) =>
+    (pathname === '/home' || isFavoritesTogether)
+      ? state.cardCheckboxOptions[5].value
+      : state.cardCheckboxOptions[5].valueF
+  );
+  const originView = useSelector((state) =>
+    (pathname === '/home' || isFavoritesTogether)
+      ? state.cardCheckboxOptions[6].value
+      : state.cardCheckboxOptions[6].valueF
+  );
+  const locationView = useSelector((state) =>
+    (pathname === '/home' || isFavoritesTogether)
+      ? state.cardCheckboxOptions[7].value
+      : state.cardCheckboxOptions[7].valueF
+  );
+  const verticalCardsPerRow = useSelector((state) =>
+    (pathname === '/home' || isFavoritesTogether)
+      ? state.cardRadioOptions[0].value
+      : state.cardRadioOptions[0].valueF
+  );
+  const horizontalCardsPerRow = useSelector((state) =>
+    (pathname === '/home' || isFavoritesTogether)
+      ? state.cardRadioOptions[1].value
+      : state.cardRadioOptions[1].valueF
+  );
+  const infoLabelsPosition = useSelector((state) =>
+    (pathname === '/home' || isFavoritesTogether)
+      ? state.cardRadioOptions[2].value
+      : state.cardRadioOptions[2].valueF
+  );
+  const textPositionX = useSelector((state) =>
+    (pathname === '/home' || isFavoritesTogether)
+      ? state.cardRadioOptions[3].value
+      : state.cardRadioOptions[3].valueF
+  );
+  const textPositionY = useSelector((state) =>
+    (pathname === '/home' || isFavoritesTogether)
+      ? state.cardRadioOptions[4].value
+      : state.cardRadioOptions[4].valueF
+  );
   const dispatch = useDispatch();
   let cardsPerRow;
   if (infoLabelsPosition === 'left' || infoLabelsPosition === 'right') {
@@ -42,13 +96,11 @@ export default function Card(props) {
     if (isFav) {
       setIsFav(false);
       dispatch(removeFav(id));
-      dispatch(query({ query: searchQuery, isHome: false }));
-      dispatch(filter({ name: '', value: '', isHome: false }))
       console.log(myFavorites);
     } else {
       setIsFav(true);
       dispatch(addFav(props));
-      dispatch(query({ query: searchQuery, isHome: false }));
+      dispatch(query({ query: searchQueryFavorites, isHome: false }));
       dispatch(filter({ name: '', value: '', isHome: false }))
       console.log(myFavorites);
     }

@@ -7,6 +7,7 @@ export default async function getCharacterById(request, response) {
     const character = await Character.findByPk(id, { include: Episode });
     response.status(200).json(character);
   } catch (error) {
+    console.error(error);
     response.status(500).send({error, message: 'Error at getting character by id'});
   }
 }

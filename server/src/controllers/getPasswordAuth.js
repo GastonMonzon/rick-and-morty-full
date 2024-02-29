@@ -12,7 +12,7 @@ export default async function getPasswordAuth(request, response) {
     if (!email) {
       return response.status(400).json({ message: 'User email is not available.' });
     }
-    const credential = EmailAuthProvider.credential(user.email, password);
+    const credential = EmailAuthProvider.credential(email, password);
     const result = await reauthenticateWithCredential(auth.currentUser, credential)
     response.status(200).send(result);
   } catch (error) {

@@ -55,8 +55,8 @@ const initialState = {
   filteredCards: [],
   randomizedCards: [],
   queriedCards: [],
-  autoSaveSearch: true,
-  autoSaveFilters: true,
+  autoSaveSearch: false,
+  autoSaveFilters: false,
   autoSaveOptions: true,
   searchQuery: '',
   selectedFilters: [],
@@ -95,6 +95,9 @@ const reducer = (state = initialState, action) => {
       };
     case SET_VALUES: {
       const userOptions = action.payload;
+      const favorites = userOptions.favorites !== null 
+      ? userOptions.favorites.map((favorite) => state.allCards.find((card) => card.id === favorite))
+      : [];
       return {
         ...state,
         autoSaveSearch: userOptions.autoSaveSearch,
@@ -110,7 +113,7 @@ const reducer = (state = initialState, action) => {
         cardCheckboxOptions: generateCardOptions(cardOptions, false),
         detailCheckboxOptions: generateCardOptions(detailOptions, false),
         favoritesIcon: ['🤍', '❤️'],
-        allFavorites: userOptions.favorites === null ? [] : userOptions.favorites,
+        allFavorites: favorites,
         filteredFavorites: [],
         randomizedFavorites: [],
         queriedFavorites: [],

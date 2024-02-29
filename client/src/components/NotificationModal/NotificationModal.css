@@ -1,0 +1,40 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 25;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(3px);
+  border-radius: 20px;
+  padding: 20px 30px;
+  width: 30%;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.modal-login-button {
+  color: rgb(0, 0, 0);
+  background-color: rgb(255, 255, 255);
+  box-shadow: 3px 3px 0px 0px rgb(51, 0, 255);
+  border-color: rgb(51, 0, 255);
+}
+
+.modal-login-button:hover {
+  color: rgb(0, 255, 136);
+  border-color: rgb(0, 255, 136);
+  outline-color: rgb(0, 255, 136);
+}

@@ -11,8 +11,7 @@
 }
 
 .login-container,
-.register-container,
-.modal {
+.register-container {
   background-color: rgba(0, 179, 255, 0.3);
   box-shadow: 10px 10px 5px 0px rgba(0, 179, 255, 0.2);
   backdrop-filter: blur(3px);
@@ -141,39 +140,4 @@ form p {
   color: rgb(0, 0, 0);
   background-color: rgb(255, 255, 255);
   visibility: visible;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.1);
-  z-index: 25;
-}
-
-.modal {
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 20px 30px;
-}
-
-.modal-content {
-  text-align: center;
-}
-
-.modal-button {
-  color: rgb(0, 0, 0);
-  background-color: rgb(255, 255, 255);
-  box-shadow: 3px 3px 0px 0px rgb(51, 0, 255);
-  border-color: rgb(51, 0, 255);
-}
-
-.modal-button:hover {
-  color: rgb(0, 255, 136);
-  border-color: rgb(0, 255, 136);
-  outline-color: rgb(0, 255, 136);
 }

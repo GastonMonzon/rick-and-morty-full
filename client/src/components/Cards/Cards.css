@@ -6,13 +6,16 @@
     margin-top: 200px;
 }
 
-.twoCards {
+.twoCards,
+.twoCardsH {
     grid-template-columns: repeat(2, 1fr);
 }
-.threeCards {
+.threeCards,
+.threeCardsH {
     grid-template-columns: repeat(3, 1fr);
 }
-.fourCards {
+.fourCards,
+.fourCardsH {
     grid-template-columns: repeat(4, 1fr);
 }
 .fiveCards {

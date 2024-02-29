@@ -6,15 +6,15 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [userOptions, setUserOptions] = useState('');
 
-  useEffect(() => {
-    (async function onAuthStateChanged() {
-      try {
-        await axios.get('http://localhost:3001/user/change');
-      } catch (error) {
-        console.error('Error fetching userInfo:', error);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async function onAuthStateChanged() {
+  //     try {
+  //       await axios('http://localhost:3001/user/change');
+  //     } catch (error) {
+  //       console.error('Error fetching userInfo:', error);
+  //     }
+  //   })();
+  // }, []);
 
   async function createUser(registerData) {
     try {
@@ -32,6 +32,13 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   }
+  const getUserData = async (password) => {
+    try {
+      return await axios('http://localhost:3001/userData', { password });
+    } catch (error) {
+      throw error;
+    }
+  }
   const reauthenticate = async (password) => {
     try {
       await axios.post('http://localhost:3001/user/auth', { password });
@@ -39,36 +46,51 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   }
-  const getUserInfo = async (password) => {
+  const changeUserData = async (userData) => {
     try {
-      return await axios.get('http://localhost:3001/userInfo');
+      await axios.post('http://localhost:3001/userData', userData);
+    } catch (error) {
+      throw error;
+    }
+  }
+  const saveUserOptions = async (userOptions) => {
+    try {
+      await axios.patch('http://localhost:3001/userOptions', userOptions);
     } catch (error) {
       throw error;
     }
   }
   const changeEmail = async (email, password) => {
     try {
-      return await axios.post('http://localhost:3001/user/changeEmail', { email, password });
+      await axios.post('http://localhost:3001/user/changeEmail', { email, password });
     } catch (error) {
       throw error;
     }
   }
   const changePassword = async (currentPassword, newPassword) => {
     try {
-      return await axios.post('http://localhost:3001/user/changePassword', { currentPassword, newPassword });
+      await axios.post('http://localhost:3001/user/changePassword', { currentPassword, newPassword });
     } catch (error) {
       throw error;
     }
   }
   const logOut = async () => {
     try {
-      await axios.get('http://localhost:3001/user/logout');
+      await axios('http://localhost:3001/user/logout');
       setUserOptions('');
     } catch (error) {
       throw error;
     }
   }
-  const authContextValue = { userOptions, createUser, reauthenticate, getUserInfo, logIn, changeEmail, changePassword, logOut };
+  const deleteAccount = async () => {
+    try {
+      await axios.delete('http://localhost:3001/user');
+      setUserOptions('');
+    } catch (error) {
+      throw error;
+    }
+  }
+  const authContextValue = { userOptions, createUser, reauthenticate, getUserData, logIn, changeUserData, saveUserOptions, changeEmail, changePassword, logOut, deleteAccount };
   return (
     <AuthContext.Provider value={authContextValue}>
       {children}
