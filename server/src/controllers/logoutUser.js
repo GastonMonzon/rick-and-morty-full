@@ -7,6 +7,6 @@ export default async function logoutUser(request, response) {
     response.status(200).json({ message: 'Logout successful' });
   } catch (error) {
     console.error(error);
-    response.status(500).json({ error, message: 'Error logging out' });
+    response.status(500).json({ error, message: 'Error logging out of firebase' });
   }
 }

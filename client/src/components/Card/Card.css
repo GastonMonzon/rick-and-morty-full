@@ -15,41 +15,44 @@
   font-family: neuropolitical;
 }
 
-.container-above {
+.container-above,
+.container-aboveF {
   display: grid;
   grid-template-rows: auto auto;
   height: fit-content;
 }
 
-.container-right {
+.container-right,
+.container-rightF {
   display: flex;
   flex-direction: column;
 }
 
-.container-left {
+.container-left,
+.container-leftF {
   display: inline;
 }
 
 .container-twoCardsH-right,
 .container-twoCardsH-left,
-.container-twoCardsHF-right,
-.container-twoCardsHF-left {
+.container-twoCardsHF-rightF,
+.container-twoCardsHF-leftF {
   width: 600px;
   height: 300px;
 }
 
 .container-threeCardsH-right,
 .container-threeCardsH-left,
-.container-threeCardsHF-right,
-.container-threeCardsHF-left {
+.container-threeCardsHF-rightF,
+.container-threeCardsHF-leftF {
   width: 400px;
   height: 200px;
 }
 
 .container-fourCardsH-right,
 .container-fourCardsH-left,
-.container-fourCardsHF-right,
-.container-fourCardsHF-left {
+.container-fourCardsHF-rightF,
+.container-fourCardsHF-leftF {
   height: 148px;
 }
 
@@ -58,7 +61,8 @@
   color: inherit;
 }
 
-.card-over {
+.card-over,
+.card-overF {
   position: absolute;
   top: 0%;
   left: 0%;
@@ -67,123 +71,155 @@
   text-shadow: 1px 1px 0.5px rgb(0, 0, 0);
 }
 
-.card-over h2 {
+.card-over h2,
+.card-overF h2 {
   width: 100%;
   text-shadow: inherit;
 
 }
 
 .card-above,
-.card-below {
+.card-below,
+.card-aboveF,
+.card-belowF {
   width: 100%;
 }
 
-.card-right {
+.card-right,
+.card-rightF {
   position: absolute;
   top: 0;
   right: 0;
   width: 50%;
 }
 
-.card-left {
+.card-left,
+.card-leftF {
   position: absolute;
   width: 50%;
 }
 
-.card-twoCards-over {
+.card-twoCards-over,
+.card-twoCardsF-overF {
   font-size: 21px;
 }
 
-.card-threeCards-over {
+.card-threeCards-over,
+.card-threeCardsF-overF {
   font-size: 20px;
 }
 
-.card-fourCards-over {
+.card-fourCards-over,
+.card-fourCardsF-overF {
   font-size: 18px;
 }
 
-.card-fiveCards-over {
+.card-fiveCards-over,
+.card-fiveCardsF-overF {
   font-size: 15px;
 }
 
-.card-sixCards-over {
+.card-sixCards-over,
+.card-sixCardsF-overF {
   font-size: 13px;
 }
 
-.card-sevenCards-over {
+.card-sevenCards-over,
+.card-sevenCardsF-overF {
   font-size: 10px;
 }
 
-.card-eightCards-over {
+.card-eightCards-over,
+.card-eightCardsF-overF {
   font-size: 9px;
 }
 
-.card-nineCards-over {
+.card-nineCards-over,
+.card-nineCardsF-overF {
   font-size: 8px;
 }
 
-.card-tenCards-over {
+.card-tenCards-over,
+.card-tenCardsF-overF {
   font-size: 7px;
 }
 
 .card-twoCards-above,
-.card-twoCards-below {
+.card-twoCards-below,
+.card-twoCardsF-aboveF,
+.card-twoCardsF-belowF {
   max-width: 400px;
   font-size: 20px;
 }
 
 .card-threeCards-above,
-.card-threeCards-below {
+.card-threeCards-below,
+.card-threeCardsF-aboveF,
+.card-threeCardsF-belowF {
   font-size: 16px;
 }
 
 .card-fourCards-above,
-.card-fourCards-below {
+.card-fourCards-below,
+.card-fourCardsF-aboveF,
+.card-fourCardsF-belowF {
   font-size: 14px;
 }
 
 .card-fiveCards-above,
-.card-fiveCards-below {
+.card-fiveCards-below,
+.card-fiveCardsF-aboveF,
+.card-fiveCardsF-belowF {
   font-size: 13px;
 }
 
 .card-sixCards-above,
-.card-sixCards-below {
+.card-sixCards-below,
+.card-sixCardsF-aboveF,
+.card-sixCardsF-belowF {
   font-size: 12px;
 }
 
 .card-sevenCards-above,
-.card-sevenCards-below {
+.card-sevenCards-below,
+.card-sevenCardsF-aboveF,
+.card-sevenCardsF-belowF {
   font-size: 11px;
 }
 
 .card-eightCards-above,
-.card-eightCards-below {
+.card-eightCards-below,
+.card-eightCardsF-aboveF,
+.card-eightCardsF-belowF {
   font-size: 10px;
 }
 
 .card-nineCards-above,
-.card-nineCards-below {
+.card-nineCards-below,
+.card-nineCardsF-aboveF,
+.card-nineCardsF-belowF {
   font-size: 8px;
 }
 
 .card-tenCards-above,
-.card-tenCards-below {
+.card-tenCards-below,
+.card-tenCardsF-aboveF,
+.card-tenCardsF-belowF {
   font-size: 7px;
 }
 
 .card-twoCardsH-right,
 .card-twoCardsH-left,
-.card-twoCardsHF-right,
-.card-twoCardsHF-left {
+.card-twoCardsHF-rightF,
+.card-twoCardsHF-leftF {
   height: 300px;
   font-size: 16px;
 }
 
 .card-threeCardsH-right,
 .card-threeCardsH-left,
-.card-threeCardsHF-right,
-.card-threeCardsHF-left {
+.card-threeCardsHF-rightF,
+.card-threeCardsHF-leftF {
   height: 200px;
   font-size: 13.5px;
   line-height: 15px;
@@ -191,26 +227,30 @@
 
 .card-fourCardsH-right,
 .card-fourCardsH-left,
-.card-fourCardsHF-right,
-.card-fourCardsHF-left {
+.card-fourCardsHF-rightF,
+.card-fourCardsHF-leftF {
   height: 145px;
   font-size: 10px;
   line-height: 10px;
 }
 
-.card-leftX {
+.card-leftX,
+.card-leftXF {
   text-align: left;
 }
 
-.card-centerX {
+.card-centerX,
+.card-centerXF {
   text-align: center;
 }
 
-.card-rightX {
+.card-rightX,
+.card-rightXF {
   text-align: right;
 }
 
-.card-justify {
+.card-justify,
+.card-justifyF {
   text-align: justify;
 }
 
@@ -219,43 +259,56 @@
 .card-bottom,
 .card-space-around,
 .card-space-between,
-.card-space-evenly {
+.card-space-evenly,
+.card-topF,
+.card-centerYF,
+.card-bottomF,
+.card-space-aroundF,
+.card-space-betweenF,
+.card-space-evenlyF {
   display: flex;
   flex-direction: column;
 }
 
-.card-top {
+.card-top,
+.card-topF {
   justify-content: flex-start;
 }
 
-.card-centerY {
+.card-centerY,
+.card-centerYF {
   justify-content: center;
 }
 
-.card-bottom {
+.card-bottom,
+.card-bottomF {
   justify-content: flex-end;
 }
 
-.card-space-around {
+.card-space-around,
+.card-space-aroundF {
   justify-content: space-around;
 }
 
-.card-space-between {
+.card-space-between,
+.card-space-betweenF {
   justify-content: space-between;
 }
 
-.card-space-evenly {
+.card-space-evenly,
+.card-space-evenlyF {
   justify-content: space-evenly;
 }
 
-.image-right {
+.image-right,
+.image-rightF {
   position: relative;
-  /* z-index: -1; */
   width: 50%;
   height: fit-content;
 }
 
-.image-left {
+.image-left,
+.image-leftF {
   position: relative;
   left: 50%;
   width: 50%;
@@ -263,78 +316,105 @@
 
 .image-twoCards-over,
 .image-twoCards-above,
-.image-twoCards-below {
+.image-twoCards-below,
+.image-twoCardsF-overF,
+.image-twoCardsF-aboveF,
+.image-twoCardsF-belowF {
   width: 400px;
   height: 400px;
 }
 
 .image-threeCards-over,
 .image-threeCards-above,
-.image-threeCards-below {
+.image-threeCards-below,
+.image-threeCardsF-overF,
+.image-threeCardsF-aboveF,
+.image-threeCardsF-belowF {
   width: 350px;
   height: 350px;
 }
 
 .image-fourCards-over,
 .image-fourCards-above,
-.image-fourCards-below {
+.image-fourCards-below,
+.image-fourCardsF-overF,
+.image-fourCardsF-aboveF,
+.image-fourCardsF-belowF {
   height: 296px;
 }
 
 .image-fiveCards-over,
 .image-fiveCards-above,
-.image-fiveCards-below {
+.image-fiveCards-below,
+.image-fiveCardsF-overF,
+.image-fiveCardsF-aboveF,
+.image-fiveCardsF-belowF {
   height: 232px;
 }
 
 .image-sixCards-over,
 .image-sixCards-above,
-.image-sixCards-below {
+.image-sixCards-below,
+.image-sixCardsF-overF,
+.image-sixCardsF-aboveF,
+.image-sixCardsF-belowF {
   height: 190px;
 }
 
 .image-sevenCards-over,
 .image-sevenCards-above,
-.image-sevenCards-below {
+.image-sevenCards-below,
+.image-sevenCardsF-overF,
+.image-sevenCardsF-aboveF,
+.image-sevenCardsF-belowF {
   height: 160px;
 }
 
 .image-eightCards-over,
 .image-eightCards-above,
-.image-eightCards-below {
+.image-eightCards-below,
+.image-eightCardsF-overF,
+.image-eightCardsF-aboveF,
+.image-eightCardsF-belowF {
   height: 138px;
 }
 
 .image-nineCards-over,
 .image-nineCards-above,
-.image-nineCards-below {
+.image-nineCards-below,
+.image-nineCardsF-overF,
+.image-nineCardsF-aboveF,
+.image-nineCardsF-belowF {
   height: 120px;
 }
 
 .image-tenCards-over,
 .image-tenCards-above,
-.image-tenCards-below {
+.image-tenCards-below,
+.image-tenCardsF-overF,
+.image-tenCardsF-aboveF,
+.image-tenCardsF-belowF {
   height: 106px;
 }
 
 .image-twoCardsH-right,
 .image-twoCardsH-left,
-.image-twoCardsHF-right,
-.image-twoCardsHF-left {
+.image-twoCardsHF-rightF,
+.image-twoCardsHF-leftF {
   height: 300px;
 }
 
 .image-threeCardsH-right,
 .image-threeCardsH-left,
-.image-threeCardsHF-right,
-.image-threeCardsHF-left {
+.image-threeCardsHF-rightF,
+.image-threeCardsHF-leftF {
   height: 200px;
 }
 
 .image-fourCardsH-right,
 .image-fourCardsH-left,
-.image-fourCardsHF-right,
-.image-fourCardsHF-left {
+.image-fourCardsHF-rightF,
+.image-fourCardsHF-leftF {
   height: 145px;
 }
 
@@ -368,6 +448,7 @@
   box-shadow: 0px 0px 10px 5px rgba(0, 255, 47, 1);
 }
 
-.card-over:hover {
+.card-over:hover,
+.card-overF:hover {
   text-shadow: 1px 1px 0.5px rgb(255, 255, 255);
 }

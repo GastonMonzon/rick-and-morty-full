@@ -8,7 +8,7 @@ import usernameIcon from '../../assets/icons/person-outline.svg';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.js';
 import { useDispatch } from 'react-redux';
-import { setAllValues } from '../../redux/actions.js';
+import { favoritesIcon, setAllValues } from '../../redux/actions.js';
 import NotificationModal from '../NotificationModal/NotificationModal.jsx';
 
 export default function LoginRegister() {
@@ -51,13 +51,13 @@ export default function LoginRegister() {
     event.preventDefault();
     try {
       const response = await createUser(registerData);
-      setModalMessage({ title: 'Success', message: response.data.message });
+      setModalMessage({ title: 'Success', message: response?.data?.message || '' });
       setIsModalOpen(true);
       setLoginData({ email: registerData.email, password: registerData.password });
       setLoginErrors({ email: '', password: '' });
       setRegisterData({ name: '', surName: '', userName: '', dateOfBirth: '', email: '', password: '', repeatPassword: '' });
     } catch (error) {
-      setModalMessage({ title: 'Error', message: error.response.data.code });
+      setModalMessage({ title: 'Error registering user', message: error?.response?.data?.error?.code || '' });
       setIsModalOpen(true);
     }
   }
@@ -69,7 +69,7 @@ export default function LoginRegister() {
       dispatch(setAllValues(user));
       navigate('/home');
     } catch (error) {
-      setModalMessage({ title: 'Error', message: error.response.data.code });
+      setModalMessage({ title: 'Error logging in', message: error?.response?.data?.error?.code || '' });
       setIsModalOpen(true);
     }
   }

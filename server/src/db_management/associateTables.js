@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { models, obtainAllCharacters } from './createTables.js';
-const { Character, Episode } = models;
+const { Character, Episode, Character_Episodes } = models;
 import { SingleBar } from 'cli-progress';
 
 const progressBar = new SingleBar({}, {
@@ -12,9 +12,15 @@ const progressBar = new SingleBar({}, {
 
 export default async function associateTables() {
   try {
-  console.log('Associating characters');
-  const allCharacters = await obtainAllCharacters();
-  let count = 0;
+    console.log('Associating characters');
+    const allCharacters = await obtainAllCharacters();
+    const characterCheck = await Character.findByPk(allCharacters[0].id);
+    const associatedEpisodes = await characterCheck.getEpisodes();
+    if (associatedEpisodes.length > 0) {
+      console.log('Character associations already made. Skipping associations.');
+      return;
+    }
+    let count = 0;
     progressBar.start(allCharacters.length, count);
     for (const character of allCharacters) {
       for (const episode of character.episode) {

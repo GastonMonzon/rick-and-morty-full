@@ -1,5 +1,5 @@
 import auth from '../firebase.js';
-import { EmailAuthProvider, reauthenticateWithCredential, updateEmail  } from 'firebase/auth';
+import { EmailAuthProvider, reauthenticateWithCredential, updateEmail } from 'firebase/auth';
 
 export default async function changeEmail(request, response) {
   try {
@@ -14,10 +14,10 @@ export default async function changeEmail(request, response) {
     }
     const credential = EmailAuthProvider.credential(email, password);
     await reauthenticateWithCredential(user, credential);
-    await updateEmail (user, newEmail);
+    await updateEmail(user, newEmail);
     response.status(200).json({ message: 'Email change successful' });
   } catch (error) {
     console.error(error);
-    response.status(404).send({ error, message: 'Error changing email' });
+    response.status(500).send({ error, message: 'Error changing email from firebase' });
   }
 }

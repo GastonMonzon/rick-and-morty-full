@@ -1,32 +1,33 @@
-.video-container {
+.options-sidebar {
+  position: fixed;
+  width: 25%;
+  height: 91%;
+  top: 8%;
+  right: 0;
+  z-index: 20;
+  border-radius: 10px 0 0 10px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 15px;
+  transition: .25s transform ease;
+}
+
+.video-container,
+.video-container2 {
   position: absolute;
   top: 0;
   left: 0;
   z-index: -1;
 }
+
 .video-container2 {
-  position: absolute;
-  left: 0;
-  top: 900px;
-  z-index: -1;
+  top: 720px;
 }
 
-#background-video,
-#background-video2 {
+.background-video,
+.background-video2 {
   opacity: 0.8;
-  height: 900px;
-}
-
-.options-sidebar {
-  position: fixed;
-  width: 25%;
-  height: 100%;
-  right: 0;
-  z-index: 20;
-  border-radius: 10px 0 0 10px;
-  overflow: scroll;
-  padding: 15px;
-  transition: .25s transform ease;
+  height: 720px;
 }
 
 .options-sidebar::-webkit-scrollbar-thumb {
@@ -110,18 +111,23 @@
 
 .cards-per-page-input:hover,
 .sidebar-button:hover {
+  outline: 1px solid;
+  color: var(--options-sidebar-letter-color);
   border-color: var(--options-sidebar-selected-color);
   outline-color: var(--options-sidebar-selected-color);
 }
 
-.sidebar-button:active,
+.sidebar-button-active,
 .cards-per-page-input:focus {
   box-shadow: none;
+  color: var(--options-sidebar-selected-color);
+  border-color: var(--options-sidebar-selected-color);
   outline-color: var(--options-sidebar-selected-color);
+  transform: translate(3px, 3px);
 }
 
 .cards-per-page-input:focus {
-  border-color: var(--options-sidebar-selected-color);
+  color: var(--options-sidebar-letter-color);
 }
 
 .home-options-button-active,

@@ -1,17 +1,3 @@
-// // const verticalCardsPerRowSelected = localStorage.getItem('verticalCardsPerRow'); 
-// // const verticalCardsPerRowFSelected = localStorage.getItem('verticalCardsPerRowF'); 
-// // const horizontalCardsPerRowSelected = localStorage.getItem('horizontalCardsPerRow'); 
-// // const horizontalCardsPerRowFSelected = localStorage.getItem('horizontalCardsPerRowF'); 
-// // const infoPositionSelected = localStorage.getItem('infoPosition'); 
-// // const infoPositionFSelected = localStorage.getItem('infoPositionF'); 
-// // const textPositionXSelected = localStorage.getItem('textPositionX'); 
-// // const textPositionXFSelected = localStorage.getItem('textPositionXF'); 
-// // const textPositionYSelected = localStorage.getItem('textPositionY'); 
-// // const textPositionYFSelected = localStorage.getItem('textPositionYF'); 
-// // const favoritesIconSelected = localStorage.getItem('favoritesIcon'); 
-// // const episodesViewSelected = localStorage.getItem('episodesView'); 
-// // const episodeListViewSelected = localStorage.getItem('episodeListView'); 
-// // const charactersViewSelected = localStorage.getItem('charactersView');
 import { useAuth } from './context/AuthContext.js';
 
 const { userOptions } = useAuth;
@@ -24,6 +10,7 @@ const getUserOptions = () => {
         mainTitle: 'Search By:',
         titles: ['Id', 'Name', 'Origin', 'Location'],
         ids: ['idCheckbox', 'nameCheckbox', 'originCheckbox', 'locationCheckbox'],
+        idsF: ['idCheckboxF', 'nameCheckboxF', 'originCheckboxF', 'locationCheckboxF'],
         checked: userOptions.searchBy,
         checkedFavorites: userOptions.searchByF
       },
@@ -106,7 +93,7 @@ const getUserOptions = () => {
           'heartFire', 'heartPink', 'heartStar', 'heartPresent', 'star', 'heartFace', 'starFace', 'monkeyFace', 'eye',
           'thumbsUp', 'nazar', 'disk', 'nest', 'leaves', 'ship', 'earthAmerica', 'earthAfrica', 'earthAsia', 'volcano',
           'cloudySunny', 'rainy', 'snowy', 'umbrella', 'moon', 'moonFace', 'sunFace', 'noYes', 'exclamation'],
-        checked: userOptions.favoritesIcon
+        selectedIcon: userOptions.favoritesIcon
       },
       detailOptions: [
         {
@@ -143,11 +130,13 @@ const getUserOptions = () => {
   return {
     searchByCheckbox: {
       name: 'searchBy',
+      nameF: 'searchByF',
       mainTitle: 'Search By:',
       titles: ['Id', 'Name', 'Origin', 'Location'],
       ids: ['idCheckbox', 'nameCheckbox', 'originCheckbox', 'locationCheckbox'],
+      idsF: ['idCheckboxF', 'nameCheckboxF', 'originCheckboxF', 'locationCheckboxF'],
       checked: ['nameCheckbox'],
-      checkedFavorites: ['nameCheckbox']
+      checkedFavorites: ['nameCheckboxF']
     },
     orderByOptions: {
       title: 'orderBy',
@@ -175,8 +164,8 @@ const getUserOptions = () => {
         titles: ['2', '3', '4'],
         ids: ['twoCardsH', 'threeCardsH', 'fourCardsH'],
         idsF: ['twoCardsHF', 'threeCardsHF', 'fourCardsHF'],
-        checked: 'fourCards',
-        checkedFavorites: 'twoCards'
+        checked: 'fourCardsH',
+        checkedFavorites: 'twoCardsHF'
       },
       {
         name: 'infoLabels',
@@ -184,9 +173,9 @@ const getUserOptions = () => {
         mainTitle: 'Info Labels:',
         titles: ['Id', 'Name', 'Status', 'Species', 'Type', 'Gender', 'Origin', 'Location'],
         ids: ['idView', 'nameView', 'statusView', 'speciesView', 'typeView', 'genderView', 'originView', 'locationView'],
-        idsF: ['idView', 'nameView', 'statusView', 'speciesView', 'typeView', 'genderView', 'originView', 'locationView'],
+        idsF: ['idViewF', 'nameViewF', 'statusViewF', 'speciesViewF', 'typeViewF', 'genderViewF', 'originViewF', 'locationViewF'],
         checked: ['idView', 'nameView', 'statusView', 'speciesView', 'genderView'],
-        checkedFavorites: ['nameView', 'statusView', 'speciesView', 'genderView']
+        checkedFavorites: ['nameViewF', 'statusViewF', 'speciesViewF', 'genderViewF']
       },
       {
         name: 'infoPosition',
@@ -194,9 +183,9 @@ const getUserOptions = () => {
         mainTitle: 'Info Position:',
         titles: ['Over', 'Above', 'Right', 'Below', 'Left'],
         ids: ['over', 'above', 'right', 'below', 'left'],
-        idsF: ['over', 'above', 'right', 'below', 'left'],
+        idsF: ['overF', 'aboveF', 'rightF', 'belowF', 'leftF'],
         checked: 'below',
-        checkedFavorites: 'left'
+        checkedFavorites: 'leftF'
       },
       {
         name: 'textPositionX',
@@ -204,9 +193,9 @@ const getUserOptions = () => {
         mainTitle: 'Text Position X:',
         titles: ['Left', 'Center', 'Right', 'Justify'],
         ids: ['leftX', 'centerX', 'rightX', 'justify'],
-        idsF: ['leftX', 'centerX', 'rightX', 'justify'],
+        idsF: ['leftXF', 'centerXF', 'rightXF', 'justifyF'],
         checked: 'leftX',
-        checkedFavorites: 'centerX'
+        checkedFavorites: 'centerXF'
       },
       {
         name: 'textPositionY',
@@ -214,9 +203,9 @@ const getUserOptions = () => {
         mainTitle: 'Text Position Y:',
         titles: ['Top', 'Center', 'Bottom', 'Space-Around', 'Space-Between', 'Space-Evenly'],
         ids: ['top', 'centerY', 'bottom', 'space-around', 'space-between', 'space-evenly'],
-        idsF: ['top', 'centerY', 'bottom', 'space-around', 'space-between', 'space-evenly'],
+        idsF: ['topF', 'centerYF', 'bottomF', 'space-aroundF', 'space-betweenF', 'space-evenlyF'],
         checked: 'top',
-        checkedFavorites: 'bottom'
+        checkedFavorites: 'bottomF'
       }
     ],
     favoritesIconRadio: {
@@ -230,7 +219,7 @@ const getUserOptions = () => {
         'heartFire', 'heartPink', 'heartStar', 'heartPresent', 'star', 'heartFace', 'starFace', 'monkeyFace', 'eye',
         'thumbsUp', 'nazar', 'disk', 'nest', 'leaves', 'ship', 'earthAmerica', 'earthAfrica', 'earthAsia', 'volcano',
         'cloudySunny', 'rainy', 'snowy', 'umbrella', 'moon', 'moonFace', 'sunFace', 'noYes', 'exclamation'],
-      checked: 'heart'
+      selectedIcon: ['🤍', '❤️']
     },
     detailOptions: [
       {

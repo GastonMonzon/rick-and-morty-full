@@ -31,7 +31,7 @@ import loading17 from '../../assets/loadingGifs/loading17.gif'
 import loading18 from '../../assets/loadingGifs/loading18.gif'
 import loading19 from '../../assets/loadingGifs/loading19.gif'
 import { useDispatch, useSelector } from 'react-redux';
-import { changeBackground } from '../../redux/actions';
+import { autoSaveToggle, changeBackground, loadSettings, saveSettings } from '../../redux/actions';
 import { useNavigate } from 'react-router';
 import dataValidation from '../../dataValidation.js';
 import useDetailsTagAnimations from '../../hooks/useDetailsTagAnimations.jsx';
@@ -39,7 +39,10 @@ import PromptPasswordModal from '../PromptPasswordModal/PromptPasswordModal.jsx'
 import NotificationModal from '../NotificationModal/NotificationModal.jsx';
 
 export default function UserSideBarLeft() {
-  const videoRef = useRef(null);
+  const backgroundVideoRef = useRef(null);
+  const backgroundVideo2Ref = useRef(null);
+  const backgroundVideo3Ref = useRef(null);
+  const saveOptionsRef = useRef(null);
   const changeUserDataRef = useRef(null);
   const homeBackgroundRef = useRef(null);
   const favoritesBackgroundRef = useRef(null);
@@ -48,10 +51,11 @@ export default function UserSideBarLeft() {
   const changeEmailRef = useRef(null);
   const changePasswordRef = useRef(null);
   const deleteAccountRef = useRef(null);
-  const { userOptions, getUserData, changeUserData, changeEmail, changePassword, reauthenticate, logOut, deleteAccount } = useAuth();
+  const logOutRef = useRef(null);
+  const { userOptions, getUserData, changeUserData, saveFilterSettings, saveOptionsSettings, saveSearchSettings, saveUserSettings, changeEmail, changePassword, reauthenticate, logOut, deleteAccount } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [changeData, setChangeData] = useState({ promptModalPassword: '', name: '', surName: '', userName: '', dateOfBirth: '', currentEmail: '', email: '', emailPassword: '', passwordPassword: '', password: '', repeatPassword: '' });
+  const [changeData, setChangeData] = useState({ loadSearchSettings: '', loadFilterSettings: '', loadOptionsSettings: '', promptModalPassword: '', name: '', surName: '', userName: '', dateOfBirth: '', currentEmail: '', email: '', emailPassword: '', passwordPassword: '', password: '', repeatPassword: '' });
   const [changeDataErrors, setChangeDataErrors] = useState({ promptModalPassword: '', userData: '', name: '', surName: '', userName: '', dateOfBirth: '', changeEmail: '', currentEmail: '', email: '', emailPassword: '', passwordPassword: '', password: '', repeatPassword: '' });
   const addAnimations = useDetailsTagAnimations();
   const [isUserDataModalOpen, setIsUserDataModalOpen] = useState(false);
@@ -61,10 +65,22 @@ export default function UserSideBarLeft() {
   const [modalMessage, setModalMessage] = useState({ title: '', requiresInput: false, message: '', cancelButtonText: '', submitButtontext: '' });
   const [userDataEvent, setUserDataEvent] = useState({});
   const [isUserDataChanged, setIsUserDataChanged] = useState(false);
+  const [isOpenThresholdReached, setIsOpenThresholdReached] = useState(0);
+  const autoSaveSearch = useSelector((state) => state.autoSaveSearch);
+  const autoSaveFilters = useSelector((state) => state.autoSaveFilters);
+  const autoSaveOptions = useSelector((state) => state.autoSaveOptions);
   const selectedHomeBackground = useSelector((state) => state.homeBackground);
   const selectedFavoritesBackground = useSelector((state) => state.favoritesBackground);
   const selectedDetailBackground = useSelector((state) => state.detailBackground);
   const selectedLoadingScreen = useSelector((state) => state.loadingScreen);
+  const filterSettings = useSelector((state) => state.filterSettings);
+  const searchSettings = useSelector((state) => state.searchSettings);
+  const optionsSettings = useSelector((state) => state.optionsSettings);
+  const userSettings = useSelector((state) => state.userSettings);
+  const areSearchSettingsChanged = useSelector((state) => state.areSearchSettingsChanged);
+  const areFilterSettingsChanged = useSelector((state) => state.areFilterSettingsChanged);
+  const areOptionsSettingsChanged = useSelector((state) => state.areOptionsSettingsChanged);
+  const areUserSettingsChanged = useSelector((state) => state.areUserSettingsChanged);
 
   const backgroundImages = [
     { name: 'background1', src: background1 },
@@ -119,6 +135,67 @@ export default function UserSideBarLeft() {
     }, 1000);
   }, []);
 
+  useEffect(() => {
+    if (areUserSettingsChanged) {
+      const interval = setInterval(() => {
+        handleSave('saveUserSettings');
+      }, 3 * 60 * 1000);
+      return () => {
+        clearInterval(interval);
+      }
+    }
+  }, [areUserSettingsChanged]);
+
+  useEffect(() => {
+    if (autoSaveFilters && areFilterSettingsChanged) {
+      const interval = setInterval(() => {
+        handleSave('saveFiltersSettings');
+      }, 3 * 60 * 1000);
+      return () => {
+        clearInterval(interval);
+      }
+    }
+  }, [autoSaveFilters, areFilterSettingsChanged]);
+
+  useEffect(() => {
+    if (autoSaveOptions && areOptionsSettingsChanged) {
+      const interval = setInterval(() => {
+        handleSave('saveOptionsSettings');
+      }, 3 * 60 * 1000);
+      return () => {
+        clearInterval(interval);
+      }
+    }
+  }, [autoSaveOptions, areOptionsSettingsChanged]);
+
+  useEffect(() => {
+    if (autoSaveSearch && areSearchSettingsChanged) {
+      const interval = setInterval(() => {
+        handleSave('saveSearchSettings');
+      }, 3 * 60 * 1000);
+      return () => {
+        clearInterval(interval);
+      }
+    }
+  }, [autoSaveSearch, areSearchSettingsChanged]);
+
+  useEffect(() => {
+    const detailsElements = document.querySelectorAll('.user-options-details-tag');
+    const handleToggle = () => {
+      const openCount = Array.from(detailsElements).reduce(
+        (count, element) => (element.open ? count + 1 : count), 0);
+      setIsOpenThresholdReached(openCount);
+    };
+    detailsElements.forEach((element) =>
+      element.addEventListener('toggle', handleToggle)
+    );
+    return () => {
+      detailsElements.forEach((element) =>
+        element.removeEventListener('toggle', handleToggle)
+      );
+    };
+  }, []);
+
   const handleDetailsClick = (event, ref, contentId) => {
     addAnimations(event, ref, contentId);
   }
@@ -130,7 +207,7 @@ export default function UserSideBarLeft() {
     event.preventDefault();
     const detailsTag = document.getElementById(`changeUserDataDetailsTag`);
     if (detailsTag.open) {
-      handleDetailsClick(event, changeUserDataRef, 'user-data');
+      handleDetailsClick(event, changeUserDataRef, 'UserDataContainer');
       setChangeData({
         ...changeData,
         name: '',
@@ -159,11 +236,11 @@ export default function UserSideBarLeft() {
         promptModalPassword: ''
       });
       handleUserData();
-      handleDetailsClick(userDataEvent, changeUserDataRef, 'user-data');
+      handleDetailsClick(userDataEvent, changeUserDataRef, 'UserDataContainer');
     } catch (error) {
       setModalMessage({
         ...modalMessage,
-        message: error.response.data.code
+        message: `Error authenticating password ${error?.response?.data?.error?.code}`
       });
     }
   }
@@ -181,7 +258,7 @@ export default function UserSideBarLeft() {
     } catch (error) {
       setChangeDataErrors({
         ...changeDataErrors,
-        userData: error.response.data.code
+        userData: error?.response?.data?.error?.code || 'Error'
       });
     }
   }
@@ -214,13 +291,13 @@ export default function UserSideBarLeft() {
       setModalMessage({
         ...modalMessage,
         title: 'Success',
-        message: 'User Data Changed Succesfully'
+        message: 'User Data Updated Succesfully'
       });
       setIsNotificatioModalOpen(true);
     } catch (error) {
       setChangeDataErrors({
         ...changeDataErrors,
-        userData: error.response.data.code
+        userData: `Error updating user data ${error?.response?.data?.error?.code}`
       });
     }
   }
@@ -237,13 +314,13 @@ export default function UserSideBarLeft() {
       setModalMessage({
         ...modalMessage,
         title: 'Success',
-        message: 'Email Changed Succesfully'
+        message: 'Email Updated Succesfully'
       });
       setIsNotificatioModalOpen(true);
     } catch (error) {
       setChangeDataErrors({
         ...changeDataErrors,
-        changeEmail: error.response.data.code
+        changeEmail: `Error updating email ${error?.response?.data?.error?.code}`
       });
     }
   }
@@ -260,13 +337,13 @@ export default function UserSideBarLeft() {
       setModalMessage({
         ...modalMessage,
         title: 'Success',
-        message: 'Password Changed Succesfully'
+        message: 'Password Updated Succesfully'
       });
       setIsNotificatioModalOpen(true);
     } catch (error) {
       setChangeDataErrors({
         ...changeDataErrors,
-        changePassword: error.response.data.error.code
+        changePassword: `Error updating password ${error?.response?.data?.error?.code}`
       });
     }
   }
@@ -278,7 +355,7 @@ export default function UserSideBarLeft() {
       console.log(error);
     }
   }
-  const handleDeleteAccountDetailsClick = () => {
+  const handleDeleteAccountButtonClick = () => {
     setModalMessage({
       ...modalMessage,
       title: 'Deleting Account Requires Password',
@@ -308,7 +385,7 @@ export default function UserSideBarLeft() {
     } catch (error) {
       setModalMessage({
         ...modalMessage,
-        message: error.response.data.code
+        message: `Error authenticating password' ${error?.response?.data?.error?.code}`
       });
     }
   }
@@ -319,8 +396,106 @@ export default function UserSideBarLeft() {
     } catch (error) {
       setChangeDataErrors({
         ...changeDataErrors,
-        changePassword: error.response.data.code
+        changePassword: `Error deleting account ${error?.response?.data?.error?.code}`
       });
+    }
+  }
+  const handleAutosaveToggle = (id) => {
+    dispatch(autoSaveToggle(id));
+  }
+  const handleLoad = (id) => {
+    dispatch(loadSettings({ id: id, userOptions: userOptions }));
+    switch (id) {
+      case 'loadSearchSettings':
+        setChangeData({
+          ...changeData,
+          loadSearchSettings: 'Search Settings Loaded'
+        });
+        break;
+      case 'loadFilterSettings':
+        setChangeData({
+          ...changeData,
+          loadFilterSettings: 'Filter Settings Loaded'
+        });
+        break;
+      case 'loadOptionsSettings':
+        setChangeData({
+          ...changeData,
+          loadOptionsSettings: 'View Options Loaded'
+        });
+        break;
+      default:
+        break;
+    }
+  }
+  const handleSave = async (id) => {
+    dispatch(saveSettings(id));
+    switch (id) {
+      case 'saveFiltersSettings':
+        try {
+          await saveFilterSettings(filterSettings);
+          setModalMessage({
+            ...modalMessage,
+            title: 'Success',
+            message: 'Filter Settings Saved Succesfully'
+          });
+          setIsNotificatioModalOpen(true);
+        } catch (error) {
+          setModalMessage({
+            ...modalMessage,
+            title: 'Error saving filter settings',
+            message: error?.response?.data?.error?.code
+          });
+          setIsNotificatioModalOpen(true);
+        }
+        break;
+      case 'saveOptionsSettings':
+        try {
+          await saveOptionsSettings(optionsSettings);
+          setModalMessage({
+            ...modalMessage,
+            title: 'Success',
+            message: 'Options Settings Saved Succesfully'
+          });
+          setIsNotificatioModalOpen(true);
+        } catch (error) {
+          setModalMessage({
+            ...modalMessage,
+            title: 'Error saving options settings',
+            message: error?.response?.data?.error?.code
+          });
+          setIsNotificatioModalOpen(true);
+        }
+        break;
+      case 'saveSearchSettings':
+        try {
+          await saveSearchSettings(searchSettings);
+          setModalMessage({
+            ...modalMessage,
+            title: 'Success',
+            message: 'Search Settings Saved Succesfully'
+          });
+          setIsNotificatioModalOpen(true);
+        } catch (error) {
+          setModalMessage({
+            ...modalMessage,
+            title: 'Error saving search settings',
+            message: error?.response?.data?.error?.code
+          });
+          setIsNotificatioModalOpen(true);
+        }
+        break;
+      case 'saveUserSettings':
+        try {
+          await saveUserSettings(userSettings);
+          console.log('User settings saved');
+        } catch (error) {
+          console.error(error);
+        }
+        break;
+      default:
+        console.log(`Invalid save id: ${id}`);
+        break;
     }
   }
   const handleCloseModal = () => {
@@ -328,59 +503,165 @@ export default function UserSideBarLeft() {
     setIsUserDataModalOpen(false);
     setIsDeletePromptModalOpen(false);
     setIsDeleteConfirmationModalOpen(false);
+    setModalMessage({
+      ...modalMessage,
+      title: '',
+      requiresInput: false,
+      message: '',
+      cancelButtonText: '',
+      submitButtontext: ''
+    });
   }
 
   return (
-    <div className='user-sidebar' id='user-sidebar' >
+    <div className='user-sidebar' id='userSidebar' >
       <div className='video-container-user-options'>
-        <video ref={videoRef} src={userBackgroundVideo} id='user-options-background-video' autoPlay muted loop>
+        <video ref={backgroundVideoRef} src={userBackgroundVideo} className='user-options-background-video' autoPlay muted loop>
         </video>
       </div>
-      <div className='video-container2-user-options'>
-        <video ref={videoRef} src={userBackgroundVideo} id='user-options-background-video2' autoPlay muted loop>
-        </video>
-      </div>
-      <h4>Autosave</h4>
-      <div className='autosave-option-container' >
-        <label>Search & Search Options</label>
-        <button className='user-options-button' >On</button>
-      </div>
-      <div className='autosave-option-container' >
-        <label>Selected Filters</label>
-        <button className='user-options-button' >On</button>
-      </div>
-      <div className='autosave-option-container' >
-        <label>View Options</label>
-        <button className='user-options-button' >On</button>
-      </div>
-      <h4>Load Last Save / Save Options</h4>
-      <label>Search & Search Options</label>
-      <div className='autosave-option-container' >
-        <button className='user-options-button' >Load</button>
-        <button className='user-options-button' >Save</button>
-      </div>
-      <label>Selected Filters</label>
-      <div className='autosave-option-container' >
-        <button className='user-options-button' >Load</button>
-        <button className='user-options-button' >Save</button>
-      </div>
-      <label>View Options</label>
-      <div className='autosave-option-container' >
-        <button className='user-options-button' >Load</button>
-        <button className='user-options-button' >Save</button>
-      </div>
+      {(isOpenThresholdReached > 2) &&
+        <div className='video-container2-user-options'>
+          <video ref={backgroundVideo2Ref} src={userBackgroundVideo} className='user-options-background-video2' autoPlay muted loop>
+          </video>
+        </div>
+      }
+      {(isOpenThresholdReached > 5) &&
+        <div className='video-container3-user-options'>
+          <video ref={backgroundVideo3Ref} src={userBackgroundVideo} className='user-options-background-video3' autoPlay muted loop>
+          </video>
+        </div>
+      }
+      <details id='saveOptionsDetailsTag' className='user-options-details-tag' ref={saveOptionsRef} >
+        <summary
+          id='saveOptions'
+          onClick={(event) => handleDetailsClick(event, saveOptionsRef, 'saveOptionsContainer')} >
+          Save Options
+        </summary>
+        <div className='save-options-container' id='saveOptionsContainer' >
+          <h4>Autosave</h4>
+          <div className='autosave-option-container' >
+            <label>Search & Search Options</label>
+            <button
+              id='autoSaveSearch'
+              className={`user-options-button ${autoSaveSearch ? 'user-options-button-active' : ''}`}
+              onClick={(event) => handleAutosaveToggle(event.target.id)} >
+              {autoSaveSearch ? 'On' : 'Off'}
+            </button>
+          </div>
+          <div className='autosave-option-container' >
+            <label>Selected Filters</label>
+            <button
+              id='autoSaveFilters'
+              className={`user-options-button ${autoSaveFilters ? 'user-options-button-active' : ''}`}
+              onClick={(event) => handleAutosaveToggle(event.target.id)} >
+              {autoSaveFilters ? 'On' : 'Off'}
+            </button>
+          </div>
+          <div className='autosave-option-container' >
+            <label>View Options</label>
+            <button
+              id='autoSaveOptions'
+              className={`user-options-button ${autoSaveOptions ? 'user-options-button-active' : ''}`}
+              onClick={(event) => handleAutosaveToggle(event.target.id)} >
+              {autoSaveOptions ? 'On' : 'Off'}
+            </button>
+          </div>
+          {(!autoSaveSearch || !autoSaveFilters || !autoSaveOptions) &&
+            <h4>Load Last Save / Save Options</h4>
+          }
+          {!autoSaveSearch &&
+            <>
+              <label>Search & Search Options</label>
+              <div className='autosave-option-container' >
+                <button
+                  id='loadSearchSettings'
+                  className='user-options-button'
+                  disabled={!areSearchSettingsChanged}
+                  onClick={(event) => handleLoad(event.target.id)} >
+                  Load
+                </button>
+                <button
+                  id='saveSearchSettings'
+                  className='user-options-button'
+                  disabled={!areSearchSettingsChanged}
+                  onClick={(event) => handleSave(event.target.id)} >
+                  Save
+                </button>
+              </div>
+              <pre className={changeData.loadSearchSettings ? '' : 'invisible'} >{changeData.loadSearchSettings ? `${changeData.loadSearchSettings}` : 'invisible'}</pre>
+            </>
+          }
+          {!autoSaveFilters &&
+            <>
+              <label>Selected Filters</label>
+              <div className='autosave-option-container' >
+                <button
+                  id='loadFiltersSettings'
+                  className='user-options-button'
+                  disabled={!areFilterSettingsChanged}
+                  onClick={(event) => handleLoad(event.target.id)} >
+                  Load
+                </button>
+                <button
+                  id='saveFiltersSettings'
+                  className='user-options-button'
+                  disabled={!areFilterSettingsChanged}
+                  onClick={(event) => handleSave(event.target.id)} >
+                  Save
+                </button>
+              </div>
+              <pre className={changeData.loadFilterSettings ? '' : 'invisible'} >{changeData.loadFilterSettings ? `${changeData.loadFilterSettings}` : 'invisible'}</pre>
+            </>
+          }
+          {!autoSaveOptions &&
+            <>
+              <label>View Options</label>
+              <div className='autosave-option-container' >
+                <button
+                  id='loadOptionsSettings'
+                  className='user-options-button'
+                  disabled={!areOptionsSettingsChanged}
+                  onClick={(event) => handleLoad(event.target.id)} >
+                  Load
+                </button>
+                <button
+                  id='saveOptionsSettings'
+                  className='user-options-button'
+                  disabled={!areOptionsSettingsChanged}
+                  onClick={(event) => handleSave(event.target.id)} >
+                  Save
+                </button>
+              </div>
+              <pre className={changeData.loadOptionsSettings ? '' : 'invisible'} >{changeData.surName ? `${changeData.loadOptionsSettings}` : 'invisible'}</pre>
+            </>
+          }
+          {autoSaveSearch &&
+            <>
+              <br /><br /><br /><br /><br />
+            </>
+          }
+          {autoSaveFilters &&
+            <>
+              <br /><br /><br /><br /><br />
+            </>
+          }
+          {autoSaveOptions &&
+            <>
+              <br /><br /><br /><br /><br />
+            </>
+          }
+        </div>
+      </details>
+      <details>
+        <summary>Change User Image</summary>
+      </details>
       <div>
-        <details>
-          <summary>Change User Image</summary>
-        </details>
-      </div>
-      <div>
-        <details id='homeBackgroundDetailsTag' ref={homeBackgroundRef}>
+        <details id='homeBackgroundDetailsTag' className='user-options-details-tag' ref={homeBackgroundRef}>
           <summary
             id='homeBackground'
-            onClick={(event) => handleDetailsClick(event, homeBackgroundRef, 'home-background')} >
+            onClick={(event) => handleDetailsClick(event, homeBackgroundRef, 'homeBackgroundContainer')} >
             Change Home Background</summary>
-          <div className='background-images-container' id='home-background' >
+          <div className='background-images-container' id='homeBackgroundContainer' >
             {backgroundImages.map((background, index) => (
               <div key={index}
                 className='thumbnail-image-div' >
@@ -396,12 +677,12 @@ export default function UserSideBarLeft() {
         </details>
       </div>
       <div>
-        <details id='favoritesBackgroundDetailsTag' ref={favoritesBackgroundRef}>
+        <details id='favoritesBackgroundDetailsTag' className='user-options-details-tag' ref={favoritesBackgroundRef}>
           <summary
             id='favoritesBackground'
-            onClick={(event) => handleDetailsClick(event, favoritesBackgroundRef, 'favorites-background')} >
+            onClick={(event) => handleDetailsClick(event, favoritesBackgroundRef, 'favoritesBackgroundContainer')} >
             Change Favorites Background</summary>
-          <div className='background-images-container' id='favorites-background' >
+          <div className='background-images-container' id='favoritesBackgroundContainer' >
             {backgroundImages.map((background, index) => (
               <div key={index}
                 className='thumbnail-image-div' >
@@ -417,12 +698,12 @@ export default function UserSideBarLeft() {
         </details>
       </div>
       <div>
-        <details id='detailBackgroundDetailsTag' ref={detailBackgroundRef} >
+        <details id='detailBackgroundDetailsTag' className='user-options-details-tag' ref={detailBackgroundRef} >
           <summary
             id='detailBackground'
-            onClick={(event) => handleDetailsClick(event, detailBackgroundRef, 'detail-background')} >
+            onClick={(event) => handleDetailsClick(event, detailBackgroundRef, 'detailBackgroundContainer')} >
             Change Detail Background</summary>
-          <div className='background-images-container' id='detail-background' >
+          <div className='background-images-container' id='detailBackgroundContainer' >
             {backgroundImages.map((background, index) => (
               <div key={index}
                 className='thumbnail-image-div' >
@@ -438,12 +719,12 @@ export default function UserSideBarLeft() {
         </details>
       </div>
       <div>
-        <details id='loadingScreenDetailsTag' ref={loadingScreenRef} >
+        <details id='loadingScreenDetailsTag' className='user-options-details-tag' ref={loadingScreenRef} >
           <summary
             id='loadingScreen'
-            onClick={(event) => handleDetailsClick(event, loadingScreenRef, 'loading-screen')} >
+            onClick={(event) => handleDetailsClick(event, loadingScreenRef, 'loadingScreenContainer')} >
             Change Loading Screen</summary>
-          <div className='background-images-container' id='loading-screen' >
+          <div className='background-images-container' id='loadingScreenContainer' >
             {loadingGifs.map((gif, index) => (
               <div key={index}
                 className='thumbnail-image-div' >
@@ -458,9 +739,9 @@ export default function UserSideBarLeft() {
           </div>
         </details>
       </div>
-      <details id='changeUserDataDetailsTag' ref={changeUserDataRef} >
+      <details id='changeUserDataDetailsTag' className='user-options-details-tag' ref={changeUserDataRef} >
         <summary id='changeUserData' onClick={handleUserDataChangeClick} >Change User Data</summary>
-        <div className='user-data-container' id='user-data' >
+        <div className='user-data-container' id='UserDataContainer' >
           <form onSubmit={handleUserDataChangeSubmit} >
             <div className='user-data-input-label-container' >
               <label htmlFor='changeName' >Name</label>
@@ -516,12 +797,12 @@ export default function UserSideBarLeft() {
           </form>
         </div>
       </details>
-      <details id='changeEmailDetailsTag' ref={changeEmailRef} >
+      <details id='changeEmailDetailsTag' className='user-options-details-tag' ref={changeEmailRef} >
         <summary
           id='changeEmail'
-          onClick={(event) => handleDetailsClick(event, changeEmailRef, 'change-email')} >
+          onClick={(event) => handleDetailsClick(event, changeEmailRef, 'changeEmailContainer')} >
           Change Email</summary>
-        <div className='change-email-container' id='change-email'>
+        <div className='change-email-container' id='changeEmailContainer'>
           <form onSubmit={handleUserEmailChangeSubmit}  >
             <div className='user-data-input-label-container' >
               <label>Current Email</label>
@@ -567,14 +848,14 @@ export default function UserSideBarLeft() {
           </form>
         </div>
       </details>
-      <details id='changePasswordDetailsTag' ref={changePasswordRef} >
+      <details id='changePasswordDetailsTag' className='user-options-details-tag' ref={changePasswordRef} >
         <summary
           id='changePassword'
-          onClick={(event) => handleDetailsClick(event, changePasswordRef, 'change-password')} >
+          onClick={(event) => handleDetailsClick(event, changePasswordRef, 'changePasswordContainer')} >
           Change Password
         </summary>
-        <div className='change-password-container' id='change-password' >
-          <form autoComplete='off' onSubmit={handleUserPasswordChangeSubmit} >
+        <div className='change-password-container' id='changePasswordContainer' >
+          <form onSubmit={handleUserPasswordChangeSubmit} >
             <div className='user-data-input-label-container' >
               <label>Current Password</label>
               <input
@@ -618,25 +899,34 @@ export default function UserSideBarLeft() {
           </form>
         </div>
       </details>
-      <details id='deleteAccountDetailsTag' ref={deleteAccountRef} >
+      <details id='deleteAccountDetailsTag' className='user-options-details-tag' ref={deleteAccountRef} >
         <summary
           id='deleteAccount'
-          onClick={(event) => handleDetailsClick(event, deleteAccountRef, 'delete-account')} >
+          onClick={(event) => handleDetailsClick(event, deleteAccountRef, 'deleteAccountContainer')} >
           Delete Account
         </summary>
-        <div className='change-password-container' id='delete-account' >
+        <div className='delete-account-container' id='deleteAccountContainer' >
           <button
             className='user-options-button'
-            onClick={handleDeleteAccountDetailsClick} >
+            onClick={handleDeleteAccountButtonClick} >
             Delete
           </button>
         </div>
       </details>
-      <button
-        className='user-options-button'
-        onClick={handleLogOut} >
-        Log Out
-      </button>
+      <details id='logOutDetailsTag' className='user-options-details-tag' ref={logOutRef} >
+        <summary
+          id='logOut'
+          onClick={(event) => handleDetailsClick(event, logOutRef, 'logOutContainer')} >
+          Exit / Log Out
+        </summary>
+        <div className='log-out-container' id='logOutContainer' >
+          <button
+            className='user-options-button'
+            onClick={handleLogOut} >
+            Log Out
+          </button>
+        </div>
+      </details>
       <br /><br />
       {isUserDataModalOpen && <PromptPasswordModal requiresInput={modalMessage.requiresInput} title={modalMessage.title} errorMessage={modalMessage.message} inputName='promptModalPassword' inputValue={changeData.promptModalPassword} handleChange={handleUserDataChange} validationMessage={changeDataErrors.promptModalPassword} handleCloseModal={handleCloseModal} handleSubmit={handleUserDataPasswordSubmit} cancelButtonText={modalMessage.cancelButtonText} submitButtontext={modalMessage.submitButtontext} />}
 

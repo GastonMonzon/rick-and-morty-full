@@ -8,6 +8,6 @@ export default async function getCharacterById(request, response) {
     response.status(200).json(character);
   } catch (error) {
     console.error(error);
-    response.status(500).send({error, message: 'Error at getting character by id'});
+    response.status(500).send({ error, message: 'Error at getting character by id from database' });
   }
 }

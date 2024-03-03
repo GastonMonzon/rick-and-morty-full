@@ -13,7 +13,7 @@ server.use((request, response, next) => {
   response.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // update to match the domain you will make the request from
   response.header('Access-Control-Allow-Credentials', 'true');
   response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  response.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  response.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   next();
 });
 server.use('/', routes);

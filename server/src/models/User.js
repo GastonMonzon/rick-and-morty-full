@@ -28,7 +28,8 @@ const getUserModel =  (sequelize) => {
     },
     favorites: {
       type: DataTypes.ARRAY(DataTypes.INTEGER),
-      allowNull: true
+      allowNull: true,
+      defaultValue: []
     },
     homeBackground: {
       type: DataTypes.STRING,
@@ -59,6 +60,26 @@ const getUserModel =  (sequelize) => {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
       defaultValue: ['nameCheckbox']
+    },
+    searchQuery: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: ''
+    },
+    searchQueryF: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: ''
+    },
+    isAscending: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: true
+    },
+    isAscendingF: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: true
     },
     orderBy: {
       type: DataTypes.STRING,
@@ -156,9 +177,9 @@ const getUserModel =  (sequelize) => {
       defaultValue: 'top'
     },
     favoritesIcon: {
-      type: DataTypes.STRING,
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
-      defaultValue: 'heart'
+      defaultValue: ['🤍', '❤️']
     },
     episodeInfo: {
       type: DataTypes.ARRAY(DataTypes.STRING),

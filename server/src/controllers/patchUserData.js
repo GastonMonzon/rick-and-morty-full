@@ -25,10 +25,10 @@ export default async function patchUserData(request, response) {
       await updateDoc(userDocRef, userData);
       response.status(200).json({ message: 'User data updated succesfully' });
     } else {
-      response.status(401).json({ message: 'No user is currently signed in.' });
+      response.status(401).json({ message: 'No user is currently signed in' });
     }
   } catch (error) {
     console.error(error);
-    response.status(500).send(error);
+    response.status(500).send({ error, message: 'Error updating user data in firestore'});
   }
 }

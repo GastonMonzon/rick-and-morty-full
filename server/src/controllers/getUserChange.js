@@ -9,6 +9,6 @@ export default async function getUserChange(request, response) {
     response.status(200).json(unsubscribe);
   } catch (error) {
     console.error(error);
-    response.status(404).send({ error, message: 'Error loging in' });
+    response.status(404).send({ error, message: 'Error on auth change on firebase' });
   }
 }

@@ -13,6 +13,6 @@ export default async function getCharactersByName(request, response) {
     response.status(200).json(searchedCharacters);
   } catch (error) {
     console.error(error);
-    response.status(500).send('Error at searching characters by name');
+    response.status(500).send({ error, message: 'Error searching characters by name from database' });
   }
 }

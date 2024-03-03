@@ -18,6 +18,6 @@ export default async function changePassword(request, response) {
     response.status(200).json({ message: 'Password change successful' });
   } catch (error) {
     console.error(error);
-    response.status(500).send({ error, message: 'Error changing password' });
+    response.status(500).send({ error, message: 'Error changing password from firebase' });
   }
 }

@@ -9,6 +9,6 @@ export default async function getCharacterByRandomId(request, response) {
     response.status(200).json(randomCharacter);
   } catch (error) {
     console.error(error);
-    response.status(500).send({ error, message: 'Error at searching character by random id'});
+    response.status(500).send({ error, message: 'Error searching character by random id from database' });
   }
 }

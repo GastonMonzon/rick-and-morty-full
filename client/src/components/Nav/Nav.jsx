@@ -57,7 +57,7 @@ export default function Nav() {
         <details id='userOptionsDetailsTag' ref={userSideBarRef} >
           <summary
             id='userOptions'
-            onClick={(event) => handleDetailsClick(event, userSideBarRef, 'user-sidebar')} >
+            onClick={(event) => handleDetailsClick(event, userSideBarRef, 'userSidebar')} >
             User Options
           </summary>
           <UserSideBarLeft />
@@ -86,13 +86,13 @@ export default function Nav() {
         onClick={handleRandomizeAll} >
         Randomize All
       </button>
-      {pathname === '/home' && <SearchBar />}
-      {pathname === '/favorites' && <SearchBar />}
+      <SearchBar isHome={true} />
+      <SearchBar isHome={false} />
       {pathname !== '/home' && pathname !== '/favorites' && <div className='searchBar-space-div' ></div>}
       <details id='optionsOptionsDetailsTag' ref={optionsSideBarRef} >
         <summary
           id='optionsOptions'
-          onClick={(event) => handleDetailsClick(event, optionsSideBarRef, 'options-sidebar')} >
+          onClick={(event) => handleDetailsClick(event, optionsSideBarRef, 'optionsSidebar')} >
           Options
         </summary>
         <OptionsSideBarRight />

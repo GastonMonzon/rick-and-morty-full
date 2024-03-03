@@ -7,6 +7,6 @@ export default async function getEpisodes(request, response) {
         response.status(200).json(episodes);
     } catch (error) {
     console.error(error);
-    response.status(404).send({error, message: 'Error getting all episodes'});
+    response.status(404).send({error, message: 'Error getting all episodes from database'});
     }
 }

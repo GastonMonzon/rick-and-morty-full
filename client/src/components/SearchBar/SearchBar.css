@@ -1,3 +1,7 @@
+.searchBar-main-container {
+  position: fixed;
+}
+
 .searchBy-container {
   display: grid;
   grid-template-columns: auto 1fr;

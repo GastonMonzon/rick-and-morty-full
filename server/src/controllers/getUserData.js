@@ -9,7 +9,6 @@ export default async function getUserData(request, response) {
       const uid = user.uid;
       const userDocRef = doc(firestore, 'users', uid);
       const snapshot = await getDoc(userDocRef);
-
       if (snapshot.exists()) {
         const userData = snapshot.data();
         response.status(200).json(userData);
@@ -21,6 +20,6 @@ export default async function getUserData(request, response) {
     }
   } catch (error) {
     console.error(error);
-    response.status(500).json({ error, message: 'Error getting user data.' });
+    response.status(500).json({ error, message: 'Error getting user data from firestore' });
   }
 }

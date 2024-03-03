@@ -5,7 +5,7 @@ import './OptionsSideBarRight.css'
 import Checkbox from '../Checkbox/Checkbox';
 import RadioButtons from '../RadioButtons/RadioButtons';
 import { cardOptions, favoritesIconRadio, detailOptions } from '../../config';
-import { optionsRadios, optionsCheckboxes, optionsCardsPerPage, saveUserOptions } from '../../redux/actions';
+import { optionsRadios, optionsCheckboxes, optionsCardsPerPage, saveUserOptions, setIsFavoritesTogether, favoritesIcon } from '../../redux/actions';
 import optionsBackgroundVideo from '../../assets/videos/optionsBackgroundVideo2.mp4';
 
 /* hooks */
@@ -17,21 +17,10 @@ export default function OptionsSideBarRight() {
   const videoRef = useRef(null);
   const selectedCardsPerPage = useSelector(state => state.selectedCardsPerPage);
   const selectedCardsPerPageFavorites = useSelector(state => state.selectedCardsPerPageFavorites);
-  const isAutoSaveOn = useSelector(state => state.autoSave);
+  const isFavoritesTogether = useSelector(state => state.isFavoritesTogether);
   const [isHomeOptions, setIsHomeOptions] = useState(true);
-  const [areOptionsTogether, setAreOptionsTogether] = useState('Together');
   const [cardsPerPageFavorites, setCardPerPageFavorites] = useState(selectedCardsPerPageFavorites);
   const [cardsPerPage, setCardPerPage] = useState(selectedCardsPerPage);
-
-  useEffect(() => {
-    if (isAutoSaveOn) {
-      setInterval(saveOptions(), 5 * 60 * 1000);
-    }
-  }, [isAutoSaveOn])
-
-  const saveOptions = () => {
-    dispatch(saveUserOptions());
-  }
 
   const handleCardsPerPageChange = () => {
     if (Number.isInteger(Number(cardsPerPage)) && cardsPerPage > 0 && cardsPerPage < 1000) {
@@ -39,11 +28,8 @@ export default function OptionsSideBarRight() {
     }
   }
   const handleOptionsTogether = () => {
-    if (areOptionsTogether === 'Together') {
-      setAreOptionsTogether('Separate');
-    } else {
-      setAreOptionsTogether('Together');
-    }
+    dispatch(setIsFavoritesTogether());
+    setIsHomeOptions(!isFavoritesTogether);
   }
   const handleOptionsRadioChange = (id, name) => {
     dispatch(optionsRadios({ value: id, name: name, isHome: isHomeOptions }));
@@ -51,10 +37,13 @@ export default function OptionsSideBarRight() {
   const handleOptionsCheckboxChange = (id, checked) => {
     dispatch(optionsCheckboxes({ name: id, isChecked: checked, isHome: isHomeOptions }));
   }
+  const handleFavoritesIconChange = (id) => {
+    dispatch(favoritesIcon(id));
+  }
   const renderCardOptions = (isForHome) => {
     if (isForHome) {
       return (
-        <div className={`card-options-container ${isHomeOptions || areOptionsTogether === 'Together' ? '' : 'move-away'}`} >
+        <div className={`card-options-container ${isHomeOptions || isFavoritesTogether ? '' : 'move-away'}`} >
           <h4>Card Options</h4>
           <div className='cardsPerPage-input-container'>
             <label htmlFor='cardsPerPage' className='cards-per-page-label'>
@@ -79,7 +68,7 @@ export default function OptionsSideBarRight() {
       );
     } else {
       return (
-        <div className={`card-options-container ${!isHomeOptions && areOptionsTogether === 'Separate' ? '' : 'move-away'}`} >
+        <div className={`card-options-container ${!isHomeOptions && !isFavoritesTogether ? '' : 'move-away'}`} >
           <h4>Card Options</h4>
           <div className='cardsPerPage-input-container'>
             <label htmlFor='cardsPerPage' className='cards-per-page-label'>
@@ -122,10 +111,10 @@ export default function OptionsSideBarRight() {
         return (
           <div key={option.name}>
             <Checkbox
-              name={option.name}
+              name={isForHome ? option.name : option.nameF}
               mainTitle={option.mainTitle}
               titles={option.titles}
-              ids={option.ids}
+              ids={isForHome ? option.ids : option.idsF}
               checkedIds={isForHome ? option.checked : option.checkedFavorites}
               handleChange={handleOptionsCheckboxChange}
             />
@@ -136,13 +125,13 @@ export default function OptionsSideBarRight() {
   }
 
   return (
-    <div className='options-sidebar' id='options-sidebar' >
+    <div className='options-sidebar' id='optionsSidebar' >
       <div className='video-container'>
-        <video ref={videoRef} src={optionsBackgroundVideo} id='background-video' autoPlay muted loop>
+        <video ref={videoRef} src={optionsBackgroundVideo} className='background-video' autoPlay muted loop>
         </video>
       </div>
       <div className='video-container2'>
-        <video ref={videoRef} src={optionsBackgroundVideo} id='background-video2' autoPlay muted loop>
+        <video ref={videoRef} src={optionsBackgroundVideo} className='background-video2' autoPlay muted loop>
         </video>
       </div>
       <h3>⚙️ Options Sidebar</h3>
@@ -150,12 +139,12 @@ export default function OptionsSideBarRight() {
         <div className='home-favorites-option-container' >
           <label>Home / Favorites</label>
           <button
-            className='sidebar-button'
+            className={`sidebar-button ${isFavoritesTogether ? 'sidebar-button-active' : ''}`}
             onClick={handleOptionsTogether} >
-            {areOptionsTogether}
+            {isFavoritesTogether ? 'Together' : 'Separate'}
           </button>
         </div>
-        {areOptionsTogether === 'Separate' ? (
+        {!isFavoritesTogether ? (
           <div className='home-favorites-buttons-container' >
             <button
               className={isHomeOptions ? 'home-options-button home-options-button-active' : 'home-options-button'}
@@ -168,8 +157,7 @@ export default function OptionsSideBarRight() {
               Favorites
             </button>
           </div>
-        ) : null
-        }
+        ) : null }
         {renderCardOptions(true)}
         {renderCardOptions(false)}
       </div>
@@ -180,7 +168,7 @@ export default function OptionsSideBarRight() {
           titles={favoritesIconRadio.titles}
           ids={favoritesIconRadio.ids}
           checkedId={favoritesIconRadio.checked}
-          handleOptionsSideBarChange={handleOptionsRadioChange}
+          handleChange={handleFavoritesIconChange}
         />
       </div>
       <div>

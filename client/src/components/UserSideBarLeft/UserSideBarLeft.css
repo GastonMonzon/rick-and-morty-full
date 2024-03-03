@@ -1,49 +1,65 @@
-.video-container-user-options {
+.user-sidebar {
+  position: fixed;
+  width: 25%;
+  height: 91%;
+  top: 8%;
+  left: 0;
+  z-index: 20;
+  color: var(--user-sidebar-letter-color);
+  border-radius: 0 10px 0 10px;
+  direction: rtl;
+  overflow: scroll;
+  text-align: left;
+  padding: 15px;
+  transition: .25s transform ease;
+}
+
+.user-sidebar label {
+  text-align: left;
+}
+
+.video-container-user-options,
+.video-container2-user-options,
+.video-container3-user-options {
   position: absolute;
   top: 0;
   right: 0;
   z-index: -1;
 }
 .video-container2-user-options {
-  position: absolute;
-  right: 0;
   top: 1000px;
-  z-index: -1;
 }
 
-#user-options-background-video,
-#user-options-background-video2 {
+.video-container3-user-options {
+  top: 2000px;
+}
+
+.user-options-background-video,
+.user-options-background-video2,
+.user-options-background-video3 {
   filter: brightness(1.0) contrast(2.0) saturate(2.0) hue-rotate(190deg);
   opacity: 0.8;
   height: 1000px;
-}
-
-.user-sidebar {
-  width: 25%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  z-index: 20;
-  color: var(--user-sidebar-letter-color);
-  border-radius: 0 10px 0 10px;
-  overflow: scroll;
-  padding: 15px;
-  transition: .25s transform ease;
 }
 
 .user-sidebar::-webkit-scrollbar-thumb {
   background-color: var(--user-sidebar-color);
 }
 
+.autosave-option-container,
+.load-save-option-container {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  margin: 5px 0 0px 0;
+}
+
 .autosave-option-container label {
   font-weight: bold;
 }
 
-.autosave-option-container,
-.load-save-option-container {
-  display: flex;
-  justify-content: space-between;
-  margin: 10px 0 10px 0;
+pre {
+  font-weight: normal;
 }
 
 .title-label {
@@ -86,17 +102,23 @@
   border:  2px solid var(--user-sidebar-color);
 }
 
+.save-options-container,
 .user-data-container,
 .change-password-container,
-.change-email-container {
+.change-email-container,
+.delete-account-container,
+.log-out-container {
   position: absolute;
   overflow: hidden;
   width: 89%;
 }
 
+.save-options-container p,
 .user-data-container p,
 .change-email-container p,
-.change-password-container p {
+.change-password-container p,
+.delete-account-container p,
+.log-out-container p {
   color: white;
 }
 
@@ -134,4 +156,10 @@
   color: var(--user-sidebar-selected-color);
   border-color: var(--user-sidebar-selected-color);
   outline-color: var(--user-sidebar-selected-color);
+}
+
+.user-options-button-active {
+  box-shadow: none;
+  border-color: var(--user-sidebar-selected-color);
+  transform: translate(3px, 3px);
 }

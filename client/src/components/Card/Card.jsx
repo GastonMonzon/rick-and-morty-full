@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 
 export default function Card(props) {
   const { id, name, status, species, type, gender, origin_name, location_name, image } = props;
-  const [isFav, setIsFav] = useState(false);
+  const dispatch = useDispatch();
   const { pathname } = useLocation();
+  const [isFav, setIsFav] = useState(false);
   const isFavoritesTogether = useSelector((state) => state.isFavoritesTogether);
   const myFavorites = useSelector((state) => state.allFavorites);
   const searchQueryFavorites = useSelector((state) => state.searchQueryFavorites);
@@ -77,9 +78,8 @@ export default function Card(props) {
       ? state.cardRadioOptions[4].value
       : state.cardRadioOptions[4].valueF
   );
-  const dispatch = useDispatch();
   let cardsPerRow;
-  if (infoLabelsPosition === 'left' || infoLabelsPosition === 'right') {
+  if (infoLabelsPosition === 'left' || infoLabelsPosition === 'right' || infoLabelsPosition === 'leftF' || infoLabelsPosition === 'rightF') {
     cardsPerRow = horizontalCardsPerRow;
   } else {
     cardsPerRow = verticalCardsPerRow;
@@ -105,8 +105,7 @@ export default function Card(props) {
       console.log(myFavorites);
     }
   }
-
-
+  
   return (
     <div className={`card-container container-${infoLabelsPosition} container-${cardsPerRow}-${infoLabelsPosition}`} id={`card-${id}`}>
       <button
@@ -114,8 +113,8 @@ export default function Card(props) {
         onClick={handleFavorite} >
         {!isFav ? favoritesIcon[0] : favoritesIcon[1]}
       </button>
-      {
-        (infoLabelsPosition === 'above' || infoLabelsPosition === 'over' || infoLabelsPosition === 'left') ? (
+      {(infoLabelsPosition === 'above' || infoLabelsPosition === 'over' || infoLabelsPosition === 'left' || infoLabelsPosition === 'aboveF' || infoLabelsPosition === 'overF' || infoLabelsPosition === 'leftF')
+        ? (
           <>
             <NavLink to={`/detail/${id}`} style={{ textDecoration: 'none' }}>
               <div className={`card-div card-${infoLabelsPosition} card-${cardsPerRow}-${infoLabelsPosition}

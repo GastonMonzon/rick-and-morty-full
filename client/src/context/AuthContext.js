@@ -6,15 +6,15 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [userOptions, setUserOptions] = useState('');
 
-  // useEffect(() => {
-  //   (async function onAuthStateChanged() {
-  //     try {
-  //       await axios('http://localhost:3001/user/change');
-  //     } catch (error) {
-  //       console.error('Error fetching userInfo:', error);
-  //     }
-  //   })();
-  // }, []);
+  useEffect(() => {
+    (async function onAuthStateChanged() {
+      try {
+        await axios('http://localhost:3001/user/change');
+      } catch (error) {
+        console.error('Error fetching userData:', error);
+      }
+    })();
+  }, []);
 
   async function createUser(registerData) {
     try {
@@ -46,16 +46,37 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   }
-  const changeUserData = async (userData) => {
+  const changeUserData = async (data) => {
     try {
-      await axios.post('http://localhost:3001/userData', userData);
+      await axios.patch('http://localhost:3001/userData', data);
     } catch (error) {
       throw error;
     }
   }
-  const saveUserOptions = async (userOptions) => {
+  const saveFilterSettings = async (settings) => {
     try {
-      await axios.patch('http://localhost:3001/userOptions', userOptions);
+      await axios.patch('http://localhost:3001/filterSettings', settings);
+    } catch (error) {
+      throw error;
+    }
+  }
+  const saveOptionsSettings = async (settings) => {
+    try {
+      await axios.patch('http://localhost:3001/optionsSettings', settings);
+    } catch (error) {
+      throw error;
+    }
+  }
+  const saveSearchSettings = async (settings) => {
+    try {
+      await axios.patch('http://localhost:3001/searchSettings', settings);
+    } catch (error) {
+      throw error;
+    }
+  }
+  const saveUserSettings = async (settings) => {
+    try {
+      await axios.patch('http://localhost:3001/userSettings', settings);
     } catch (error) {
       throw error;
     }
@@ -90,7 +111,7 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   }
-  const authContextValue = { userOptions, createUser, reauthenticate, getUserData, logIn, changeUserData, saveUserOptions, changeEmail, changePassword, logOut, deleteAccount };
+  const authContextValue = { userOptions, createUser, reauthenticate, getUserData, logIn, changeUserData, saveFilterSettings, saveOptionsSettings, saveSearchSettings, saveUserSettings, changeEmail, changePassword, logOut, deleteAccount };
   return (
     <AuthContext.Provider value={authContextValue}>
       {children}

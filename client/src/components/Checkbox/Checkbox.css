@@ -1,9 +1,11 @@
 .infoLabels-label,
+.infoLabelsF-label,
 .episodeInfo-label {
     font-weight: bold;
 }
 
 .infoLabels-container,
+.infoLabelsF-container,
 .episodeInfo-container {
     display: flex;
     flex-wrap: wrap;

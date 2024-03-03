@@ -1,5 +1,5 @@
 import {
-  SET_ALL_CARDS, SET_VALUES, SAVE_USER_OPTIONS, CHANGE_BACKGROUND, RANDOMIZE_ALL, ADD_FAV, REMOVE_FAV, QUERY, ORDER, ORDER_BY, FILTER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS
+  SET_ALL_CARDS, SET_VALUES, CHANGE_BACKGROUND, RANDOMIZE_ALL, ADD_FAV, REMOVE_FAV, QUERY_CHECKBOXES, QUERY, ORDER, ORDER_BY, FILTER, IS_FAVORITES_TOGETHER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS, AUTOSAVE_TOGGLE, LOAD_SETTINGS, SAVE_SETTINGS
 } from "./action-types"
 import axios from "axios";
 
@@ -8,9 +8,6 @@ export const setAllCards = (cards) => {
 }
 export const setAllValues = (user) => {
   return { type: SET_VALUES, payload: user }
-}
-export const saveUserOptions = () => {
-  return { type: SAVE_USER_OPTIONS }
 }
 export const changeBackground = (backgroundInfo) => {
   return { type: CHANGE_BACKGROUND, payload: backgroundInfo }
@@ -42,6 +39,9 @@ export const removeFav = (id) => {
   //  }
   return { type: REMOVE_FAV, payload: id }
 }
+export const queryCheckboxes = (checkboxData) => {
+  return { type: QUERY_CHECKBOXES, payload: checkboxData }
+}
 export const query = (queryData) => {
   return { type: QUERY, payload: queryData }
 }
@@ -54,15 +54,27 @@ export const orderBy = (orderData) => {
 export const filter = (filterData) => {
   return { type: FILTER, payload: filterData }
 }
+export const setIsFavoritesTogether = () => {
+  return { type: IS_FAVORITES_TOGETHER }
+}
 export const optionsCardsPerPage = (optionsData) => {
   return { type: OPTIONS_SIDEBAR_CARDS_PER_PAGE, payload: optionsData }
 }
 export const optionsRadios = (optionsData) => {
   return { type: OPTIONS_SIDEBAR_RADIOS, payload: optionsData }
 }
-export const optionsCheckboxes = (labelData) => {
-  return { type: OPTIONS_SIDEBAR_CHECKBOXES, payload: labelData }
+export const optionsCheckboxes = (checkboxData) => {
+  return { type: OPTIONS_SIDEBAR_CHECKBOXES, payload: checkboxData }
 }
 export const favoritesIcon = (id) => {
   return { type: FAVORITES_ICONS, payload: id }
+}
+export const autoSaveToggle = (id) => {
+  return { type: AUTOSAVE_TOGGLE, payload: id }
+}
+export const loadSettings = (loadData) => {
+  return { type: LOAD_SETTINGS, payload: loadData }
+}
+export const saveSettings = (saveType) => {
+  return { type: SAVE_SETTINGS, payload: saveType }
 }

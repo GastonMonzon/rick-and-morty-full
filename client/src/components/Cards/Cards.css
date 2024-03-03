@@ -7,32 +7,44 @@
 }
 
 .twoCards,
-.twoCardsH {
+.twoCardsH,
+.twoCardsF
+.twoCardsHF {
     grid-template-columns: repeat(2, 1fr);
 }
 .threeCards,
-.threeCardsH {
+.threeCardsH,
+.threeCardsF,
+.threeCardsHF {
     grid-template-columns: repeat(3, 1fr);
 }
 .fourCards,
-.fourCardsH {
+.fourCardsH,
+.fourCardsF,
+.fourCardsHF {
     grid-template-columns: repeat(4, 1fr);
 }
-.fiveCards {
+.fiveCards,
+.fiveCardsF {
     grid-template-columns: repeat(5, 20%);
 }
-.sixCards {
+.sixCards,
+.sixCardsF {
     grid-template-columns: repeat(6, 1fr);
 }
-.sevenCards {
+.sevenCards,
+.sevenCardsF {
     grid-template-columns: repeat(7, 1fr);
 }
-.eightCards {
+.eightCards,
+.eightCardsF {
     grid-template-columns: repeat(8, 12.5%);
 }
-.nineCards {
+.nineCards,
+.nineCardsF {
     grid-template-columns: repeat(9, 1fr);
 }
-.tenCards {
+.tenCards,
+.tenCardsF {
     grid-template-columns: repeat(10, 1fr);
 }

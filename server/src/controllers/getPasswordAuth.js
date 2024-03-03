@@ -13,10 +13,10 @@ export default async function getPasswordAuth(request, response) {
       return response.status(400).json({ message: 'User email is not available.' });
     }
     const credential = EmailAuthProvider.credential(email, password);
-    const result = await reauthenticateWithCredential(auth.currentUser, credential)
-    response.status(200).send(result);
+    await reauthenticateWithCredential(auth.currentUser, credential);
+    response.status(204).send(); // No content response
   } catch (error) {
     console.error(error);
-    response.status(404).send(error);
+    response.status(500).send({ error, message: 'Error reauthenticating user on firebase' });
   }
 }

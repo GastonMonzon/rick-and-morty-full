@@ -22,6 +22,6 @@ export default async function postUser(request, response) {
     response.status(201).json({ message: 'New user created successfully' });
   } catch (error) {
     console.error(error);
-    return response.status(500).json(error);
+    return response.status(500).json({ error, message: 'Error registering user on firebase' });
   }
 }
