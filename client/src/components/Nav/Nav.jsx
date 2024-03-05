@@ -82,7 +82,7 @@ export default function Nav() {
         onClick={handleRandomize} >
         Randomize
       </button>
-      <button className={pathname === '/home' || pathname === '/favorites' ? 'menu-button' : 'menu-button invisible'}
+      <button className={`menu-button ${pathname === '/home' || pathname === '/favorites' ? '' : 'invisible'}`}
         onClick={handleRandomizeAll} >
         Randomize All
       </button>

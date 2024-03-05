@@ -16,9 +16,22 @@ export const AuthProvider = ({ children }) => {
     })();
   }, []);
 
+  async function setCurrentUser() {
+    try {
+      const { data } = await axios('http://localhost:3001/user');
+      setUserOptions(data);
+      return data;
+    } catch (error) {
+      setUserOptions('');
+      throw error;
+    }
+  }
+
+
+
   async function createUser(registerData) {
     try {
-      return await axios.post('http://localhost:3001/user', registerData );
+      return await axios.post('http://localhost:3001/user', registerData);
     } catch (error) {
       throw error;
     }
@@ -111,7 +124,7 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   }
-  const authContextValue = { userOptions, createUser, reauthenticate, getUserData, logIn, changeUserData, saveFilterSettings, saveOptionsSettings, saveSearchSettings, saveUserSettings, changeEmail, changePassword, logOut, deleteAccount };
+  const authContextValue = { userOptions, setCurrentUser, createUser, reauthenticate, getUserData, logIn, changeUserData, saveFilterSettings, saveOptionsSettings, saveSearchSettings, saveUserSettings, changeEmail, changePassword, logOut, deleteAccount };
   return (
     <AuthContext.Provider value={authContextValue}>
       {children}

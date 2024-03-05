@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, setPersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import dotenv from 'dotenv';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -23,6 +23,15 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firebase Aunthentication and get a reference to the service
 const auth = getAuth(app);
 const firestore = getFirestore(app);
+
+setPersistence(auth, 'local')
+  .then(() => {
+    // Continue with other Firebase operations
+  })
+  .catch((error) => {
+    // Handle persistence enablement error
+    console.error('Error enabling persistence:', error);
+  });
 
 export default auth;
 export { firestore };

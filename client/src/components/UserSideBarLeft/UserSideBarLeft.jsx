@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
 import './UserSideBarLeft.css'
+import { useEffect, useRef, useState } from 'react';
 import userBackgroundVideo from '../../assets/videos/optionsBackgroundVideo2.mp4';
 import { useAuth } from '../../context/AuthContext';
 import background1 from '../../assets/thumbnails/background1_thumbnail_1280x720.jpg';

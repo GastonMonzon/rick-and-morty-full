@@ -133,7 +133,6 @@ const reducer = (state = initialState, action) => {
       const favorites = userOptions.favorites !== null
         ? userOptions.favorites.map((favorite) => state.allCards.find((card) => card.id === favorite))
         : [];
-      console.log(searchByCheckbox);
       return {
         ...state,
         autoSaveSearch: userOptions.autoSaveSearch,

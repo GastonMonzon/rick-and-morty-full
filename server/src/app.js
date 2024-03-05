@@ -26,4 +26,9 @@ server.use((error, request, response, next) => { // eslint-disable-line no-unuse
   response.status(status).send(message);
 });
 
+server.get('*', (request, response) => {
+  console.log(__dirname);
+  response.sendFile(path.resolve(__dirname, 'rick_and_morty\\client\\public\\index.html'));
+});
+
 export default server;
