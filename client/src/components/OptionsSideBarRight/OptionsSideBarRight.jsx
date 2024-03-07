@@ -4,9 +4,10 @@ import './OptionsSideBarRight.css'
 /* components */
 import Checkbox from '../Checkbox/Checkbox';
 import RadioButtons from '../RadioButtons/RadioButtons';
-import { cardOptions, favoritesIconRadio, detailOptions } from '../../config';
-import { optionsRadios, optionsCheckboxes, optionsCardsPerPage, saveUserOptions, setIsFavoritesTogether, favoritesIcon } from '../../redux/actions';
+import { getCardOptions, getDetailOptions, getFavoritesIconOptions } from '../../config';
+import { optionsRadios, optionsCheckboxes, optionsCardsPerPage, setIsFavoritesTogether, favoritesIcon } from '../../redux/actions';
 import optionsBackgroundVideo from '../../assets/videos/optionsBackgroundVideo2.mp4';
+import { useAuth } from '../../context/AuthContext.js';
 
 /* hooks */
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,12 +16,22 @@ import { useEffect, useRef, useState } from 'react';
 export default function OptionsSideBarRight() {
   const dispatch = useDispatch();
   const videoRef = useRef(null);
+  const { userOptions } = useAuth();
+  const favoritesIconRadio = getFavoritesIconOptions(userOptions);
   const selectedCardsPerPage = useSelector(state => state.selectedCardsPerPage);
   const selectedCardsPerPageFavorites = useSelector(state => state.selectedCardsPerPageFavorites);
   const isFavoritesTogether = useSelector(state => state.isFavoritesTogether);
+  const areOptionsSettingsChanged = useSelector(state => state.areOptionsSettingsChanged);
   const [isHomeOptions, setIsHomeOptions] = useState(true);
   const [cardsPerPageFavorites, setCardPerPageFavorites] = useState(selectedCardsPerPageFavorites);
   const [cardsPerPage, setCardPerPage] = useState(selectedCardsPerPage);
+  const [renderKey, setRenderKey] = useState(0);
+
+  useEffect(() => {
+    if (!areOptionsSettingsChanged) {
+      setRenderKey(prevKey => prevKey + 1);
+    }
+  }, [areOptionsSettingsChanged]);
 
   const handleCardsPerPageChange = () => {
     if (Number.isInteger(Number(cardsPerPage)) && cardsPerPage > 0 && cardsPerPage < 1000) {
@@ -63,7 +74,7 @@ export default function OptionsSideBarRight() {
             </button>
             <p className='cards-per-page-warning' >must be integer between 0 and 999</p>
           </div>
-          {renderOptions(cardOptions, isForHome)}
+          {renderOptions(getCardOptions(userOptions), isForHome)}
         </div>
       );
     } else {
@@ -87,41 +98,43 @@ export default function OptionsSideBarRight() {
             </button>
             <p className='cards-per-page-warning' >must be integer between 0 and 999</p>
           </div>
-          {renderOptions(cardOptions, isForHome)}
+          {renderOptions(getCardOptions(userOptions), isForHome)}
         </div>
       );
     }
   }
   const renderOptions = (options, isForHome) => {
-    return options.map((option) => {
-      if (!Array.isArray(option.checked)) {
-        return (
-          <div key={option.name}>
-            <RadioButtons
-              name={isForHome ? option.name : option.nameF}
-              mainTitle={option.mainTitle}
-              titles={option.titles}
-              ids={isForHome ? option.ids : option.idsF}
-              checkedId={isForHome ? option.checked : option.checkedFavorites}
-              handleChange={handleOptionsRadioChange}
-            />
-          </div>
-        );
-      } else {
-        return (
-          <div key={option.name}>
-            <Checkbox
-              name={isForHome ? option.name : option.nameF}
-              mainTitle={option.mainTitle}
-              titles={option.titles}
-              ids={isForHome ? option.ids : option.idsF}
-              checkedIds={isForHome ? option.checked : option.checkedFavorites}
-              handleChange={handleOptionsCheckboxChange}
-            />
-          </div>
-        );
-      }
-    });
+    if (options) {
+      return options.map((option) => {
+        if (!Array.isArray(option.checked)) {
+          return (
+            <div key={option.name}>
+              <RadioButtons
+                name={isForHome ? option.name : option.nameF}
+                mainTitle={option.mainTitle}
+                titles={option.titles}
+                ids={isForHome ? option.ids : option.idsF}
+                checkedId={isForHome ? option.checked : option.checkedFavorites}
+                handleChange={handleOptionsRadioChange}
+              />
+            </div>
+          );
+        } else {
+          return (
+            <div key={option.name}>
+              <Checkbox
+                name={isForHome ? option.name : option.nameF}
+                mainTitle={option.mainTitle}
+                titles={option.titles}
+                ids={isForHome ? option.ids : option.idsF}
+                checkedIds={isForHome ? option.checked : option.checkedFavorites}
+                handleChange={handleOptionsCheckboxChange}
+              />
+            </div>
+          );
+        }
+      });
+    }
   }
 
   return (
@@ -134,48 +147,50 @@ export default function OptionsSideBarRight() {
         <video ref={videoRef} src={optionsBackgroundVideo} className='background-video2' autoPlay muted loop>
         </video>
       </div>
-      <h3>⚙️ Options Sidebar</h3>
-      <div>
-        <div className='home-favorites-option-container' >
-          <label>Home / Favorites</label>
-          <button
-            className={`sidebar-button ${isFavoritesTogether ? 'sidebar-button-active' : ''}`}
-            onClick={handleOptionsTogether} >
-            {isFavoritesTogether ? 'Together' : 'Separate'}
-          </button>
-        </div>
-        {!isFavoritesTogether ? (
-          <div className='home-favorites-buttons-container' >
+      <div key={renderKey} >
+        <h3>⚙️ Options Sidebar</h3>
+        <div>
+          <div className='home-favorites-option-container' >
+            <label>Home / Favorites</label>
             <button
-              className={isHomeOptions ? 'home-options-button home-options-button-active' : 'home-options-button'}
-              onClick={() => setIsHomeOptions(true)} >
-              Home
-            </button>
-            <button
-              className={!isHomeOptions ? 'favorites-options-button favorites-options-button-active' : 'favorites-options-button'}
-              onClick={() => setIsHomeOptions(false)} >
-              Favorites
+              className={`sidebar-button ${isFavoritesTogether ? 'sidebar-button-active' : ''}`}
+              onClick={handleOptionsTogether} >
+              {isFavoritesTogether ? 'Together' : 'Separate'}
             </button>
           </div>
-        ) : null }
-        {renderCardOptions(true)}
-        {renderCardOptions(false)}
+          {!isFavoritesTogether ? (
+            <div className='home-favorites-buttons-container' >
+              <button
+                className={isHomeOptions ? 'home-options-button home-options-button-active' : 'home-options-button'}
+                onClick={() => setIsHomeOptions(true)} >
+                Home
+              </button>
+              <button
+                className={!isHomeOptions ? 'favorites-options-button favorites-options-button-active' : 'favorites-options-button'}
+                onClick={() => setIsHomeOptions(false)} >
+                Favorites
+              </button>
+            </div>
+          ) : null}
+          {renderCardOptions(true)}
+          {renderCardOptions(false)}
+        </div>
+        <div className='favorites-options-container' >
+          <RadioButtons
+            name={favoritesIconRadio.name}
+            mainTitle={favoritesIconRadio.mainTitle}
+            titles={favoritesIconRadio.titles}
+            ids={favoritesIconRadio.ids}
+            checkedId={favoritesIconRadio.checked}
+            handleChange={handleFavoritesIconChange}
+          />
+        </div>
+        <div>
+          <h4>Detail Options</h4>
+          {renderOptions(getDetailOptions(userOptions), true)}
+        </div>
+        <br /><br /><br /><br /><br /><br /><br /><br />
       </div>
-      <div className='favorites-options-container' >
-        <RadioButtons
-          name={favoritesIconRadio.name}
-          mainTitle={favoritesIconRadio.mainTitle}
-          titles={favoritesIconRadio.titles}
-          ids={favoritesIconRadio.ids}
-          checkedId={favoritesIconRadio.checked}
-          handleChange={handleFavoritesIconChange}
-        />
-      </div>
-      <div>
-        <h4>Detail Options</h4>
-        {renderOptions(detailOptions, true)}
-      </div>
-      <br /><br /><br /><br /><br /><br /><br /><br />
     </div>
   );
 }

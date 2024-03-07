@@ -59,7 +59,7 @@ export default function UserSideBarLeft() {
   const [changeDataErrors, setChangeDataErrors] = useState({ promptModalPassword: '', userData: '', name: '', surName: '', userName: '', dateOfBirth: '', changeEmail: '', currentEmail: '', email: '', emailPassword: '', passwordPassword: '', password: '', repeatPassword: '' });
   const addAnimations = useDetailsTagAnimations();
   const [isUserDataModalOpen, setIsUserDataModalOpen] = useState(false);
-  const [isNotificationModalOpen, setIsNotificatioModalOpen] = useState(false);
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const [isDeletePromptModalOpen, setIsDeletePromptModalOpen] = useState(false);
   const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState({ title: '', requiresInput: false, message: '', cancelButtonText: '', submitButtontext: '' });
@@ -224,6 +224,91 @@ export default function UserSideBarLeft() {
   }, [autoSaveSearch, areSearchSettingsChanged]);
 
   useEffect(() => {
+    (async function saveData() {
+      if (searchSettings) {
+        try {
+          console.log(searchSettings);
+          await saveSearchSettings(searchSettings);
+          setModalMessage({
+            ...modalMessage,
+            title: 'Success',
+            message: 'Search Settings Saved Successfully'
+          });
+          setIsNotificationModalOpen(true);
+        } catch (error) {
+          setModalMessage({
+            ...modalMessage,
+            title: 'Error saving search settings',
+            message: error?.response?.data?.error?.code
+          });
+          setIsNotificationModalOpen(true);
+        }
+      }
+    }());
+  }, [searchSettings]);
+
+  useEffect(() => {
+    (async function saveData() {
+      if (filterSettings) {
+        try {
+          await saveFilterSettings(filterSettings);
+          setModalMessage({
+            ...modalMessage,
+            title: 'Success',
+            message: 'Filter Settings Saved Succesfully'
+          });
+          setIsNotificationModalOpen(true);
+        } catch (error) {
+          setModalMessage({
+            ...modalMessage,
+            title: 'Error saving filter settings',
+            message: error?.response?.data?.error?.code
+          });
+          setIsNotificationModalOpen(true);
+        }
+      }
+    }());
+  }, [filterSettings]);
+
+  useEffect(() => {
+    (async function saveData() {
+      if (optionsSettings) {
+        try {
+          await saveOptionsSettings(optionsSettings);
+          console.log(optionsSettings);
+          console.log(userOptions);
+          setModalMessage({
+            ...modalMessage,
+            title: 'Success',
+            message: 'Options Settings Saved Succesfully'
+          });
+          setIsNotificationModalOpen(true);
+        } catch (error) {
+          setModalMessage({
+            ...modalMessage,
+            title: 'Error saving options settings',
+            message: error?.response?.data?.error?.code
+          });
+          setIsNotificationModalOpen(true);
+        }
+      }
+    }());
+  }, [optionsSettings]);
+
+  useEffect(() => {
+    (async function saveData() {
+      if (userSettings) {
+        try {
+          await saveUserSettings(userSettings);
+          console.log('User settings saved');
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }());
+  }, [userSettings]);
+
+  useEffect(() => {
     const detailsElements = document.querySelectorAll('.user-options-details-tag');
     const handleToggle = () => {
       const openCount = Array.from(detailsElements).reduce(
@@ -248,6 +333,7 @@ export default function UserSideBarLeft() {
   }
   const handleLoad = (id) => {
     dispatch(loadSettings({ id: id, userOptions: userOptions }));
+    console.log(userOptions);
     switch (id) {
       case 'loadSearchSettings':
         setChangeData({
@@ -273,73 +359,6 @@ export default function UserSideBarLeft() {
   }
   const handleSave = async (id) => {
     dispatch(saveSettings(id));
-    switch (id) {
-      case 'saveFiltersSettings':
-        try {
-          await saveFilterSettings(filterSettings);
-          setModalMessage({
-            ...modalMessage,
-            title: 'Success',
-            message: 'Filter Settings Saved Succesfully'
-          });
-          setIsNotificatioModalOpen(true);
-        } catch (error) {
-          setModalMessage({
-            ...modalMessage,
-            title: 'Error saving filter settings',
-            message: error?.response?.data?.error?.code
-          });
-          setIsNotificatioModalOpen(true);
-        }
-        break;
-      case 'saveOptionsSettings':
-        try {
-          await saveOptionsSettings(optionsSettings);
-          setModalMessage({
-            ...modalMessage,
-            title: 'Success',
-            message: 'Options Settings Saved Succesfully'
-          });
-          setIsNotificatioModalOpen(true);
-        } catch (error) {
-          setModalMessage({
-            ...modalMessage,
-            title: 'Error saving options settings',
-            message: error?.response?.data?.error?.code
-          });
-          setIsNotificatioModalOpen(true);
-        }
-        break;
-      case 'saveSearchSettings':
-        try {
-          await saveSearchSettings(searchSettings);
-          setModalMessage({
-            ...modalMessage,
-            title: 'Success',
-            message: 'Search Settings Saved Succesfully'
-          });
-          setIsNotificatioModalOpen(true);
-        } catch (error) {
-          setModalMessage({
-            ...modalMessage,
-            title: 'Error saving search settings',
-            message: error?.response?.data?.error?.code
-          });
-          setIsNotificatioModalOpen(true);
-        }
-        break;
-      case 'saveUserSettings':
-        try {
-          await saveUserSettings(userSettings);
-          console.log('User settings saved');
-        } catch (error) {
-          console.error(error);
-        }
-        break;
-      default:
-        console.log(`Invalid save id: ${id}`);
-        break;
-    }
   }
   const handleBackgroundChange = (event) => {
     const { name, alt } = event.target;
@@ -441,7 +460,7 @@ export default function UserSideBarLeft() {
         title: 'Success',
         message: 'User Data Updated Succesfully'
       });
-      setIsNotificatioModalOpen(true);
+      setIsNotificationModalOpen(true);
     } catch (error) {
       setChangeDataErrors({
         ...changeDataErrors,
@@ -464,7 +483,7 @@ export default function UserSideBarLeft() {
         title: 'Success',
         message: 'Email Updated Succesfully'
       });
-      setIsNotificatioModalOpen(true);
+      setIsNotificationModalOpen(true);
     } catch (error) {
       setChangeDataErrors({
         ...changeDataErrors,
@@ -487,7 +506,7 @@ export default function UserSideBarLeft() {
         title: 'Success',
         message: 'Password Updated Succesfully'
       });
-      setIsNotificatioModalOpen(true);
+      setIsNotificationModalOpen(true);
     } catch (error) {
       setChangeDataErrors({
         ...changeDataErrors,
@@ -553,7 +572,7 @@ export default function UserSideBarLeft() {
     }
   }
   const handleCloseModal = () => {
-    setIsNotificatioModalOpen(false);
+    setIsNotificationModalOpen(false);
     setIsUserDataModalOpen(false);
     setIsDeletePromptModalOpen(false);
     setIsDeleteConfirmationModalOpen(false);
@@ -585,6 +604,10 @@ export default function UserSideBarLeft() {
           </video>
         </div>
       }
+      <div className='user-sidebar-title-container' >
+        <h2>🪪 </h2>
+        <h3>User Sidebar</h3>
+      </div>
       <details id='saveOptionsDetailsTag' className='user-options-details-tag' ref={saveOptionsRef} >
         <summary
           id='saveOptions'

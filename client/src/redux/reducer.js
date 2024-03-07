@@ -1,78 +1,84 @@
 import {
-  SET_ALL_CARDS, SET_VALUES, CHANGE_BACKGROUND, ADD_FAV, REMOVE_FAV, RANDOMIZE_ALL, QUERY_CHECKBOXES, QUERY, ORDER, ORDER_BY, FILTER, IS_FAVORITES_TOGETHER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS, AUTOSAVE_TOGGLE, LOAD_SETTINGS, SAVE_SETTINGS
+  SET_ALL_CARDS, SET_ALL_VALUES, CHANGE_BACKGROUND, ADD_FAV, REMOVE_FAV, RANDOMIZE_ALL, QUERY_CHECKBOXES, QUERY, ORDER, ORDER_BY, FILTER, IS_FAVORITES_TOGETHER, OPTIONS_SIDEBAR_CARDS_PER_PAGE, OPTIONS_SIDEBAR_RADIOS, OPTIONS_SIDEBAR_CHECKBOXES, FAVORITES_ICONS, AUTOSAVE_TOGGLE, LOAD_SETTINGS, SAVE_SETTINGS
 } from "./action-types"
 import {
-  searchByCheckbox, orderByOptions, filterOptions, cardOptions, detailOptions, favoritesIconRadio
+  filterOptions, getSearchOptions, getCardOptions, getFavoritesIconOptions, getDetailOptions, getDefaultSearchOptions, getDefaultCardOptions, getDefaultFavoritesIconOptions, getDefaultDetailOptions, getDefaultCardsPerPage, getDefaultCardsPerPageF, getDefaultFavoritesIcon, getDefaultOrderOptions
 } from '../config';
 
 const generateCardOptions = (options, isRadio) => {
-  const generatedOptions = [];
-  if (isRadio) {
-    for (let i = 0; i < options.length; i++) {
-      if (Array.isArray(options[i].checked)) {
-        continue;
+  if (options) {
+    const generatedOptions = [];
+    if (isRadio) {
+      for (let i = 0; i < options.length; i++) {
+        if (Array.isArray(options[i].checked)) {
+          continue;
+        }
+        generatedOptions.push({
+          name: options[i].name,
+          nameF: options[i]?.nameF || null,
+          value: options[i].checked,
+          valueF: options[i]?.checkedFavorites || null
+        });
       }
-      generatedOptions.push({
-        name: options[i].name,
-        nameF: options[i]?.nameF || null,
-        value: options[i].checked,
-        valueF: options[i]?.checkedFavorites || null
-      });
-    }
-  } else {
-    for (let i = 0; i < options.length; i++) {
-      if (Array.isArray(options[i].checked)) {
-        for (let j = 0; j < options[i].ids.length; j++) {
-          generatedOptions.push({
-            name: options[i].ids[j],
-            nameF: options[i].idsF ? options[i].idsF[j] : null,
-            value: false,
-            valueF: false,
-          });
-        }
-        for (let k = 0; k < options[i].checked.length; k++) {
-          const indexToUpdate = generatedOptions.findIndex(option => option.name === options[i].checked[k]);
-          if (indexToUpdate !== -1) {
-            generatedOptions[indexToUpdate].value = true;
+    } else {
+      for (let i = 0; i < options.length; i++) {
+        if (Array.isArray(options[i].checked)) {
+          for (let j = 0; j < options[i].ids.length; j++) {
+            generatedOptions.push({
+              name: options[i].ids[j],
+              nameF: options[i].idsF ? options[i].idsF[j] : null,
+              value: false,
+              valueF: false,
+            });
           }
-        }
-        if (options[i].checkedFavorites) {
-          for (let k = 0; k < options[i].checkedFavorites.length; k++) {
-            const indexToUpdate = generatedOptions.findIndex(option => option.nameF === options[i].checkedFavorites[k]);
+          for (let k = 0; k < options[i].checked.length; k++) {
+            const indexToUpdate = generatedOptions.findIndex(option => option.name === options[i].checked[k]);
             if (indexToUpdate !== -1) {
-              generatedOptions[indexToUpdate].valueF = true;
+              generatedOptions[indexToUpdate].value = true;
+            }
+          }
+          if (options[i].checkedFavorites) {
+            for (let k = 0; k < options[i].checkedFavorites.length; k++) {
+              const indexToUpdate = generatedOptions.findIndex(option => option.nameF === options[i].checkedFavorites[k]);
+              if (indexToUpdate !== -1) {
+                generatedOptions[indexToUpdate].valueF = true;
+              }
             }
           }
         }
       }
     }
+    return generatedOptions;
   }
-  return generatedOptions;
 }
 
 const generateSearchCheckboxOptions = (options) => {
-  const generatedOptions = [];
-  for (let i = 0; i < options.ids.length; i++) {
-    generatedOptions.push({
-      name: options.ids[i],
-      nameF: options.idsF ? options.idsF[i] : null,
-      value: false,
-      valueF: false,
-    });
-  }
-  for (let k = 0; k < options.checked.length; k++) {
-    const indexToUpdate = generatedOptions.findIndex(option => option.name === options.checked[k]);
-    if (indexToUpdate !== -1) {
-      generatedOptions[indexToUpdate].value = true;
+  console.log(options);
+  if (options) {
+    const generatedOptions = [];
+    for (let i = 0; i < options.ids.length; i++) {
+      generatedOptions.push({
+        name: options.ids[i],
+        nameF: options.idsF ? options.idsF[i] : null,
+        value: false,
+        valueF: false,
+      });
     }
-  }
-  for (let k = 0; k < options.checkedFavorites.length; k++) {
-    const indexToUpdate = generatedOptions.findIndex(option => option.nameF === options.checkedFavorites[k]);
-    if (indexToUpdate !== -1) {
-      generatedOptions[indexToUpdate].valueF = true;
+    for (let k = 0; k < options.checked.length; k++) {
+      const indexToUpdate = generatedOptions.findIndex(option => option.name === options.checked[k]);
+      if (indexToUpdate !== -1) {
+        generatedOptions[indexToUpdate].value = true;
+      }
     }
+    for (let k = 0; k < options.checkedFavorites.length; k++) {
+      const indexToUpdate = generatedOptions.findIndex(option => option.nameF === options.checkedFavorites[k]);
+      if (indexToUpdate !== -1) {
+        generatedOptions[indexToUpdate].valueF = true;
+      }
+    }
+    console.log(generatedOptions);
+    return generatedOptions;
   }
-  return generatedOptions;
 }
 
 const initialState = {
@@ -86,22 +92,22 @@ const initialState = {
   searchQuery: '',
   selectedFilters: [],
   isFavoritesTogether: true,
-  selectedCardsPerPage: '',
+  selectedCardsPerPage: getDefaultCardsPerPage,
   isAscending: true,
   selectedOrder: '',
-  cardRadioOptions: {},
-  cardCheckboxOptions: {},
-  detailRadioOptions: {},
-  detailCheckboxOptions: {},
-  searchByCheckboxOptions: {},
-  favoritesIcon: ['🤍', '❤️'],
+  searchByCheckboxOptions: generateSearchCheckboxOptions(getDefaultSearchOptions()),
+  cardRadioOptions: generateCardOptions(getDefaultCardOptions(), true),
+  cardCheckboxOptions: generateCardOptions(getDefaultCardOptions(), false),
+  favoritesIcon: getDefaultFavoritesIcon,
+  detailRadioOptions: generateCardOptions(getDefaultDetailOptions(), true),
+  detailCheckboxOptions: generateCardOptions(getDefaultDetailOptions(), false),
   allFavorites: [],
   filteredFavorites: [],
   randomizedFavorites: [],
   queriedFavorites: [],
   searchQueryFavorites: '',
   selectedFiltersFavorites: [],
-  selectedCardsPerPageFavorites: '',
+  selectedCardsPerPageFavorites: getDefaultCardsPerPageF,
   isAscendingFavorites: true,
   selectedOrderFavorites: '',
   homeBackground: '',
@@ -128,7 +134,7 @@ const reducer = (state = initialState, action) => {
         filteredCards: action.payload,
         queriedCards: action.payload
       };
-    case SET_VALUES: {
+    case SET_ALL_VALUES: {
       const userOptions = action.payload;
       const favorites = userOptions.favorites !== null
         ? userOptions.favorites.map((favorite) => state.allCards.find((card) => card.id === favorite))
@@ -148,12 +154,12 @@ const reducer = (state = initialState, action) => {
         selectedFilters: userOptions.selectedFilters,
         isFavoritesTogether: userOptions.isFavoritesTogether,
         selectedCardsPerPage: userOptions.selectedCardsPerPage,
-        searchByCheckboxOptions: generateSearchCheckboxOptions(searchByCheckbox),
-        cardRadioOptions: generateCardOptions(cardOptions, true),
-        cardCheckboxOptions: generateCardOptions(cardOptions, false),
-        favoritesIcon: favoritesIconRadio.selectedIcon,
-        detailRadioOptions: generateCardOptions(detailOptions, true),
-        detailCheckboxOptions: generateCardOptions(detailOptions, false),
+        searchByCheckboxOptions: generateSearchCheckboxOptions(getSearchOptions(userOptions)),
+        cardRadioOptions: generateCardOptions(getCardOptions(userOptions), true),
+        cardCheckboxOptions: generateCardOptions(getCardOptions(userOptions), false),
+        favoritesIcon: userOptions.favoritesIcon,
+        detailRadioOptions: generateCardOptions(getDetailOptions(userOptions), true),
+        detailCheckboxOptions: generateCardOptions(getDetailOptions(userOptions), false),
         allFavorites: favorites,
         searchQueryFavorites: userOptions.searchQueryF,
         selectedOrderFavorites: userOptions.orderByF,
@@ -234,6 +240,7 @@ const reducer = (state = initialState, action) => {
       let updatedCheckboxOptions = [...state.searchByCheckboxOptions];
       if (action.payload.isHome) {
         const index = updatedCheckboxOptions.findIndex(option => option.name === action.payload.name);
+        console.log(state.searchByCheckboxOptions);
         console.log(action.payload.name, action.payload.isChecked, index);
         console.log(updatedCheckboxOptions);
         console.log(state.searchByCheckboxOptions);
@@ -449,7 +456,7 @@ const reducer = (state = initialState, action) => {
               filteredCards: [...state.queriedCards],
               selectedFilters: [],
               isAscending: true,
-              selectedOrder: orderByOptions.default,
+              selectedOrder: getDefaultOrderOptions()?.checked,
               areFilterSettingsChanged: true
             }
           default:
@@ -500,7 +507,7 @@ const reducer = (state = initialState, action) => {
               filteredFavorites: [...state.queriedFavorites],
               selectedFiltersFavorites: [],
               isAscendingFavorites: true,
-              selectedOrderFavorites: orderByOptions.default,
+              selectedOrderFavorites: getDefaultOrderOptions()?.checkedFavorites,
               areFilterSettingsChanged: true
             }
           default:
@@ -879,7 +886,7 @@ const reducer = (state = initialState, action) => {
             ...state,
             searchQuery: userOptions.searchQuery,
             searchQueryFavorites: userOptions.searchQueryF,
-            searchByCheckboxOptions: generateCardOptions(searchByCheckbox, false),
+            searchByCheckboxOptions: generateSearchCheckboxOptions(getSearchOptions(userOptions), false),
             areSearchSettingsChanged: false
           }
         case 'loadFiltersSettings':
@@ -899,10 +906,10 @@ const reducer = (state = initialState, action) => {
             isFavoritesTogether: userOptions.isFavoritesTogether,
             selectedCardsPerPage: userOptions.selectedCardsPerPage,
             selectedCardsPerPageFavorites: userOptions.selectedCardsPerPageF,
-            cardRadioOptions: generateCardOptions(cardOptions, true),
-            detailRadioOptions: generateCardOptions(detailOptions, true),
-            cardCheckboxOptions: generateCardOptions(cardOptions, false),
-            detailCheckboxOptions: generateCardOptions(detailOptions, false),
+            cardRadioOptions: generateCardOptions(getCardOptions(userOptions), true),
+            detailRadioOptions: generateCardOptions(getDetailOptions(userOptions), true),
+            cardCheckboxOptions: generateCardOptions(getCardOptions(userOptions), false),
+            detailCheckboxOptions: generateCardOptions(getDetailOptions(userOptions), false),
             areOptionsSettingsChanged: false
           }
         default:
@@ -927,6 +934,7 @@ const reducer = (state = initialState, action) => {
               return array;
             }, []),
           }
+          console.log(searchSettings);
           return {
             ...state,
             searchSettings: searchSettings,

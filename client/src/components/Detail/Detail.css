@@ -1,7 +1,8 @@
 .detail-container {
-  color: rgb(0, 157, 255);
+  color: rgba(4, 0, 255, 0.7);
   padding: 5px;
   width: 70vw;
+  font-family: neuropolitical;
 }
 
 .detail-background-container {

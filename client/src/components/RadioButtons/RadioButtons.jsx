@@ -3,35 +3,33 @@ import { useEffect, useRef } from "react";
 import React from "react";
 
 export default function RadioButtons({ name, mainTitle, titles, ids, checkedId, handleChange }) {
-    const refs = useRef({});
+  const refs = useRef({});
 
-    useEffect(() => {
-        if (refs.current[checkedId]) {
-            refs.current[checkedId].checked = true;
-        }
-    }, [checkedId]);
+  useEffect(() => {
+    if (refs.current[checkedId]) {
+      refs.current[checkedId].checked = true;
+    }
+  }, [checkedId]);
 
-    return (
-        <>
-            <label htmlFor={name} className={`title-label-${name}`} >{mainTitle}</label>
-            <div className={`container-${name}`}>
-                {
-                    ids.map((id, i) => (
-                        <React.Fragment key={id}>
-                            <span className={`input-label-container ${name}`} >
-                                <input
-                                    type="radio"
-                                    key={id}
-                                    name={name}
-                                    id={id}
-                                    ref={(ref) => (refs.current[id] = ref)}
-                                    onChange={() => handleChange(refs.current[id].id, name)}
-                                />
-                                <label htmlFor={id}>{titles[i]}</label>
-                            </span>
-                        </React.Fragment>
-                    ))}
-            </div >
-        </>
-    );
+  return (
+    <>
+      <label htmlFor={name} className={`title-label-${name}`} >{mainTitle}</label>
+      <div className={`container-${name}`}>
+        {ids.map((id, i) => (
+          <React.Fragment key={id}>
+            <span className={`input-label-container ${name}`} >
+              <input
+                type="radio"
+                key={id}
+                name={name}
+                id={id}
+                ref={(ref) => (refs.current[id] = ref)}
+                onChange={() => handleChange(refs.current[id].id, name)} />
+              <label htmlFor={id}>{titles[i]}</label>
+            </span>
+          </React.Fragment>
+        ))}
+      </div >
+    </>
+  );
 }

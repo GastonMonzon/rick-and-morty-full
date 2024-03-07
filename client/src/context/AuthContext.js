@@ -26,9 +26,6 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   }
-
-
-
   async function createUser(registerData) {
     try {
       return await axios.post('http://localhost:3001/user', registerData);
@@ -39,8 +36,8 @@ export const AuthProvider = ({ children }) => {
   const logIn = async (email, password) => {
     try {
       const { data } = await axios.post('http://localhost:3001/user/login', { email, password });
-      setUserOptions(data.userOptions);
-      return data.userOptions;
+      setUserOptions(data);
+      return data;
     } catch (error) {
       throw error;
     }
@@ -69,6 +66,8 @@ export const AuthProvider = ({ children }) => {
   const saveFilterSettings = async (settings) => {
     try {
       await axios.patch('http://localhost:3001/filterSettings', settings);
+      const { data } = await getUserSettings();
+      setUserOptions(data);
     } catch (error) {
       throw error;
     }
@@ -76,6 +75,8 @@ export const AuthProvider = ({ children }) => {
   const saveOptionsSettings = async (settings) => {
     try {
       await axios.patch('http://localhost:3001/optionsSettings', settings);
+      const { data } = await getUserSettings();
+      setUserOptions(data);
     } catch (error) {
       throw error;
     }
@@ -83,6 +84,9 @@ export const AuthProvider = ({ children }) => {
   const saveSearchSettings = async (settings) => {
     try {
       await axios.patch('http://localhost:3001/searchSettings', settings);
+      const { data } = await getUserSettings();
+      console.log(data);
+      setUserOptions(data);
     } catch (error) {
       throw error;
     }
@@ -90,6 +94,15 @@ export const AuthProvider = ({ children }) => {
   const saveUserSettings = async (settings) => {
     try {
       await axios.patch('http://localhost:3001/userSettings', settings);
+      const { data } = await getUserSettings();
+      setUserOptions(data);
+    } catch (error) {
+      throw error;
+    }
+  }
+  const getUserSettings = async () => {
+    try {
+      return await axios('http://localhost:3001/userOptions');
     } catch (error) {
       throw error;
     }

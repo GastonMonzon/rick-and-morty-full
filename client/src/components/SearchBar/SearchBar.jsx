@@ -1,13 +1,20 @@
 import './SearchBar.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { filter, orderBy, query, queryCheckboxes } from '../../redux/actions';
-import { searchByCheckbox } from '../../config';
 import Checkbox from '../Checkbox/Checkbox';
 import { useLocation } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { getSearchOptions } from '../../config';
+import { useEffect, useState } from 'react';
 
 export default function SearchBar({ isHome }) {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+  const { userOptions } = useAuth();
+  const [renderKey, setRenderKey] = useState(0);
+  const [renderKeyF, setRenderKeyF] = useState(0);
+  const searchByCheckbox = getSearchOptions(userOptions);
+  const areSearchSettingsChanged = useSelector(state => state.areSearchSettingsChanged);
   const searchQuery = useSelector(state =>
     isHome
       ? state.searchQuery
@@ -24,11 +31,15 @@ export default function SearchBar({ isHome }) {
       : state.selectedOrderFavorites
   );
 
-  const handleQuery = (value) => {
-    dispatch(query({ query: value, isHome: isHome }));
-    dispatch(filter({ name: '', value: '', isHome: isHome }));
-    dispatch(orderBy({ order: selectedOrder, isAscending: isAscending }));
-  }
+  useEffect(() => {
+    if (!areSearchSettingsChanged) {
+      if (isHome) {
+        setRenderKey(prevKey => prevKey + 1);
+      } else {
+        setRenderKeyF(prevKey => prevKey + 1);
+      }
+    }
+  }, [areSearchSettingsChanged]);
 
   const handleCheckboxChange = (id, checked) => {
     let idCheckbox;
@@ -46,22 +57,32 @@ export default function SearchBar({ isHome }) {
       originCheckbox = document.getElementById('originCheckboxF');
       locationCheckbox = document.getElementById('locationCheckboxF');
     }
-
     if (!idCheckbox.checked && !nameCheckbox.checked && !originCheckbox.checked && !locationCheckbox.checked) {
-      checked = true;
+      const lastUnchecked = document.getElementById(id);
+      lastUnchecked.checked = true;
       return;
     }
     dispatch(queryCheckboxes({ name: id, isChecked: checked, isHome: isHome }));
+    dispatch(query({ query: searchQuery, isHome: isHome }));
+    dispatch(filter({ name: '', value: '', isHome: isHome }));
+    dispatch(orderBy({ order: selectedOrder, isHome: isHome, isAscending: isAscending }));
+  }
+  const handleQuery = (value) => {
+    dispatch(query({ query: value, isHome: isHome }));
+    dispatch(filter({ name: '', value: '', isHome: isHome }));
+    dispatch(orderBy({ order: selectedOrder, isHome: isHome, isAscending: isAscending }));
   }
   const handleQueryReset = (event) => {
     const { id, value } = event.target;
     dispatch(filter({ name: id, value: value, isHome: isHome }));
+    dispatch(orderBy({ order: selectedOrder, isHome: isHome, isAscending: isAscending }));
   }
   const renderSearchBar = (isHome) => {
     if (isHome) {
       return (
         <>
-          <div className={`${searchByCheckbox.name}-container ${pathname !== '/home' ? 'no-display' : ''}`} >
+          <div className={`${searchByCheckbox.name}-container ${pathname !== '/home' ? 'no-display' : ''}`} 
+          key={renderKey} >
             <Checkbox
               name={searchByCheckbox.name}
               mainTitle={searchByCheckbox.mainTitle}
@@ -91,7 +112,8 @@ export default function SearchBar({ isHome }) {
     } else {
       return (
         <>
-          <div className={`${searchByCheckbox.name}-container ${pathname !== '/favorites' ? 'no-display' : ''}`} >
+          <div className={`${searchByCheckbox.name}-container ${pathname !== '/favorites' ? 'no-display' : ''}`} 
+          key={renderKeyF} >
             <Checkbox
               name={searchByCheckbox.name}
               mainTitle={searchByCheckbox.mainTitle}

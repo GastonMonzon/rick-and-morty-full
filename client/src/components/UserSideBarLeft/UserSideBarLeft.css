@@ -14,6 +14,25 @@
   transition: .25s transform ease;
 }
 
+.user-sidebar-title-container {
+  display: flex;
+  direction: ltr;
+}
+
+.user-sidebar h2 {
+  margin-top: -5px;
+  margin-right: 5px;
+}
+
+.user-sidebar h3 {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  font-weight: normal;
+  direction: ltr;
+  margin-bottom: 5px;
+}
+
 .user-sidebar label {
   text-align: left;
 }

@@ -2,21 +2,25 @@
 import './FiltersBar.css';
 
 /* components */
-import { filterOptions, orderByOptions } from '../../config';
+import { filterOptions, getOrderOptions, orderByOptions } from '../../config';
 import { orderDirection, orderBy, filter, randomizeAll, query } from '../../redux/actions';
 
 /* hooks */
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useBackground from '../../hooks/useBackground';
+import { useAuth } from '../../context/AuthContext.js';
 
 export default function FiltersBar() {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+  const { userOptions } = useAuth();
+  const [renderKey, setRenderKey] = useState(0);
   const [isOrderFocused, setIsOrderFocused] = useState(false);
   const filtersBackground = useSelector((state) => state.homeBackground);
   const filtersBackgroundFavorites = useSelector((state) => state.favoritesBackground);
+  const areFilterSettingsChanged = useSelector(state => state.areFilterSettingsChanged);
   const selectedOrder = useSelector(state =>
     pathname === '/home'
       ? state.selectedOrder
@@ -42,6 +46,12 @@ export default function FiltersBar() {
       ? state.searchQuery
       : state.searchQueryFavorites
   );
+
+  useEffect(() => {
+    if (!areFilterSettingsChanged) {
+      setRenderKey(prevKey => prevKey + 1);
+    }
+  }, [areFilterSettingsChanged]);
 
   const handleOrderFocus = () => {
     setIsOrderFocused(true);
@@ -73,8 +83,9 @@ export default function FiltersBar() {
   }
   const homeBackground = useBackground(filtersBackground, 'filters');
   const favoritesBackground = useBackground(filtersBackgroundFavorites, 'filters');
+
   return (
-    <div className='filters-bar-container' id='filters-bar-container'>
+    <div className='filters-bar-container' id='filters-bar-container' key={renderKey}>
       <div className='filters-background-container' >
         {
           pathname === '/home'
@@ -94,9 +105,8 @@ export default function FiltersBar() {
         <div className='order-by-container' >
           <div className='order-by-select-container' >
             <label
-              htmlFor={orderByOptions.title}
               className='order-by-select-label' >
-              Order By
+              {getOrderOptions()?.title}
             </label>
             <button
               className='order-by-button'
@@ -107,7 +117,7 @@ export default function FiltersBar() {
             </button>
             <div className={`order-by-options-container ${isOrderFocused ? '' : 'invisible'}`}
               key='order-list-container' >
-              {orderByOptions.options.map((order) => {
+              {getOrderOptions()?.options.map((order) => {
                 const orderByClassname = `order-by-options-button ${order === selectedOrder ? 'selected-order' : ''}`;
                 return (
                   <div className='order-by-options-button-div' key={order} >
