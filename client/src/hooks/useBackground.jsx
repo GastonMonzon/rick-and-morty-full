@@ -8,48 +8,31 @@ import background5 from '../assets/images/background5.jpg';
 import background6 from '../assets/images/background6.jpg';
 import background7 from '../assets/images/background7.jpg';
 
+const backgroundMap = {
+  background1,
+  background2,
+  background3,
+  background4,
+  background5,
+  background6,
+  background7,
+  backgroundVideo1,
+  backgroundVideo2
+};
+
 const useBackground = (background, location) => {
-  switch (background) {
-    case 'background1':
+  const backgroundImage = backgroundMap[background];
+
+  if (background) {
+    if (background === 'backgroundVideo1' || background === 'backgroundVideo2') {
       return (
-        <img src={background1} alt={background1} className={`${location}-background ${location}-${background}`} />
+        <video src={backgroundImage} className={`${location}-background ${location}-${background}`} autoPlay muted loop />
       )
-    case 'background2':
+    } else {
       return (
-        <img src={background2} alt={background2} className={`${location}-background ${location}-${background}`} />
-      )
-    case 'background3':
-      return (
-        <img src={background3} alt={background3} className={`${location}-background ${location}-${background}`} />
-      )
-    case 'background4':
-      return (
-        <img src={background4} alt={background4} className={`${location}-background ${location}-${background}`} />
-      )
-    case 'background5':
-      return (
-        <img src={background5} alt={background5} className={`${location}-background ${location}-${background}`} />
-      )
-    case 'background6':
-      return (
-        <img src={background6} alt={background6} className={`${location}-background ${location}-${background}`} />
-      )
-    case 'background7':
-      return (
-        <img src={background7} alt={background7} className={`${location}-background ${location}-${background}`} />
-      )
-    case 'backgroundVideo1':
-      return (
-        <video src={backgroundVideo1} className={`${location}-background ${location}-${background}`} autoPlay muted loop>
-        </video>
-      )
-    case 'backgroundVideo2':
-      return (
-        <video src={backgroundVideo2} className={`${location}-background ${location}-${background}`} autoPlay muted loop>
-        </video>
-      )
-    default:
-      break;
+        <img src={backgroundImage} alt={background} className={`${location}-background ${location}-${background}`} />
+      );
+    }
   }
 }
 export default useBackground;

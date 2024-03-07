@@ -35,9 +35,12 @@ export default function Pages({ cardsPerPage, cards }) {
       <Cards characters={characters} />
       <div className='pages-selector' >
         {(() => {
-          const previousClassName = (currentPage === 1 || cardsPerPage === cards.length) ? 'invisible' : '';
           return (
-            <button className={previousClassName} onClick={previousPage} >Prev</button>
+            <button
+              className={(currentPage === 1 || cardsPerPage === cards.length) ? 'invisible' : ''}
+              onClick={previousPage} >
+              Prev
+            </button>
           );
         })()}
         {Array.from({ length: nPages }, (_, i) => (

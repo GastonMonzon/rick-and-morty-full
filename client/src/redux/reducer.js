@@ -116,7 +116,7 @@ const initialState = {
   areFilterSettingsChanged: false,
   areOptionsSettingsChanged: false,
   areUserSettingsChanged: false,
-
+  isLoading: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -255,6 +255,7 @@ const reducer = (state = initialState, action) => {
         }
       }
     case QUERY: {
+      state.isLoading = true;
       const query = action.payload.query.toLowerCase();
       let idCheckbox;
       let nameCheckbox;
@@ -276,8 +277,8 @@ const reducer = (state = initialState, action) => {
           return (
             (idCheckbox.checked && character.id.toString().includes(query)) ||
             (nameCheckbox.checked && character.name.toLowerCase().includes(query)) ||
-            (originCheckbox.checked && character.origin.name.toLowerCase().includes(query)) ||
-            (locationCheckbox.checked && character.location.name.toLowerCase().includes(query))
+            (originCheckbox.checked && character.origin?.name.toLowerCase().includes(query)) ||
+            (locationCheckbox.checked && character.location?.name.toLowerCase().includes(query))
           );
         });
       }
@@ -289,7 +290,8 @@ const reducer = (state = initialState, action) => {
           filteredCards: [...queryTemp],
           queriedCards: [...queryTemp],
           searchQuery: query,
-          areSearchSettingsChanged: true
+          areSearchSettingsChanged: true,
+          isLoading: false
         }
       } else {
         let queryTemp = queryCardsFunction([...state.allFavorites]);
@@ -299,28 +301,33 @@ const reducer = (state = initialState, action) => {
           filteredFavorites: [...queryTemp],
           queriedFavorites: [...queryTemp],
           searchQueryFavorites: query,
-          areSearchSettingsChanged: true
+          areSearchSettingsChanged: true,
+          isLoading: false
         }
       }
     }
     case ORDER: {
+      state.isLoading = true;
       if (action.payload) {
         state.isAscending = !state.isAscending;
         return {
           ...state,
           filteredCards: [...state.filteredCards].reverse(),
-          areFilterSettingsChanged: true
+          areFilterSettingsChanged: true,
+          isLoading: false
         }
       } else {
         state.isAscendingFavorites = !state.isAscendingFavorites;
         return {
           ...state,
           filteredFavorites: [...state.filteredFavorites].reverse(),
-          areFilterSettingsChanged: true
+          areFilterSettingsChanged: true,
+          isLoading: false
         }
       }
     }
     case ORDER_BY: {
+      state.isLoading = true;
       state.selectedOrder = action.payload.order;
       let orderByTemp;
       if (action.payload.isHome) {
@@ -381,17 +388,20 @@ const reducer = (state = initialState, action) => {
         return {
           ...state,
           filteredCards: [...orderByTemp],
-          areFilterSettingsChanged: true
+          areFilterSettingsChanged: true,
+          isLoading: false
         }
       } else {
         return {
           ...state,
           filteredFavorites: [...orderByTemp],
-          areFilterSettingsChanged: true
+          areFilterSettingsChanged: true,
+          isLoading: false
         }
       }
     }
     case FILTER: {
+      state.isLoading = true;
       const filterName = action.payload.name;
       const filterValue = action.payload.value;
       console.log(action.payload);
@@ -558,7 +568,8 @@ const reducer = (state = initialState, action) => {
         return {
           ...state,
           filteredCards: [...filterTemp],
-          areFilterSettingsChanged: true
+          areFilterSettingsChanged: true,
+          isLoading: false
         }
       } else {
         filterTemp = [...state.queriedFavorites];
@@ -619,7 +630,8 @@ const reducer = (state = initialState, action) => {
         return {
           ...state,
           filteredFavorites: [...filterTemp],
-          areFilterSettingsChanged: true
+          areFilterSettingsChanged: true,
+          isLoading: false
         }
       }
     }

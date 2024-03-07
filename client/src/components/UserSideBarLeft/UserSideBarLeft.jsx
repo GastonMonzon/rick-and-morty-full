@@ -66,6 +66,7 @@ export default function UserSideBarLeft() {
   const [userDataEvent, setUserDataEvent] = useState({});
   const [isUserDataChanged, setIsUserDataChanged] = useState(false);
   const [isOpenThresholdReached, setIsOpenThresholdReached] = useState(0);
+  const [isloadingScreenTested, setIsloadingScreenTested] = useState(false);
   const autoSaveSearch = useSelector((state) => state.autoSaveSearch);
   const autoSaveFilters = useSelector((state) => state.autoSaveFilters);
   const autoSaveOptions = useSelector((state) => state.autoSaveOptions);
@@ -81,6 +82,8 @@ export default function UserSideBarLeft() {
   const areFilterSettingsChanged = useSelector((state) => state.areFilterSettingsChanged);
   const areOptionsSettingsChanged = useSelector((state) => state.areOptionsSettingsChanged);
   const areUserSettingsChanged = useSelector((state) => state.areUserSettingsChanged);
+  const loadingScreen = useSelector((state) => state.loadingScreen);
+  const isLoading = useSelector((state) => state.isLoading);
 
   const backgroundImages = [
     { name: 'background1', src: background1 },
@@ -116,6 +119,29 @@ export default function UserSideBarLeft() {
     { name: 'loading13', src: loading13 }
   ];
 
+  const loadingMap = {
+    loading1,
+    loading2,
+    loading3,
+    loading4,
+    loading5,
+    loading6,
+    loading7,
+    loading8,
+    loading9,
+    loading10,
+    loading11,
+    loading12,
+    loading13,
+    loading14,
+    loading15,
+    loading16,
+    loading17,
+    loading18,
+    loading19,
+  };
+  const loadingGif = loadingMap[loadingScreen];
+
   useEffect(() => {
     setTimeout(() => {
       let event = {
@@ -136,6 +162,12 @@ export default function UserSideBarLeft() {
   }, []);
 
   useEffect(() => {
+    if (areSearchSettingsChanged) {
+      setChangeData({
+        ...changeData,
+        loadSearchSettings: '',
+      });
+    }
     if (areUserSettingsChanged) {
       const interval = setInterval(() => {
         handleSave('saveUserSettings');
@@ -147,6 +179,12 @@ export default function UserSideBarLeft() {
   }, [areUserSettingsChanged]);
 
   useEffect(() => {
+    if (areFilterSettingsChanged) {
+      setChangeData({
+        ...changeData,
+        loadFilterSettings: '',
+      });
+    }
     if (autoSaveFilters && areFilterSettingsChanged) {
       const interval = setInterval(() => {
         handleSave('saveFiltersSettings');
@@ -158,6 +196,12 @@ export default function UserSideBarLeft() {
   }, [autoSaveFilters, areFilterSettingsChanged]);
 
   useEffect(() => {
+    if (areOptionsSettingsChanged) {
+      setChangeData({
+        ...changeData,
+        loadOptionsSettings: '',
+      });
+    }
     if (autoSaveOptions && areOptionsSettingsChanged) {
       const interval = setInterval(() => {
         handleSave('saveOptionsSettings');
@@ -199,9 +243,113 @@ export default function UserSideBarLeft() {
   const handleDetailsClick = (event, ref, contentId) => {
     addAnimations(event, ref, contentId);
   }
+  const handleAutosaveToggle = (id) => {
+    dispatch(autoSaveToggle(id));
+  }
+  const handleLoad = (id) => {
+    dispatch(loadSettings({ id: id, userOptions: userOptions }));
+    switch (id) {
+      case 'loadSearchSettings':
+        setChangeData({
+          ...changeData,
+          loadSearchSettings: 'Search Settings Loaded'
+        });
+        break;
+      case 'loadFilterSettings':
+        setChangeData({
+          ...changeData,
+          loadFilterSettings: 'Filter Settings Loaded'
+        });
+        break;
+      case 'loadOptionsSettings':
+        setChangeData({
+          ...changeData,
+          loadOptionsSettings: 'View Options Loaded'
+        });
+        break;
+      default:
+        break;
+    }
+  }
+  const handleSave = async (id) => {
+    dispatch(saveSettings(id));
+    switch (id) {
+      case 'saveFiltersSettings':
+        try {
+          await saveFilterSettings(filterSettings);
+          setModalMessage({
+            ...modalMessage,
+            title: 'Success',
+            message: 'Filter Settings Saved Succesfully'
+          });
+          setIsNotificatioModalOpen(true);
+        } catch (error) {
+          setModalMessage({
+            ...modalMessage,
+            title: 'Error saving filter settings',
+            message: error?.response?.data?.error?.code
+          });
+          setIsNotificatioModalOpen(true);
+        }
+        break;
+      case 'saveOptionsSettings':
+        try {
+          await saveOptionsSettings(optionsSettings);
+          setModalMessage({
+            ...modalMessage,
+            title: 'Success',
+            message: 'Options Settings Saved Succesfully'
+          });
+          setIsNotificatioModalOpen(true);
+        } catch (error) {
+          setModalMessage({
+            ...modalMessage,
+            title: 'Error saving options settings',
+            message: error?.response?.data?.error?.code
+          });
+          setIsNotificatioModalOpen(true);
+        }
+        break;
+      case 'saveSearchSettings':
+        try {
+          await saveSearchSettings(searchSettings);
+          setModalMessage({
+            ...modalMessage,
+            title: 'Success',
+            message: 'Search Settings Saved Succesfully'
+          });
+          setIsNotificatioModalOpen(true);
+        } catch (error) {
+          setModalMessage({
+            ...modalMessage,
+            title: 'Error saving search settings',
+            message: error?.response?.data?.error?.code
+          });
+          setIsNotificatioModalOpen(true);
+        }
+        break;
+      case 'saveUserSettings':
+        try {
+          await saveUserSettings(userSettings);
+          console.log('User settings saved');
+        } catch (error) {
+          console.error(error);
+        }
+        break;
+      default:
+        console.log(`Invalid save id: ${id}`);
+        break;
+    }
+  }
   const handleBackgroundChange = (event) => {
     const { name, alt } = event.target;
-    dispatch(changeBackground({ name: name, alt: alt }))
+    dispatch(changeBackground({ name: name, alt: alt }));
+    if (name === 'loading') {
+      setIsloadingScreenTested(true);
+      setTimeout(() => {
+        setIsloadingScreenTested(false);
+      }, 2000);
+    }
   }
   const handleUserDataChangeClick = (event) => {
     event.preventDefault();
@@ -347,9 +495,13 @@ export default function UserSideBarLeft() {
       });
     }
   }
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
     try {
-      logOut();
+      handleSave('saveUserSettings');
+      handleSave('saveFiltersSettings');
+      handleSave('saveOptionsSettings');
+      handleSave('saveSearchSettings');
+      await logOut();
       navigate('/');
     } catch (error) {
       console.log(error);
@@ -398,104 +550,6 @@ export default function UserSideBarLeft() {
         ...changeDataErrors,
         changePassword: `Error deleting account ${error?.response?.data?.error?.code}`
       });
-    }
-  }
-  const handleAutosaveToggle = (id) => {
-    dispatch(autoSaveToggle(id));
-  }
-  const handleLoad = (id) => {
-    dispatch(loadSettings({ id: id, userOptions: userOptions }));
-    switch (id) {
-      case 'loadSearchSettings':
-        setChangeData({
-          ...changeData,
-          loadSearchSettings: 'Search Settings Loaded'
-        });
-        break;
-      case 'loadFilterSettings':
-        setChangeData({
-          ...changeData,
-          loadFilterSettings: 'Filter Settings Loaded'
-        });
-        break;
-      case 'loadOptionsSettings':
-        setChangeData({
-          ...changeData,
-          loadOptionsSettings: 'View Options Loaded'
-        });
-        break;
-      default:
-        break;
-    }
-  }
-  const handleSave = async (id) => {
-    dispatch(saveSettings(id));
-    switch (id) {
-      case 'saveFiltersSettings':
-        try {
-          await saveFilterSettings(filterSettings);
-          setModalMessage({
-            ...modalMessage,
-            title: 'Success',
-            message: 'Filter Settings Saved Succesfully'
-          });
-          setIsNotificatioModalOpen(true);
-        } catch (error) {
-          setModalMessage({
-            ...modalMessage,
-            title: 'Error saving filter settings',
-            message: error?.response?.data?.error?.code
-          });
-          setIsNotificatioModalOpen(true);
-        }
-        break;
-      case 'saveOptionsSettings':
-        try {
-          await saveOptionsSettings(optionsSettings);
-          setModalMessage({
-            ...modalMessage,
-            title: 'Success',
-            message: 'Options Settings Saved Succesfully'
-          });
-          setIsNotificatioModalOpen(true);
-        } catch (error) {
-          setModalMessage({
-            ...modalMessage,
-            title: 'Error saving options settings',
-            message: error?.response?.data?.error?.code
-          });
-          setIsNotificatioModalOpen(true);
-        }
-        break;
-      case 'saveSearchSettings':
-        try {
-          await saveSearchSettings(searchSettings);
-          setModalMessage({
-            ...modalMessage,
-            title: 'Success',
-            message: 'Search Settings Saved Succesfully'
-          });
-          setIsNotificatioModalOpen(true);
-        } catch (error) {
-          setModalMessage({
-            ...modalMessage,
-            title: 'Error saving search settings',
-            message: error?.response?.data?.error?.code
-          });
-          setIsNotificatioModalOpen(true);
-        }
-        break;
-      case 'saveUserSettings':
-        try {
-          await saveUserSettings(userSettings);
-          console.log('User settings saved');
-        } catch (error) {
-          console.error(error);
-        }
-        break;
-      default:
-        console.log(`Invalid save id: ${id}`);
-        break;
     }
   }
   const handleCloseModal = () => {
@@ -935,6 +989,12 @@ export default function UserSideBarLeft() {
       {isDeleteConfirmationModalOpen && <PromptPasswordModal requiresInput={modalMessage.requiresInput} title={modalMessage.title} errorMessage={modalMessage.message} inputName='promptModalPassword' inputValue={changeData.promptModalPassword} handleChange={handleUserDataChange} validationMessage={changeDataErrors.promptModalPassword} handleCloseModal={handleCloseModal} handleSubmit={handleDeleteAccount} cancelButtonText={modalMessage.cancelButtonText} submitButtontext={modalMessage.submitButtontext} />}
 
       {isNotificationModalOpen && <NotificationModal title={modalMessage.title} message={modalMessage.message} buttonClassname='user-options-button' handleCloseModal={handleCloseModal} />}
+
+      {(isloadingScreenTested || (loadingGif && isLoading)) && (
+        <div className='loading-screen-container' >
+          <img src={loadingGif} alt={loadingScreen} className={`loading-screen`} />
+        </div>
+      )}
     </div>
   )
 }
