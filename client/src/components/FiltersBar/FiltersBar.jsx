@@ -2,19 +2,17 @@
 import './FiltersBar.css';
 
 /* components */
-import { filterOptions, getOrderOptions, orderByOptions } from '../../config';
+import { filterOptions, getOrderOptions } from '../../config';
 import { orderDirection, orderBy, filter, randomizeAll, query } from '../../redux/actions';
 
 /* hooks */
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import useBackground from '../../hooks/useBackground';
 import { useAuth } from '../../context/AuthContext.js';
 
-export default function FiltersBar() {
+export default function FiltersBar({ isHome }) {
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
   const { userOptions } = useAuth();
   const [renderKey, setRenderKey] = useState(0);
   const [isOrderFocused, setIsOrderFocused] = useState(false);
@@ -22,27 +20,27 @@ export default function FiltersBar() {
   const filtersBackgroundFavorites = useSelector((state) => state.favoritesBackground);
   const areFilterSettingsChanged = useSelector(state => state.areFilterSettingsChanged);
   const selectedOrder = useSelector(state =>
-    pathname === '/home'
+    isHome
       ? state.selectedOrder
       : state.selectedOrderFavorites
   );
   const isAscending = useSelector(state =>
-    pathname === '/home'
+    isHome
       ? state.isAscending
       : state.isAscendingFavorites
   );
   const selectedFilters = useSelector(state =>
-    pathname === '/home'
+    isHome
       ? state.selectedFilters
       : state.selectedFiltersFavorites
   );
   const randomizedCards = useSelector(state =>
-    pathname === '/home'
+    isHome
       ? state.randomizedCards
       : state.randomizedFavorites
   );
   const searchQuery = useSelector(state =>
-    pathname === '/home'
+    isHome
       ? state.searchQuery
       : state.searchQueryFavorites
   );
@@ -61,8 +59,7 @@ export default function FiltersBar() {
   }
   const handleOrderChange = (event) => {
     const { id } = event.target;
-    const isHome = pathname === '/home';
-    if (id === 'Random' && randomizedCards.length === 0) {
+    if ((id === 'Random'  || id === 'RandomF') && randomizedCards.length === 0) {
       dispatch(randomizeAll(isHome));
       dispatch(query({ query: searchQuery, isHome: isHome }));
       dispatch(filter({ name: '', value: '', isHome: isHome }))
@@ -72,14 +69,12 @@ export default function FiltersBar() {
     setIsOrderFocused(false);
   }
   const handleOrderDirectionChange = () => {
-    const isHome = pathname === '/home';
     dispatch(orderDirection(isHome));
   }
   const handleFilterChange = (event) => {
     const { id, value } = event.target;
-    const isHome = pathname === '/home';
     dispatch(filter({ name: id, value: value, isHome: isHome }));
-    dispatch(orderBy({ order: selectedOrder, isAscending: isAscending, isHome: isHome }));
+    dispatch(orderBy({ order: '', isAscending: isAscending, isHome: isHome }));
   }
   const homeBackground = useBackground(filtersBackground, 'filters');
   const favoritesBackground = useBackground(filtersBackgroundFavorites, 'filters');
@@ -88,7 +83,7 @@ export default function FiltersBar() {
     <div className='filters-bar-container' id='filters-bar-container' key={renderKey}>
       <div className='filters-background-container' >
         {
-          pathname === '/home'
+          isHome
             ? homeBackground
             : favoritesBackground
         }
@@ -106,31 +101,44 @@ export default function FiltersBar() {
           <div className='order-by-select-container' >
             <label
               className='order-by-select-label' >
-              {getOrderOptions()?.title}
+              {getOrderOptions(userOptions)?.title}
             </label>
             <button
               className='order-by-button'
               id='selectedOrder'
               onBlur={() => setTimeout(handleOrderBlur, 100)}
               onClick={handleOrderFocus} >
-              {selectedOrder}
+              {selectedOrder.slice(0, -1)}
             </button>
             <div className={`order-by-options-container ${isOrderFocused ? '' : 'invisible'}`}
               key='order-list-container' >
-              {getOrderOptions()?.options.map((order) => {
-                const orderByClassname = `order-by-options-button ${order === selectedOrder ? 'selected-order' : ''}`;
+              {isHome 
+              ? getOrderOptions(userOptions)?.options.map((order) => {
                 return (
                   <div className='order-by-options-button-div' key={order} >
                     <button
                       key={order}
                       id={order}
-                      className={orderByClassname}
+                      className={`order-by-options-button ${order === selectedOrder ? 'selected-order' : ''}`}
                       onClick={handleOrderChange} >
                       {order}
                     </button>
                   </div>
                 );
-              })}
+              })
+            : getOrderOptions(userOptions)?.options.map((order) => {
+              return (
+                <div className='order-by-options-button-div' key={order} >
+                  <button
+                    key={order + 'F'}
+                    id={order + 'F'}
+                    className={`order-by-options-button ${order + 'F' === selectedOrder + 'F' ? 'selected-order' : ''}`}
+                    onClick={handleOrderChange} >
+                    {order}
+                  </button>
+                </div>
+              );
+            })}
             </div>
           </div>
           <div className='order-button-container' >

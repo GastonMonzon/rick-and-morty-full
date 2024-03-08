@@ -59,7 +59,7 @@ const getUserModel =  (sequelize) => {
     searchByF: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
-      defaultValue: ['nameCheckbox']
+      defaultValue: ['nameCheckboxF']
     },
     searchQuery: {
       type: DataTypes.STRING,
@@ -89,7 +89,7 @@ const getUserModel =  (sequelize) => {
     orderByF: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'Id'
+      defaultValue: 'IdF'
     },
     selectedFilters: {
       type: DataTypes.ARRAY(DataTypes.STRING),
@@ -124,17 +124,17 @@ const getUserModel =  (sequelize) => {
     verticalCardsPerRowF: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'sixCards'
+      defaultValue: 'sixCardsF'
     },
     horizontalCardsPerRow: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'fourCards'
+      defaultValue: 'fourCardsH'
     },
     horizontalCardsPerRowF: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'fourCards'
+      defaultValue: 'fourCardsHF'
     },
     infoLabels: {
       type: DataTypes.ARRAY(DataTypes.STRING),
@@ -144,7 +144,7 @@ const getUserModel =  (sequelize) => {
     infoLabelsF: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
-      defaultValue: ['nameView', 'statusView', 'speciesView', 'genderView'],
+      defaultValue: ['nameViewF', 'statusViewF', 'speciesViewF', 'genderViewF'],
     },
     infoPosition: {
       type: DataTypes.STRING,
@@ -154,7 +154,7 @@ const getUserModel =  (sequelize) => {
     infoPositionF: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'below'
+      defaultValue: 'belowF'
     },
     textPositionX: {
       type: DataTypes.STRING,
@@ -164,7 +164,7 @@ const getUserModel =  (sequelize) => {
     textPositionXF: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'leftX'
+      defaultValue: 'leftXF'
     },
     textPositionY: {
       type: DataTypes.STRING,
@@ -174,12 +174,12 @@ const getUserModel =  (sequelize) => {
     textPositionYF: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'top'
+      defaultValue: 'topF'
     },
     favoritesIcon: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
-      defaultValue: ['🤍', '❤️']
+      defaultValue: ['🤍', '❤️', 'heart']
     },
     episodeInfo: {
       type: DataTypes.ARRAY(DataTypes.STRING),

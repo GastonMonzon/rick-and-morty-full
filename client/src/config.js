@@ -26,7 +26,7 @@ export const getCardOptions = (userOptions) => {
       titles: ['2', '3', '4', '5', '6', '7', '8', '9', '10'],
       ids: ['twoCards', 'threeCards', 'fourCards', 'fiveCards', 'sixCards', 'sevenCards', 'eightCards', 'nineCards', 'tenCards'],
       idsF: ['twoCardsF', 'threeCardsF', 'fourCardsF', 'fiveCardsF', 'sixCardsF', 'sevenCardsF', 'eightCardsF', 'nineCardsF', 'tenCardsF'],
-      checked: userOptions ? userOptions?.verticalCardsPerRow : 'tenCards',
+      checked: userOptions?.verticalCardsPerRow,
       checkedFavorites: userOptions?.verticalCardsPerRowF
     },
     {
@@ -82,6 +82,10 @@ export const getCardOptions = (userOptions) => {
   ]
 }
 export const getFavoritesIconOptions = (userOptions) => {
+  const selectedIcon = typeof userOptions?.favoritesIcon[2] !== 'undefined'
+    ? userOptions.favoritesIcon[2]
+    : ['🤍', '❤️', 'heart'];
+    console.log(selectedIcon);
   return {
     name: 'favoritesIcon',
     mainTitle: 'Favorites Icon:',
@@ -93,7 +97,7 @@ export const getFavoritesIconOptions = (userOptions) => {
       'heartFire', 'heartPink', 'heartStar', 'heartPresent', 'star', 'heartFace', 'starFace', 'monkeyFace', 'eye',
       'thumbsUp', 'nazar', 'disk', 'nest', 'leaves', 'ship', 'earthAmerica', 'earthAfrica', 'earthAsia', 'volcano',
       'cloudySunny', 'rainy', 'snowy', 'umbrella', 'moon', 'moonFace', 'sunFace', 'noYes', 'exclamation'],
-    selectedIcon: userOptions?.favoritesIcon
+    selectedIcon: selectedIcon
   }
 }
 export const getDetailOptions = (userOptions) => {
@@ -145,7 +149,7 @@ export const getDefaultOrderOptions = () => {
     title: 'orderBy',
     options: ['Random', 'Id', 'Name', 'Status', 'Species', 'Gender', 'Origin', 'Location'],
     checked: 'Id',
-    checkedFavorites: 'Id'
+    checkedFavorites: 'IdF'
   }
 }
 export const getDefaultCardsPerPage = 12;
@@ -247,7 +251,6 @@ export const getDefaultDetailOptions = () => {
     }
   ]
 }
-
 export const filterOptions = {
   status: ['Alive', 'Dead', 'unknown Status'],
   species: ['Human', 'Alien', 'Humanoid', 'Poopybutthole', 'Mythological Creature', 'Animal', 'Robot', 'Cronenberg', 'Disease', 'unknown Species'],

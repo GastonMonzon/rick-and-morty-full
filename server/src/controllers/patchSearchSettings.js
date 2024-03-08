@@ -10,14 +10,12 @@ export default async function patchSearchSettings(request, response) {
       const uid = user.uid;
       const foundUser = await User.findOne({ where: { uid } });
       if (foundUser) {
-        const a = await foundUser.update({
+        await foundUser.update({
           searchQuery: searchQuery,
           searchQueryF: searchQueryF,
           searchBy: searchBy,
           searchByF: searchByF
         });
-        const user = await User.findOne({ where: { uid } });
-        console.log(a);
         response.status(201).json({ message: 'Search settings updated successfully' });
       } else {
         response.status(404).json({ message: 'User not found in the database' });

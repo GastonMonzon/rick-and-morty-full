@@ -53,7 +53,6 @@ const generateCardOptions = (options, isRadio) => {
 }
 
 const generateSearchCheckboxOptions = (options) => {
-  console.log(options);
   if (options) {
     const generatedOptions = [];
     for (let i = 0; i < options.ids.length; i++) {
@@ -76,7 +75,6 @@ const generateSearchCheckboxOptions = (options) => {
         generatedOptions[indexToUpdate].valueF = true;
       }
     }
-    console.log(generatedOptions);
     return generatedOptions;
   }
 }
@@ -94,7 +92,7 @@ const initialState = {
   isFavoritesTogether: true,
   selectedCardsPerPage: getDefaultCardsPerPage,
   isAscending: true,
-  selectedOrder: '',
+  selectedOrder: getDefaultOrderOptions().checked,
   searchByCheckboxOptions: generateSearchCheckboxOptions(getDefaultSearchOptions()),
   cardRadioOptions: generateCardOptions(getDefaultCardOptions(), true),
   cardCheckboxOptions: generateCardOptions(getDefaultCardOptions(), false),
@@ -109,7 +107,7 @@ const initialState = {
   selectedFiltersFavorites: [],
   selectedCardsPerPageFavorites: getDefaultCardsPerPageF,
   isAscendingFavorites: true,
-  selectedOrderFavorites: '',
+  selectedOrderFavorites: getDefaultOrderOptions().checkedFavorites,
   homeBackground: '',
   favoritesBackground: '',
   detailBackground: '',
@@ -139,6 +137,7 @@ const reducer = (state = initialState, action) => {
       const favorites = userOptions.favorites !== null
         ? userOptions.favorites.map((favorite) => state.allCards.find((card) => card.id === favorite))
         : [];
+        console.log(userOptions.orderByF);
       return {
         ...state,
         autoSaveSearch: userOptions.autoSaveSearch,
@@ -335,15 +334,26 @@ const reducer = (state = initialState, action) => {
     }
     case ORDER_BY: {
       state.isLoading = true;
-      state.selectedOrder = action.payload.order;
-      let orderByTemp;
+      let orderByTemp, order;
       if (action.payload.isHome) {
         orderByTemp = [...state.filteredCards];
+        if (!action.payload.order) {
+          order = state.selectedOrder;
+        } else {
+          order = action.payload.order;
+        }
       } else {
         orderByTemp = [...state.filteredFavorites];
+        if (!action.payload.order) {
+          order = state.selectedOrderFavorites;
+        } else {
+          order = action.payload.order;
+        }
       }
-      switch (state.selectedOrder) {
-        case 'Random': {
+      console.log(order);
+      switch (order) {
+        case 'Random':
+        case 'RandomF': {
           const orderCardsInRandom = (randomizedOrder, cardsToRandomize) => {
             const randomOrder = [];
             for (let i = 0; i < randomizedOrder.length; i++) {
@@ -364,25 +374,32 @@ const reducer = (state = initialState, action) => {
           break;
         }
         case 'Id':
+        case 'IdF':
           orderByTemp = orderByTemp.sort((a, b) => a.id - b.id);
           break;
         case 'Name':
+        case 'NameF':
           orderByTemp = orderByTemp.sort((a, b) => a.name.localeCompare(b.name));
           break;
         case 'Status':
+        case 'StatusF':
           orderByTemp = orderByTemp.sort((a, b) => a.status.localeCompare(b.status));
           break;
         case 'Species':
+        case 'SpeciesF':
           orderByTemp = orderByTemp.sort((a, b) => a.species.localeCompare(b.species));
           break;
         case 'Gender':
+        case 'GenderF':
           orderByTemp = orderByTemp.sort((a, b) => a.gender.localeCompare(b.gender));
           break;
         case 'Origin':
-          orderByTemp = orderByTemp.sort((a, b) => a.origin.name.localeCompare(b.origin.name));
+        case 'OriginF':
+          orderByTemp = orderByTemp.sort((a, b) => a.origin_name.localeCompare(b.origin_name));
           break;
         case 'Location':
-          orderByTemp = orderByTemp.sort((a, b) => a.location.name.localeCompare(b.location.name));
+        case 'LocationF':
+          orderByTemp = orderByTemp.sort((a, b) => a.location_name.localeCompare(b.location_name));
           break;
         default:
           orderByTemp = orderByTemp.sort((a, b) => a.id - b.id);
@@ -395,13 +412,16 @@ const reducer = (state = initialState, action) => {
         return {
           ...state,
           filteredCards: [...orderByTemp],
+          selectedOrder: order,
           areFilterSettingsChanged: true,
           isLoading: false
         }
       } else {
+        console.log(action.payload.order);
         return {
           ...state,
           filteredFavorites: [...orderByTemp],
+          selectedOrderFavorites: order,
           areFilterSettingsChanged: true,
           isLoading: false
         }
@@ -451,12 +471,13 @@ const reducer = (state = initialState, action) => {
             })
             break;
           case 'resetFiltersButton':
+            const order = getDefaultOrderOptions().checked;
             return {
               ...state,
               filteredCards: [...state.queriedCards],
               selectedFilters: [],
               isAscending: true,
-              selectedOrder: getDefaultOrderOptions()?.checked,
+              selectedOrder: order,
               areFilterSettingsChanged: true
             }
           default:
@@ -502,12 +523,14 @@ const reducer = (state = initialState, action) => {
             })
             break;
           case 'resetFiltersButton':
+            const order = getDefaultOrderOptions().checkedFavorites;
+            console.log(order);
             return {
               ...state,
               filteredFavorites: [...state.queriedFavorites],
               selectedFiltersFavorites: [],
               isAscendingFavorites: true,
-              selectedOrderFavorites: getDefaultOrderOptions()?.checkedFavorites,
+              selectedOrderFavorites: order,
               areFilterSettingsChanged: true
             }
           default:
@@ -666,6 +689,7 @@ const reducer = (state = initialState, action) => {
     case OPTIONS_SIDEBAR_RADIOS: {
       let updatedRadioOptions = [...state.detailRadioOptions];
       const index = updatedRadioOptions.findIndex(option => option.name === action.payload.name);
+      console.log(updatedRadioOptions, action.payload.name, action.payload.value, index);
       if (index !== -1) {
         updatedRadioOptions[index].value = action.payload.value;
         return {
@@ -739,112 +763,112 @@ const reducer = (state = initialState, action) => {
       let tempFavoritesIcon;
       switch (action.payload) {
         case 'heart':
-          tempFavoritesIcon = ['🤍', '❤️'];
+          tempFavoritesIcon = ['🤍', '❤️', 'heart'];
           break;
         case 'heartOrange':
-          tempFavoritesIcon = ['🤍', '🧡'];
+          tempFavoritesIcon = ['🤍', '🧡', 'heartOrange'];
           break;
         case 'heartYellow':
-          tempFavoritesIcon = ['🤍', '💛'];
+          tempFavoritesIcon = ['🤍', '💛', 'heartYellow'];
           break;
         case 'heartGreen':
-          tempFavoritesIcon = ['🤍', '💚'];
+          tempFavoritesIcon = ['🤍', '💚', 'heartGreen'];
           break;
         case 'heartBlue':
-          tempFavoritesIcon = ['🤍', '💙'];
+          tempFavoritesIcon = ['🤍', '💙', 'heartBlue'];
           break;
         case 'heartPurple':
-          tempFavoritesIcon = ['🤍', '💜'];
+          tempFavoritesIcon = ['🤍', '💜', 'heartPurple'];
           break;
         case 'heartBrown':
-          tempFavoritesIcon = ['🤍', '🤎'];
+          tempFavoritesIcon = ['🤍', '🤎', 'heartBrown'];
           break;
         case 'heartBlack':
-          tempFavoritesIcon = ['🤍', '🖤'];
+          tempFavoritesIcon = ['🤍', '🖤', 'heartBlack'];
           break;
         case 'heartFire':
-          tempFavoritesIcon = ['🤍', '❤️‍🔥'];
+          tempFavoritesIcon = ['🤍', '❤️‍🔥', 'heartFire'];
           break;
         case 'heartPink':
-          tempFavoritesIcon = ['🤍', '💗'];
+          tempFavoritesIcon = ['🤍', '💗', 'heartPink'];
           break;
         case 'heartStar':
-          tempFavoritesIcon = ['🤍', '💖'];
+          tempFavoritesIcon = ['🤍', '💖', 'heartStar'];
           break;
         case 'heartPresent':
-          tempFavoritesIcon = ['🤍', '💝'];
+          tempFavoritesIcon = ['🤍', '💝', 'heartPresent'];
           break;
         case 'star':
-          tempFavoritesIcon = ['🌟', '⭐'];
+          tempFavoritesIcon = ['🌟', '⭐', 'star'];
           break;
         case 'heartFace':
-          tempFavoritesIcon = ['😶', '😍'];
+          tempFavoritesIcon = ['😶', '😍', 'heartFace'];
           break;
         case 'starFace':
-          tempFavoritesIcon = ['😑', '🤩'];
+          tempFavoritesIcon = ['😑', '🤩', 'starFace'];
           break;
         case 'monkeyFace':
-          tempFavoritesIcon = ['🙈', '🐵'];
+          tempFavoritesIcon = ['🙈', '🐵', 'monkeyFace'];
           break;
         case 'eye':
-          tempFavoritesIcon = ['⚪', '👁️'];
+          tempFavoritesIcon = ['⚪', '👁️', 'eye'];
           break;
         case 'thumbsUp':
-          tempFavoritesIcon = ['✋🏻', '👍'];
+          tempFavoritesIcon = ['✋🏻', '👍', 'thumbsUp'];
           break;
         case 'nazar':
-          tempFavoritesIcon = ['⚪', '🧿'];
+          tempFavoritesIcon = ['⚪', '🧿', 'nazar'];
           break;
         case 'disk':
-          tempFavoritesIcon = ['💿', '📀'];
+          tempFavoritesIcon = ['💿', '📀', 'disk'];
           break;
         case 'nest':
-          tempFavoritesIcon = ['🪹', '🪺'];
+          tempFavoritesIcon = ['🪹', '🪺', 'nest'];
           break;
         case 'leaves':
-          tempFavoritesIcon = ['🍂', '🍃'];
+          tempFavoritesIcon = ['🍂', '🍃', 'leaves'];
           break;
         case 'ship':
-          tempFavoritesIcon = ['🚢', '⚓'];
+          tempFavoritesIcon = ['🚢', '⚓', 'ship'];
           break;
         case 'earthAmerica':
-          tempFavoritesIcon = ['⚪', '🌎'];
+          tempFavoritesIcon = ['⚪', '🌎', 'earthAmerica'];
           break;
         case 'earthAfrica':
-          tempFavoritesIcon = ['⚪', '🌍'];
+          tempFavoritesIcon = ['⚪', '🌍', 'earthAfrica'];
           break;
         case 'earthAsia':
-          tempFavoritesIcon = ['⚪', '🌏'];
+          tempFavoritesIcon = ['⚪', '🌏', 'earthAsia'];
           break;
         case 'volcano':
-          tempFavoritesIcon = ['🗻', '🌋'];
+          tempFavoritesIcon = ['🗻', '🌋', 'volcano'];
           break;
         case 'cloudySunny':
-          tempFavoritesIcon = ['☁️', '☀️'];
+          tempFavoritesIcon = ['☁️', '☀️', 'cloudySunny'];
           break;
         case 'rainy':
-          tempFavoritesIcon = ['🌧️', '💧'];
+          tempFavoritesIcon = ['🌧️', '💧', 'rainy'];
           break;
         case 'snowy':
-          tempFavoritesIcon = ['🌨️', '❄️'];
+          tempFavoritesIcon = ['🌨️', '❄️', 'snowy'];
           break;
         case 'umbrella':
-          tempFavoritesIcon = ['🌂', '☂️'];
+          tempFavoritesIcon = ['🌂', '☂️', 'umbrella'];
           break;
         case 'moon':
-          tempFavoritesIcon = ['🌑', '🌕'];
+          tempFavoritesIcon = ['🌑', '🌕', 'moon'];
           break;
         case 'moonFace':
-          tempFavoritesIcon = ['🌚', '🌝'];
+          tempFavoritesIcon = ['🌚', '🌝', 'moonFace'];
           break;
         case 'sunFace':
-          tempFavoritesIcon = ['☀️', '🌞'];
+          tempFavoritesIcon = ['☀️', '🌞', 'sunFace'];
           break;
         case 'noYes':
-          tempFavoritesIcon = ['❌', '⭕'];
+          tempFavoritesIcon = ['❌', '⭕', 'noYes'];
           break;
         case 'exclamation':
-          tempFavoritesIcon = ['❕', '❗'];
+          tempFavoritesIcon = ['❕', '❗', 'exclamation'];
           break;
         default:
           return state;
@@ -901,14 +925,16 @@ const reducer = (state = initialState, action) => {
             areFilterSettingsChanged: false
           }
         case 'loadOptionsSettings':
+          console.log(userOptions.favoritesIcon);
           return {
             ...state,
             isFavoritesTogether: userOptions.isFavoritesTogether,
             selectedCardsPerPage: userOptions.selectedCardsPerPage,
             selectedCardsPerPageFavorites: userOptions.selectedCardsPerPageF,
             cardRadioOptions: generateCardOptions(getCardOptions(userOptions), true),
-            detailRadioOptions: generateCardOptions(getDetailOptions(userOptions), true),
             cardCheckboxOptions: generateCardOptions(getCardOptions(userOptions), false),
+            favoritesIcon: userOptions.favoritesIcon,
+            detailRadioOptions: generateCardOptions(getDetailOptions(userOptions), true),
             detailCheckboxOptions: generateCardOptions(getDetailOptions(userOptions), false),
             areOptionsSettingsChanged: false
           }
@@ -1002,7 +1028,7 @@ const reducer = (state = initialState, action) => {
             autoSaveSearch: state.autoSaveSearch,
             autoSaveFilters: state.autoSaveFilters,
             autoSaveOptions: state.autoSaveOptions,
-            favorites: state.allFavorites.map(favorite => favorite.id),
+            favorites: state.allFavorites.map(favorite => favorite?.id),
             homeBackground: state.homeBackground,
             favoritesBackground: state.favoritesBackground,
             detailBackground: state.detailBackground,

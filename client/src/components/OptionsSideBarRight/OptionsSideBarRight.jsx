@@ -33,6 +33,13 @@ export default function OptionsSideBarRight() {
     }
   }, [areOptionsSettingsChanged]);
 
+  useEffect(() => {
+    if (!areOptionsSettingsChanged) {
+      setCardPerPage(selectedCardsPerPage);
+      setCardPerPageFavorites(selectedCardsPerPageFavorites);
+    }
+  }, [areOptionsSettingsChanged, selectedCardsPerPage, selectedCardsPerPageFavorites]);
+
   const handleCardsPerPageChange = () => {
     if (Number.isInteger(Number(cardsPerPage)) && cardsPerPage > 0 && cardsPerPage < 1000) {
       dispatch(optionsCardsPerPage({ value: cardsPerPage, isHome: isHomeOptions }))
@@ -181,7 +188,7 @@ export default function OptionsSideBarRight() {
             mainTitle={favoritesIconRadio.mainTitle}
             titles={favoritesIconRadio.titles}
             ids={favoritesIconRadio.ids}
-            checkedId={favoritesIconRadio.checked}
+            checkedId={favoritesIconRadio.selectedIcon}
             handleChange={handleFavoritesIconChange}
           />
         </div>

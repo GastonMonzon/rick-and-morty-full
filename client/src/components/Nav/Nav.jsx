@@ -64,11 +64,11 @@ export default function Nav() {
         </details>
         <details className={pathname !== '/home' ? 'no-display' : ''} >
           <summary >Filters</summary>
-          <FiltersBar />
+          <FiltersBar isHome={true} />
         </details>
         <details className={pathname !== '/favorites' ? 'no-display' : ''} >
           <summary>Filters</summary>
-          <FiltersBar />
+          <FiltersBar isHome={false} />
         </details>
       </div>
       <NavLink to="/home" >
