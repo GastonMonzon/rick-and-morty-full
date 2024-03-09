@@ -9,14 +9,21 @@
   border-radius: 0 10px 0 10px;
   direction: rtl;
   overflow: scroll;
-  text-align: left;
   padding: 15px;
   transition: .25s transform ease;
 }
 
+.user-sidebar h2,
+.user-sidebar h3,
+.user-sidebar div,
+.user-sidebar label,
+.user-sidebar input,
+.user-sidebar details {
+  direction: ltr;
+}
+
 .user-sidebar-title-container {
   display: flex;
-  direction: ltr;
 }
 
 .user-sidebar h2 {
@@ -24,17 +31,12 @@
   margin-right: 5px;
 }
 
-.user-sidebar h3 {
+.user-sidebar-title-container h3 {
   display: flex;
   align-items: center;
   font-size: 20px;
   font-weight: normal;
-  direction: ltr;
   margin-bottom: 5px;
-}
-
-.user-sidebar label {
-  text-align: left;
 }
 
 .video-container-user-options,
@@ -68,7 +70,6 @@
 .autosave-option-container,
 .load-save-option-container {
   display: flex;
-  flex-direction: row-reverse;
   justify-content: space-between;
   margin: 5px 0 0px 0;
 }

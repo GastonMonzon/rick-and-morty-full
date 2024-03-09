@@ -67,6 +67,7 @@ export default function UserSideBarLeft() {
   const [isUserDataChanged, setIsUserDataChanged] = useState(false);
   const [isOpenThresholdReached, setIsOpenThresholdReached] = useState(0);
   const [isloadingScreenTested, setIsloadingScreenTested] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const autoSaveSearch = useSelector((state) => state.autoSaveSearch);
   const autoSaveFilters = useSelector((state) => state.autoSaveFilters);
   const autoSaveOptions = useSelector((state) => state.autoSaveOptions);
@@ -229,19 +230,23 @@ export default function UserSideBarLeft() {
         try {
           console.log(searchSettings);
           await saveSearchSettings(searchSettings);
-          setModalMessage({
-            ...modalMessage,
-            title: 'Success',
-            message: 'Search Settings Saved Successfully'
-          });
-          setIsNotificationModalOpen(true);
+          if (!isLoggingOut) {
+            setModalMessage({
+              ...modalMessage,
+              title: 'Success',
+              message: 'Search Settings Saved Successfully'
+            });
+            setIsNotificationModalOpen(true);
+          }
         } catch (error) {
-          setModalMessage({
-            ...modalMessage,
-            title: 'Error saving search settings',
-            message: error?.response?.data?.error?.code
-          });
-          setIsNotificationModalOpen(true);
+          if (!isLoggingOut) {
+            setModalMessage({
+              ...modalMessage,
+              title: 'Error saving search settings',
+              message: error?.response?.data?.error?.code
+            });
+            setIsNotificationModalOpen(true);
+          }
         }
       }
     }());
@@ -252,19 +257,23 @@ export default function UserSideBarLeft() {
       if (filterSettings) {
         try {
           await saveFilterSettings(filterSettings);
-          setModalMessage({
-            ...modalMessage,
-            title: 'Success',
-            message: 'Filter Settings Saved Succesfully'
-          });
-          setIsNotificationModalOpen(true);
+          if (!isLoggingOut) {
+            setModalMessage({
+              ...modalMessage,
+              title: 'Success',
+              message: 'Filter Settings Saved Succesfully'
+            });
+            setIsNotificationModalOpen(true);
+          }
         } catch (error) {
-          setModalMessage({
-            ...modalMessage,
-            title: 'Error saving filter settings',
-            message: error?.response?.data?.error?.code
-          });
-          setIsNotificationModalOpen(true);
+          if (!isLoggingOut) {
+            setModalMessage({
+              ...modalMessage,
+              title: 'Error saving filter settings',
+              message: error?.response?.data?.error?.code
+            });
+            setIsNotificationModalOpen(true);
+          }
         }
       }
     }());
@@ -275,21 +284,23 @@ export default function UserSideBarLeft() {
       if (optionsSettings) {
         try {
           await saveOptionsSettings(optionsSettings);
-          console.log(optionsSettings);
-          console.log(userOptions);
-          setModalMessage({
-            ...modalMessage,
-            title: 'Success',
-            message: 'Options Settings Saved Succesfully'
-          });
-          setIsNotificationModalOpen(true);
+          if (!isLoggingOut) {
+            setModalMessage({
+              ...modalMessage,
+              title: 'Success',
+              message: 'Options Settings Saved Succesfully'
+            });
+            setIsNotificationModalOpen(true);
+          }
         } catch (error) {
-          setModalMessage({
-            ...modalMessage,
-            title: 'Error saving options settings',
-            message: error?.response?.data?.error?.code
-          });
-          setIsNotificationModalOpen(true);
+          if (!isLoggingOut) {
+            setModalMessage({
+              ...modalMessage,
+              title: 'Error saving options settings',
+              message: error?.response?.data?.error?.code
+            });
+            setIsNotificationModalOpen(true);
+          }
         }
       }
     }());
@@ -514,18 +525,6 @@ export default function UserSideBarLeft() {
       });
     }
   }
-  const handleLogOut = async () => {
-    try {
-      handleSave('saveUserSettings');
-      handleSave('saveFiltersSettings');
-      handleSave('saveOptionsSettings');
-      handleSave('saveSearchSettings');
-      await logOut();
-      navigate('/');
-    } catch (error) {
-      console.log(error);
-    }
-  }
   const handleDeleteAccountButtonClick = () => {
     setModalMessage({
       ...modalMessage,
@@ -569,6 +568,33 @@ export default function UserSideBarLeft() {
         ...changeDataErrors,
         changePassword: `Error deleting account ${error?.response?.data?.error?.code}`
       });
+    }
+  }
+  const handleLogOut = async () => {
+    try {
+      setIsLoggingOut(true);
+      setModalMessage({
+        ...modalMessage,
+        title: 'Logging Out',
+        message: 'Saving Options'
+      });
+      setIsNotificationModalOpen(true);
+      handleSave('saveUserSettings');
+      if (autoSaveFilters) {
+        handleSave('saveFiltersSettings');
+      }
+      if (autoSaveOptions) {
+        handleSave('saveOptionsSettings');
+      }
+      if (autoSaveSearch) {
+        handleSave('saveSearchSettings');
+      }
+      setTimeout(async () => {
+        setIsNotificationModalOpen(false);
+        await logOut();
+      }, 3000);
+    } catch (error) {
+      console.log(error);
     }
   }
   const handleCloseModal = () => {
@@ -709,7 +735,7 @@ export default function UserSideBarLeft() {
                   Save
                 </button>
               </div>
-              <pre className={changeData.loadOptionsSettings ? '' : 'invisible'} >{changeData.surName ? `${changeData.loadOptionsSettings}` : 'invisible'}</pre>
+              <pre className={changeData.loadOptionsSettings ? '' : 'invisible'} >{changeData.loadOptionsSettings ? `${changeData.loadOptionsSettings}` : 'invisible'}</pre>
             </>
           }
           {autoSaveSearch &&
@@ -731,6 +757,7 @@ export default function UserSideBarLeft() {
       </details>
       <details>
         <summary>Change User Image</summary>
+        <h4>Coming Soon</h4>
       </details>
       <div>
         <details id='homeBackgroundDetailsTag' className='user-options-details-tag' ref={homeBackgroundRef}>

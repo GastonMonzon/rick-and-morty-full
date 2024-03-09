@@ -10,6 +10,7 @@ export default async function patchOptionsSettings(request, response) {
     if (user) {
       const uid = user.uid;
       const foundUser = await User.findOne({ where: { uid } });
+      console.log(selectedCardsPerPageF);
       if (foundUser) {
         await foundUser.update({
           isFavoritesTogether: isFavoritesTogether,

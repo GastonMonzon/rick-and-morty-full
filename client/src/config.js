@@ -34,8 +34,8 @@ export const getCardOptions = (userOptions) => {
       nameF: 'horizontalCardsPerRowF',
       mainTitle: 'Horizontal Cards Per Row:',
       titles: ['2', '3', '4'],
-      ids: ['twoCards', 'threeCards', 'fourCards'],
-      idsF: ['twoCards', 'threeCards', 'fourCards'],
+      ids: ['twoCardsH', 'threeCardsH', 'fourCardsH'],
+      idsF: ['twoCardsHF', 'threeCardsHF', 'fourCardsHF'],
       checked: userOptions?.horizontalCardsPerRow,
       checkedFavorites: userOptions?.horizontalCardsPerRowF
     },
@@ -45,7 +45,7 @@ export const getCardOptions = (userOptions) => {
       mainTitle: 'Info Labels:',
       titles: ['Id', 'Name', 'Status', 'Species', 'Type', 'Gender', 'Origin', 'Location'],
       ids: ['idView', 'nameView', 'statusView', 'speciesView', 'typeView', 'genderView', 'originView', 'locationView'],
-      idsF: ['idView', 'nameView', 'statusView', 'speciesView', 'typeView', 'genderView', 'originView', 'locationView'],
+      idsF: ['idViewF', 'nameViewF', 'statusViewF', 'speciesViewF', 'typeViewF', 'genderViewF', 'originViewF', 'locationViewF'],
       checked: userOptions?.infoLabels,
       checkedFavorites: userOptions?.infoLabelsF
     },
@@ -55,7 +55,7 @@ export const getCardOptions = (userOptions) => {
       mainTitle: 'Info Position:',
       titles: ['Over', 'Above', 'Right', 'Below', 'Left'],
       ids: ['over', 'above', 'right', 'below', 'left'],
-      idsF: ['over', 'above', 'right', 'below', 'left'],
+      idsF: ['overF', 'aboveF', 'rightF', 'belowF', 'leftF'],
       checked: userOptions?.infoPosition,
       checkedFavorites: userOptions?.infoPositionF
     },
@@ -65,7 +65,7 @@ export const getCardOptions = (userOptions) => {
       mainTitle: 'Text Position X:',
       titles: ['Left', 'Center', 'Right', 'Justify'],
       ids: ['leftX', 'centerX', 'rightX', 'justify'],
-      idsF: ['leftX', 'centerX', 'rightX', 'justify'],
+      idsF: ['leftXF', 'centerXF', 'rightXF', 'justifyF'],
       checked: userOptions?.textPositionX,
       checkedFavorites: userOptions?.textPositionXF
     },
@@ -75,17 +75,13 @@ export const getCardOptions = (userOptions) => {
       mainTitle: 'Text Position Y:',
       titles: ['Top', 'Center', 'Bottom', 'Space-Around', 'Space-Between', 'Space-Evenly'],
       ids: ['top', 'centerY', 'bottom', 'space-around', 'space-between', 'space-evenly'],
-      idsF: ['top', 'centerY', 'bottom', 'space-around', 'space-between', 'space-evenly'],
+      idsF: ['topF', 'centerYF', 'bottomF', 'space-aroundF', 'space-betweenF', 'space-evenlyF'],
       checked: userOptions?.textPositionY,
       checkedFavorites: userOptions?.textPositionYF
     }
   ]
 }
 export const getFavoritesIconOptions = (userOptions) => {
-  const selectedIcon = typeof userOptions?.favoritesIcon[2] !== 'undefined'
-    ? userOptions.favoritesIcon[2]
-    : ['🤍', '❤️', 'heart'];
-    console.log(selectedIcon);
   return {
     name: 'favoritesIcon',
     mainTitle: 'Favorites Icon:',
@@ -97,7 +93,7 @@ export const getFavoritesIconOptions = (userOptions) => {
       'heartFire', 'heartPink', 'heartStar', 'heartPresent', 'star', 'heartFace', 'starFace', 'monkeyFace', 'eye',
       'thumbsUp', 'nazar', 'disk', 'nest', 'leaves', 'ship', 'earthAmerica', 'earthAfrica', 'earthAsia', 'volcano',
       'cloudySunny', 'rainy', 'snowy', 'umbrella', 'moon', 'moonFace', 'sunFace', 'noYes', 'exclamation'],
-    selectedIcon: selectedIcon
+    selectedIcon: userOptions?.favoritesIcon[2]
   }
 }
 export const getDetailOptions = (userOptions) => {

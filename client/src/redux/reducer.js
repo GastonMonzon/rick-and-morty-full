@@ -129,15 +129,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         allCards: action.payload,
-        filteredCards: action.payload,
-        queriedCards: action.payload
+        queriedCards: action.payload,
+        filteredCards: action.payload
       };
     case SET_ALL_VALUES: {
       const userOptions = action.payload;
-      const favorites = userOptions.favorites !== null
-        ? userOptions.favorites.map((favorite) => state.allCards.find((card) => card.id === favorite))
-        : [];
-        console.log(userOptions.orderByF);
+      const favorites = userOptions.favorites.map((favorite) => state.allCards.find((card) => card.id === favorite));
       return {
         ...state,
         autoSaveSearch: userOptions.autoSaveSearch,
@@ -160,6 +157,8 @@ const reducer = (state = initialState, action) => {
         detailRadioOptions: generateCardOptions(getDetailOptions(userOptions), true),
         detailCheckboxOptions: generateCardOptions(getDetailOptions(userOptions), false),
         allFavorites: favorites,
+        filteredFavorites: favorites,
+        queriedFavorites: favorites,
         searchQueryFavorites: userOptions.searchQueryF,
         selectedOrderFavorites: userOptions.orderByF,
         isAscendingFavorites: userOptions.isAscendingF,
@@ -280,11 +279,12 @@ const reducer = (state = initialState, action) => {
       }
       const queryCardsFunction = (cardsTemp) => {
         return cardsTemp.filter((character) => {
+          console.log(cardsTemp);
           return (
             (idCheckbox.checked && character.id.toString().includes(query)) ||
             (nameCheckbox.checked && character.name.toLowerCase().includes(query)) ||
-            (originCheckbox.checked && character.origin?.name.toLowerCase().includes(query)) ||
-            (locationCheckbox.checked && character.location?.name.toLowerCase().includes(query))
+            (originCheckbox.checked && character.origin_name?.toLowerCase().includes(query)) ||
+            (locationCheckbox.checked && character.location_name?.toLowerCase().includes(query))
           );
         });
       }
@@ -350,7 +350,6 @@ const reducer = (state = initialState, action) => {
           order = action.payload.order;
         }
       }
-      console.log(order);
       switch (order) {
         case 'Random':
         case 'RandomF': {
@@ -408,6 +407,7 @@ const reducer = (state = initialState, action) => {
       if (!action.payload.isAscending) {
         orderByTemp.reverse();
       }
+      console.log(order);
       if (action.payload.isHome) {
         return {
           ...state,
@@ -417,7 +417,6 @@ const reducer = (state = initialState, action) => {
           isLoading: false
         }
       } else {
-        console.log(action.payload.order);
         return {
           ...state,
           filteredFavorites: [...orderByTemp],
@@ -672,6 +671,7 @@ const reducer = (state = initialState, action) => {
         areOptionsSettingsChanged: true
       };
     case OPTIONS_SIDEBAR_CARDS_PER_PAGE: {
+      console.log(action.payload);
       if (action.payload.isHome) {
         return {
           ...state,

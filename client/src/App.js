@@ -13,7 +13,7 @@ import { setAllCards, setAllValues } from './redux/actions';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 /* hooks */
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch } from "react-redux";
 
@@ -50,7 +50,7 @@ export default function App() {
     return (
       <Routes>
         <Route path='/' element={<LoginRegister />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path='*' element={<Navigate to='/' />} />
       </Routes>
     );
   } else {

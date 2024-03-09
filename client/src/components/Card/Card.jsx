@@ -105,6 +105,7 @@ export default function Card(props) {
       console.log(myFavorites);
     }
   }
+  console.log(myFavorites);
   
   return (
     <div className={`card-container container-${infoLabelsPosition} container-${cardsPerRow}-${infoLabelsPosition}`} id={`card-${id}`}>

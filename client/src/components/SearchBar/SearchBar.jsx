@@ -15,6 +15,7 @@ export default function SearchBar({ isHome }) {
   const [renderKeyF, setRenderKeyF] = useState(0);
   const searchByCheckbox = getSearchOptions(userOptions);
   const areSearchSettingsChanged = useSelector(state => state.areSearchSettingsChanged);
+  const autoSaveSearch = useSelector(state => state.autoSaveSearch);
   const searchQuery = useSelector(state =>
     isHome
       ? state.searchQuery
@@ -30,6 +31,12 @@ export default function SearchBar({ isHome }) {
       ? state.selectedOrder
       : state.selectedOrderFavorites
   );
+
+  useEffect(() => {
+    dispatch(query({ query: searchQuery, isHome: isHome }));
+    dispatch(filter({ name: '', value: '', isHome: isHome }));
+    dispatch(orderBy({ order: selectedOrder, isHome: isHome, isAscending: isAscending }));
+  });
 
   useEffect(() => {
     if (!areSearchSettingsChanged) {
@@ -81,8 +88,8 @@ export default function SearchBar({ isHome }) {
     if (isHome) {
       return (
         <>
-          <div className={`${searchByCheckbox.name}-container ${pathname !== '/home' ? 'no-display' : ''}`} 
-          key={renderKey} >
+          <div className={`${searchByCheckbox.name}-container ${pathname !== '/home' ? 'no-display' : ''}`}
+            key={renderKey} >
             <Checkbox
               name={searchByCheckbox.name}
               mainTitle={searchByCheckbox.mainTitle}
@@ -112,8 +119,8 @@ export default function SearchBar({ isHome }) {
     } else {
       return (
         <>
-          <div className={`${searchByCheckbox.name}-container ${pathname !== '/favorites' ? 'no-display' : ''}`} 
-          key={renderKeyF} >
+          <div className={`${searchByCheckbox.name}-container ${pathname !== '/favorites' ? 'no-display' : ''}`}
+            key={renderKeyF} >
             <Checkbox
               name={searchByCheckbox.name}
               mainTitle={searchByCheckbox.mainTitle}

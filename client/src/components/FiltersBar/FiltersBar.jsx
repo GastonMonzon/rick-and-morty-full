@@ -108,7 +108,7 @@ export default function FiltersBar({ isHome }) {
               id='selectedOrder'
               onBlur={() => setTimeout(handleOrderBlur, 100)}
               onClick={handleOrderFocus} >
-              {selectedOrder.slice(0, -1)}
+              {isHome ? selectedOrder : selectedOrder.slice(0, -1)}
             </button>
             <div className={`order-by-options-container ${isOrderFocused ? '' : 'invisible'}`}
               key='order-list-container' >

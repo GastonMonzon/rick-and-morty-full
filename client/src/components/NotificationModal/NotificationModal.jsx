@@ -8,7 +8,11 @@ export default function NotificationModal({ title, message, buttonClassname, han
           <br />
           <h6>{message}</h6>
           <br />
-          <button className={buttonClassname} onClick={handleCloseModal}>Accept</button>
+          <button
+            className={buttonClassname}
+            onClick={handleCloseModal} >
+            Accept
+          </button>
         </div>
       </div>
     </div>

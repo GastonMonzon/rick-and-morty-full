@@ -23,8 +23,8 @@ export default function OptionsSideBarRight() {
   const isFavoritesTogether = useSelector(state => state.isFavoritesTogether);
   const areOptionsSettingsChanged = useSelector(state => state.areOptionsSettingsChanged);
   const [isHomeOptions, setIsHomeOptions] = useState(true);
-  const [cardsPerPageFavorites, setCardPerPageFavorites] = useState(selectedCardsPerPageFavorites);
   const [cardsPerPage, setCardPerPage] = useState(selectedCardsPerPage);
+  const [cardsPerPageFavorites, setCardPerPageFavorites] = useState(selectedCardsPerPageFavorites);
   const [renderKey, setRenderKey] = useState(0);
 
   useEffect(() => {
@@ -42,7 +42,11 @@ export default function OptionsSideBarRight() {
 
   const handleCardsPerPageChange = () => {
     if (Number.isInteger(Number(cardsPerPage)) && cardsPerPage > 0 && cardsPerPage < 1000) {
-      dispatch(optionsCardsPerPage({ value: cardsPerPage, isHome: isHomeOptions }))
+      if (isHomeOptions) {
+        dispatch(optionsCardsPerPage({ value: cardsPerPage, isHome: isHomeOptions }))
+      } else {
+        dispatch(optionsCardsPerPage({ value: cardsPerPageFavorites, isHome: isHomeOptions }))
+      }
     }
   }
   const handleOptionsTogether = () => {

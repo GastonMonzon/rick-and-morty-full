@@ -9,7 +9,7 @@ export default async function loginUser(request, response) {
     const { user } = await signInWithEmailAndPassword(auth, email, password);
     const userOptions = await User.findOne({ where: { uid: user.uid } });
     if (userOptions) {
-      response.status(200).json({ userOptions });
+      response.status(200).json(userOptions);
     } else {
       response.status(404).json({ message: 'User not found in the database' });
     }
